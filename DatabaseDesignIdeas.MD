@@ -2,7 +2,9 @@
 # Ideas
 Put your ideas here and we can discus them.
 
-For user login either use OAuth or store info in a database
+For user login either use OAuth or store info in a database.  
+Could also create users on MySQL and they have to connect to the database.  
+This approach would be better since we can limit what they are capable of doing to the database.
 
 ## Database design
 
