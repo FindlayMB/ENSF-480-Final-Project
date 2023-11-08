@@ -11,7 +11,7 @@ This approach would be better since we can limit what they are capable of doing 
 -> registered users and admins  
 -> used for authentication
 - TABLE: user info
-    - user id
+    - user id -> unique
     - username
     - password
     - name
@@ -20,14 +20,14 @@ This approach would be better since we can limit what they are capable of doing 
     - purchased flight
 
 - TABLE: info about planes
-    - plane id
+    - plane id -> unique
     - plane type
     - layout
     - number of regular seats
     - number of business seats  
 
 - TABLE: info about flights
-    - flight code
+    - flight code -> unique
     - destination airport -> store as the airport code
     - arrival time/date
     - origin airport -> store as the airport code
@@ -40,7 +40,7 @@ This approach would be better since we can limit what they are capable of doing 
     - user id -> unique
 
 - TABLE: crew info
-    - crew id
+    - crew id -> unique
 
 - TABLE: info about airports
     - airport code -> should be unique
