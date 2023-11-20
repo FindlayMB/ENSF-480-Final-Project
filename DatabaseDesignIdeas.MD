@@ -16,6 +16,10 @@ This approach would be better since we can limit what they are capable of doing 
 
 
 ## Database design
+### Time & Date formats  
+-> Time: XX:XX[AM/PM]
+-> Date: DD/MM/YYYY
+
 
 -> registered users and admins  
 -> used for authentication
@@ -28,6 +32,7 @@ This approach would be better since we can limit what they are capable of doing 
     - payment info
     - membership -> boolean
     - company credit card
+    - role -> member, employee, admin
 
 - TABLE: info about planes
     - plane id -> unique
@@ -48,10 +53,17 @@ This approach would be better since we can limit what they are capable of doing 
 
 - TABLE: passenger list
     - flight code -> group by
+    - crew id
     - user id -> unique
 
+- TABLE: seating info
+    - flight id -> group by
+    - seat id -> unique
+    - user id -> can be null
+
 - TABLE: crew info
-    - crew id -> unique
+    - crew id -> unique, id for the crew
+    - crew member ids -> ids for crew members
 
 - TABLE: info about airports
     - airport code -> should be unique
