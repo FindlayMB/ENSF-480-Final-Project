@@ -17,8 +17,8 @@ This approach would be better since we can limit what they are capable of doing 
 
 ## Database design
 ### Time & Date formats  
--> Time: XX:XX[AM/PM]
--> Date: DD/MM/YYYY
+-> Time: HH:MM:SS  
+-> Date: YYYY-MM-DD
 
 
 -> registered users and admins  
