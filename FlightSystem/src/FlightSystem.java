@@ -1,23 +1,16 @@
 import java.util.HashMap;
 
 import data.DataImport;
+import data.DatabaseSingleton;
 import objects.Airport;
 
 public class FlightSystem {
-    private DataImport dbImport = new DataImport();
+    private DatabaseSingleton dbConnection;
 
     private HashMap<String, Airport> airports = new HashMap<String, Airport>();
 
-    private void login() {
-        if (dbImport.createConnection("admin", "admin")) {
-            System.out.println("Database connection successfully made!");
-            return;
-        }
-        System.out.println("Failed to create connection to database!");
-    }
-
     public FlightSystem() {
-        this.login();
+        this.dbConnection = DatabaseSingleton.getInstance();
     }
 
 }

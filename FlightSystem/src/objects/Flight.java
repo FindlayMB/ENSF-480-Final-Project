@@ -14,10 +14,15 @@ public class Flight {
     private LocalDate departureDate;
     private ArrayList<Staff> crew;
 
-    public Flight(int ID, Airport destination, LocalTime arrivalTime) {
+    public Flight(int ID, Airport destination, LocalTime arrivalTime, LocalDate arrivalDate, Airport origin,
+            LocalTime departureTime, LocalDate departureDate) {
         this.ID = ID;
         this.destination = destination;
         this.arrivalTime = arrivalTime;
+        this.arrivalDate = arrivalDate;
+        this.origin = origin;
+        this.departureTime = departureTime;
+        this.departureDate = departureDate;
     }
 
 }

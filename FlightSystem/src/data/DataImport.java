@@ -11,7 +11,7 @@ import java.sql.DriverManager;
  */
 public class DataImport {
 
-    private Connection dbConnection;
+    private static Connection dbConnection = null;
 
     /**
      * Tries to create a connection to FlightSystem database on localhost
@@ -22,9 +22,9 @@ public class DataImport {
      * @return returns true if database connection was succesful
      *         otherwise returns false
      */
-    public boolean createConnection(String username, String password) {
+    private boolean createConnection(String username, String password) {
         try {
-            this.dbConnection = DriverManager.getConnection(
+            dbConnection = DriverManager.getConnection(
                     "jdbc:mysql://localhost/flightsystem",
                     username,
                     password);
@@ -34,4 +34,16 @@ public class DataImport {
         }
         return true;
     }
+
+    public static synchronized DataImport getConnection() {
+        if (dbConnection == null) {
+            if (createConnection("admin", "admin")) {
+                System.out.println("Database connection successfully made!");
+            } else {
+                System.out.println("Failed to create connection to database!");
+            }
+        }
+        return dbConnection;
+    }
+
 }

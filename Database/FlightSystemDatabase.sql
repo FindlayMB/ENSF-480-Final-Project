@@ -21,6 +21,7 @@ CREATE TABLE airports (
     City                VARCHAR(30) NOT NULL,
     Country             VARCHAR(30) NOT NULL,
     PRIMARY KEY(AirportCode)
+    
 );
 
 DROP TABLE IF EXISTS users;
