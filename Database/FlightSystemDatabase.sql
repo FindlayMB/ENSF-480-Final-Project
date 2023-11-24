@@ -80,27 +80,16 @@ CREATE TABLE passengerlist (
 
 
 /* 
- * If we make user login connecting to the database 
- * then we need to use this 
+ * Create a admin user for MySQL database.
+ * This user is used to connect to the MySQL server/database
+ * in the Java code.
  */
--- Base role creation
 DROP ROLE IF EXISTS administrator;
-DROP ROLE IF EXISTS employee;
-DROP ROLE IF EXISTS member;
-CREATE ROLE administrator, employee, member;
+CREATE ROLE administrator;
 
 DROP USER IF EXISTS 'admin'@localhost;
 CREATE USER 'admin'@localhost IDENTIFIED BY 'admin' DEFAULT ROLE administrator;
 
-DROP USER IF EXISTS 'employee'@'localhost';
-CREATE USER 'employee'@'localhost' IDENTIFIED BY 'data' DEFAULT ROLE employee;
-
-DROP USER IF EXISTS 'member'@localhost;
-CREATE USER 'member'@localhost IDENTIFIED BY 'data' DEFAULT ROLE member;
-
 GRANT ALL ON FlightSystem.* TO administrator;
-GRANT SELECT ON FlightSystem.flights TO employee;
-GRANT SELECT ON FlightSystem.flights TO member;
 
 ALTER USER 'admin'@localhost ACCOUNT UNLOCK;
-ALTER USER 'employee'@localhost ACCOUNT UNLOCK;
