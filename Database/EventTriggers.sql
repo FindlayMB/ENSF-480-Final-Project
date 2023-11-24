@@ -1,4 +1,4 @@
-USE FlightSystemDatabase;
+USE FlightSystem;
 
 /* Triggers for handling events */
 
