@@ -1,8 +1,10 @@
 
 import java.awt.*;
+import java.awt.event.ActionListener;
+
 import javax.swing.*;
 
-public class Project extends JFrame {
+public class Project extends JFrame{
 
     public Project() {
         setTitle("Air Canada");
@@ -89,7 +91,13 @@ public class Project extends JFrame {
         // Add the main panel to the JFrame
         add(mainPanel);
         add(southPanel, BorderLayout.PAGE_END);
+        flightStatusButton.addActionListener(e -> {
+            System.out.println("Sign In button clicked");
+            LoginPage loginPage = new LoginPage();
+            loginPage.setVisible(true);
+        });
     }
+
 
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
