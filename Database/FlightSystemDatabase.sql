@@ -1,6 +1,6 @@
-DROP DATABASE IF EXISTS FlightSystemDatabase;
-CREATE DATABASE FlightSystemDatabase;
-USE FlightSystemDatabase;
+DROP DATABASE IF EXISTS FlightSystem;
+CREATE DATABASE FlightSystem;
+USE FlightSystem;
 
 /* Create tables */
 
@@ -11,7 +11,7 @@ CREATE TABLE planes (
     NumRegular  INT,
     NumComfort  INT,
     NumBusiness INT,
-    primary key(PlaneID)
+    PRIMARY KEY(PlaneID)
 );
 
 DROP TABLE IF EXISTS airports;
@@ -20,12 +20,15 @@ CREATE TABLE airports (
     AirportName         VARCHAR(30) NOT NULL,
     City                VARCHAR(30) NOT NULL,
     Country             VARCHAR(30) NOT NULL,
-    primary key(AirportCode)
+    PRIMARY KEY(AirportCode)
+    
 );
 
 DROP TABLE IF EXISTS users;
 CREATE TABLE users (
     UserID              INT         NOT NULL AUTO_INCREMENT,
+    Username            VARCHAR(30) NOT NULL,
+    Password            VARCHAR(30) NOT NULL,
     FirstName           VARCHAR(30) NOT NULL,
     LastName            VARCHAR(30) NOT NULL,    
     Email               VARCHAR(60) NOT NULL,
@@ -33,16 +36,16 @@ CREATE TABLE users (
 
     CreditCardNumber    VARCHAR(19),
     Role                ENUM('member','employee','admin'),
-    primary key(UserID)
+    PRIMARY KEY(UserID, Username)
 );
-
 
 DROP TABLE IF EXISTS crews;
 CREATE TABLE crews (
     CrewID          INT NOT NULL,
     CrewMemberID    INT NOT NULL,
-    primary key(CrewID, CrewMemberID),
-    foreign key(CrewMemberID) references users(UserID)
+    Job             VARCHAR(30) NOT NULL,
+    PRIMARY KEY(CrewID, CrewMemberID),
+    FOREIGN KEY(CrewMemberID) REFERENCES users(UserID)
 );
 
 DROP TABLE IF EXISTS flights;
@@ -56,12 +59,12 @@ CREATE TABLE flights (
     DepartureDate   DATE    NOT NULL,
     CrewID          INT     NOT NULL,
     PlaneID         INT     NOT NULL,
-
-    primary key(FlightID),
-    foreign key(Destination) references airports(AirportCode),
-    foreign key(Origin) references airports(AirportCode),
-    foreign key(CrewID) references crews(CrewID),
-    foreign key(PlaneID) references planes(PlaneID)
+    BasePrice       FLOAT   NOT NULL,
+    PRIMARY KEY(FlightID),
+    FOREIGN KEY(Destination) REFERENCES airports(AirportCode),
+    FOREIGN KEY(Origin) REFERENCES airports(AirportCode),
+    FOREIGN KEY(CrewID) REFERENCES crews(CrewID),
+    FOREIGN KEY(PlaneID) REFERENCES planes(PlaneID)
 );
 
 DROP TABLE IF EXISTS passengerlist;
@@ -69,13 +72,32 @@ CREATE TABLE passengerlist (
     FlightID    INT NOT NULL,
     UserID      INT NOT NULL,
     SeatNumber  INT NOT NULL,
-    primary key(FlightID, UserID),
-    foreign key(FlightID) references flights(FlightID),
-    foreign key(UserID) references users(UserID)
+    SeatType    ENUM('regular','comfort','business'),
+    Insurance   BOOL NOT NULL DEFAULT false,
+    PRIMARY KEY(FlightID, UserID),
+    FOREIGN KEY(FlightID) REFERENCES flights(FlightID),
+    FOREIGN KEY(UserID) REFERENCES users(UserID)
 );
 
+/*
+DROP TABLE IF EXISTS promos;
+CREATE TABLE promos (
+    PromoID     INT NOT NULL,
 
+);
+*/
 
+/* 
+ * Create a admin user for MySQL database.
+ * This user is used to connect to the MySQL server/database
+ * in the Java code.
+ */
+DROP ROLE IF EXISTS administrator;
+CREATE ROLE administrator;
 
+DROP USER IF EXISTS 'admin'@localhost;
+CREATE USER 'admin'@localhost IDENTIFIED BY 'admin' DEFAULT ROLE administrator;
 
+GRANT ALL ON FlightSystem.* TO administrator;
 
+ALTER USER 'admin'@localhost ACCOUNT UNLOCK;
