@@ -1,9 +1,7 @@
 package FlightSystem.objects;
 
-import java.time.LocalDate;
 import java.util.ArrayList;
 
-import FlightSystem.FlightSystem;
 import FlightSystem.data.DatabaseSingleton;
 
 public class Crew {

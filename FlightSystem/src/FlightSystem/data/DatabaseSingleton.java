@@ -4,6 +4,7 @@ import java.sql.*;
 import java.util.*;
 
 import FlightSystem.objects.*;
+import FlightSystem.objects.airport.Airport;
 
 /**
  * Database connection singleton
@@ -70,20 +71,6 @@ public class DatabaseSingleton {
         return users;
     }
 
-    public void getCrewFlights(Crew crew, int ID) throws SQLException {
-        String query = String.format("""
-                SELECT f.FlightID,c.Job FROM flights as f
-                JOIN
-                (SELECT CrewID,Job FROM crews WHERE CrewMemberID = %d) as c
-                ON f.CrewID = c.CrewID;
-                """, ID);
-        ResultSet table = executeQuery(query);
-        while (table.next()) {
-            crew.addCrewFlightID(table.getInt(1));
-        }
-        crew.setJob(table.getString(2));
-    }
-
     public HashMap<String, Airport> getAirportTable() throws SQLException {
         HashMap<String, Airport> airports = new HashMap<String, Airport>();
         ResultSet table = getTable("airports");
@@ -113,6 +100,20 @@ public class DatabaseSingleton {
                             table.getInt(5)));
         }
         return planes;
+    }
+
+    public void getCrewFlights(Crew crew, int ID) throws SQLException {
+        String query = String.format("""
+                SELECT f.FlightID,c.Job FROM flights as f
+                JOIN
+                (SELECT CrewID,Job FROM crews WHERE CrewMemberID = %d) as c
+                ON f.CrewID = c.CrewID;
+                """, ID);
+        ResultSet table = executeQuery(query);
+        while (table.next()) {
+            crew.addCrewFlightID(table.getInt(1));
+        }
+        crew.setJob(table.getString(2));
     }
 
 }

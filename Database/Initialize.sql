@@ -15,14 +15,14 @@ VALUES
 
 INSERT INTO users (UserID, Username, Password, FirstName, LastName, Email, SignUpDate, CreditCardNumber, Role)
 VALUES
-(1,'p1','p1','Passenger','1','Passenger1@gmail.com','2023-11-20',NULL,'member'),
-(2,'p1','p1','Passenger','2','Passenger2@gmail.com','2023-11-20',NULL,'member'),
-(3,'m1','m1','Member','1','Member1@gmail.com','2023-11-20',NULL,'member'),
-(4,'m2','m2','Member','2','Member2@gmail.com','2023-11-20',NULL,'member'),
-(5,'e1','e1','Employee','1','Employee1@companymail.com','2023-11-21',NULL,'employee'),
-(6,'e2','e2','Employee','2','Employee2@companymail.com','2023-11-21',NULL,'employee'),
-(7,'e3','e3','Employee','3','Employee3@companymail.com','2023-11-21',NULL,'employee'),
-(8,'a1','a1','Admin','1','Admin1@companyemail.com','2023-11-15',NULL,'admin');
+(1,'Passenger','1','Passenger1@gmail.com','2023-11-20',NULL,'member'),
+(2,'Passenger','2','Passenger2@gmail.com','2023-11-20',NULL,'member'),
+(3,'Member','1','Member1@gmail.com','2023-11-20',NULL,'member'),
+(4,'Member','2','Member2@gmail.com','2023-11-20',NULL,'member'),
+(5,'Employee','1','Employee1@companymail.com','2023-11-21',NULL,'employee'),
+(6,'Employee','2','Employee2@companymail.com','2023-11-21',NULL,'employee'),
+(7,'Employee','3','Employee3@companymail.com','2023-11-21',NULL,'employee'),
+(8,'Admin','1','Admin1@companyemail.com','2023-11-15',NULL,'admin');
 
 
 INSERT INTO crews (CrewID, CrewMemberID, Job)

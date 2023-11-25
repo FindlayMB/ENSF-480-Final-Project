@@ -1,4 +1,4 @@
-package FlightSystem.objects;
+package FlightSystem.objects.airport;
 
 public class Airport {
     private String Code;

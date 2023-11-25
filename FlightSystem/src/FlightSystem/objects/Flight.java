@@ -4,6 +4,8 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
 
+import FlightSystem.objects.airport.Airport;
+
 public class Flight {
     private final int ID;
     private Airport destination;

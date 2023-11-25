@@ -3,32 +3,35 @@ package FlightSystem;
 import java.util.*;
 
 import FlightSystem.data.DatabaseSingleton;
-import FlightSystem.objects.Airport;
-import FlightSystem.objects.Plane;
+import FlightSystem.objects.airport.*;
+import FlightSystem.objects.*;
+import FlightSystem.objects.seats.*;
 
 public class FlightSystem {
+    private static SeatFactory seatFactory = new SeatFactory();
     private DatabaseSingleton dbConnection;
 
     private static HashMap<String, Airport> airports;
     private static HashMap<Integer, Plane> planes;
 
     public FlightSystem() {
-        this.dbConnection = DatabaseSingleton.getInstance();
+        Seat s1 = seatFactory.createSeat("regular", 1);
+        s1.getSeatType();
+        // this.dbConnection = DatabaseSingleton.getInstance();
 
-        airports = getAirports();
-        planes = getPlanes();
-        System.out.println("Got tables!");
+        // airports = getAirports();
+        // planes = getPlanes();
+        // System.out.println("Got tables!");
 
-        System.out.println("Airports");
-        for (String a : airports.keySet()) {
-            System.out.println(airports.get(a).toString());
-        }
+        // System.out.println("Airports");
+        // for (String a : airports.keySet()) {
+        // System.out.println(airports.get(a).toString());
+        // }
 
-        System.out.println("Planes");
-        for (Integer i : planes.keySet()) {
-            System.out.println(planes.get(i).toString());
-        }
-
+        // System.out.println("Planes");
+        // for (Integer i : planes.keySet()) {
+        // System.out.println(planes.get(i).toString());
+        // }
     }
 
     public HashMap<Integer, Plane> getPlanes() {
