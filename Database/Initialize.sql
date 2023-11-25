@@ -25,7 +25,7 @@ VALUES
 (8,'a1','a1','Admin','1','Admin1@companyemail.com','2023-11-15',NULL,'admin');
 
 
-INSERT INTO crews (CrewID, CrewMemberID)
+INSERT INTO crews (CrewID, CrewMemberID, Job)
 VALUES
 (1,5,"Pilot"),
 (1,6,"Pilot"),
@@ -33,8 +33,8 @@ VALUES
 
 INSERT INTO flights (FlightID, Destination, ArrivalTime, ArrivalDate, Origin, DepartureTime, DepartureDate, CrewID, PlaneID)
 VALUES
-(1,'YYC','7:50','2023-01-01','AAL','0:50','2023-01-01',1,1),
-(2,'YYC','7:50','2023-01-01','AAL','0:50','2023-01-01',1,1);
+(1,'YYC','7:50','2023-01-01','AAL','0:50','2023-01-01',1,1,50),
+(2,'YYC','7:50','2023-01-01','AAL','0:50','2023-01-01',1,1,50);
 
 INSERT INTO passengerlist (FlightID, UserID, SeatNumber, Insurance)
 VALUES

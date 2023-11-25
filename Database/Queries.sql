@@ -14,6 +14,22 @@ ON c.CrewMemberID = u.UserID
 ORDER BY FirstName,LastName;
 
 
+/*
+USE FlightSystem;
+SELECT f.FlightID,c.Job FROM flights as f
+JOIN
+(SELECT CrewID,Job FROM crews WHERE CrewMemberID = %d) as c
+ON f.CrewID = c.CrewID;
+*/
+
+
+
+/*WHERE
+CrewID IN (SELECT CrewID FROM crews WHERE CrewMemberID = 1)
+*/
+
+
+
 
 /*  
     Get Role of a user

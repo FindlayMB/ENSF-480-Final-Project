@@ -1,4 +1,4 @@
-package objects;
+package FlightSystem.objects;
 
 public class PassengerList {
     User[] passengetlist;

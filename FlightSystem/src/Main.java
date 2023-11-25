@@ -1,6 +1,8 @@
-import data.*;
 import java.util.HashMap;
-import objects.*;
+
+import FlightSystem.FlightSystem;
+import FlightSystem.data.*;
+import FlightSystem.objects.*;
 
 public class Main {
 
