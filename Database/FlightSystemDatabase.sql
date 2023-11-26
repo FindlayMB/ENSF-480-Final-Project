@@ -72,7 +72,7 @@ CREATE TABLE passengerlist (
     FlightID    INT NOT NULL,
     UserID      INT NOT NULL,
     SeatNumber  INT NOT NULL,
-    SeatType    ENUM('regular','comfort','business'),
+    SeatType    ENUM('ordinary','comfort','business'),
     Insurance   BOOL NOT NULL DEFAULT false,
     PRIMARY KEY(FlightID, UserID),
     FOREIGN KEY(FlightID) REFERENCES flights(FlightID),
