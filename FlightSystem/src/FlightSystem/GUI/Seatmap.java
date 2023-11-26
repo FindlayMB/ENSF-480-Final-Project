@@ -1,5 +1,9 @@
 package FlightSystem.GUI;
 import javax.swing.*;
+
+import FlightSystem.data.*;
+import FlightSystem.objects.*;
+
 import java.awt.*;
 import java.awt.event.*;
 import java.util.ArrayList;
@@ -8,6 +12,8 @@ public class Seatmap extends JFrame implements ActionListener, MouseListener
 {
     // private Aircraft aircraft; // use this to get rows and columns
     // private Flight flight; // use to find classes of each seat 
+
+
  
     private JButton[][] seatButtons;
 
@@ -18,7 +24,7 @@ public class Seatmap extends JFrame implements ActionListener, MouseListener
     private ArrayList<Integer> selectedSeats;
 
 
-    public Seatmap(int flightID)
+    public Seatmap(Flight selectFlight)
     {
         super("Seatmap"); // create a frame
         selectedSeats = new ArrayList<Integer>();
@@ -69,8 +75,6 @@ public class Seatmap extends JFrame implements ActionListener, MouseListener
         businessSeat.setBackground(Color.YELLOW);
         businessSeat.setPreferredSize(new Dimension(50, 20));
         legendPanel.add(businessSeat);
-        
-
         
 
         // CODE FOR ADDING SEATS TO SEAT MAP
@@ -124,7 +128,7 @@ public class Seatmap extends JFrame implements ActionListener, MouseListener
     // public static void main(String[] args)
     // {
     //     EventQueue.invokeLater(() -> { // event queue is threading related
-    //         new Seatmap().setVisible(true); // makes GUI appear on screen 
+    //         new Seatmap(4).setVisible(true); // makes GUI appear on screen 
     //     });
     // }
 

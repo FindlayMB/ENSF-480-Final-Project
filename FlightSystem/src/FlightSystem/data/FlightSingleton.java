@@ -50,8 +50,7 @@ public class FlightSingleton {
         return onlyInstance;
     }
 
-    public ArrayList<Flight> getFlights(String destination)
-    {
+    public HashMap<Integer, Flight> getFlights(String destination) {
         // return all flights that go to destination
         HashMap<Integer, Flight> filteredFlights = new HashMap<>();
         for (Flight flight : flights.values()) {
@@ -59,7 +58,7 @@ public class FlightSingleton {
                 filteredFlights.put(flight.getID(), flight);
             }
         }
-        return new ArrayList<>(filteredFlights.values());
+        return filteredFlights;
     }
     
 }

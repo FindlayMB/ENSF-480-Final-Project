@@ -4,6 +4,8 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
 
+import com.mysql.cj.x.protobuf.MysqlxDatatypes.Array;
+
 public class Flight {
     private final int ID;
     private Airport destination;
@@ -13,9 +15,11 @@ public class Flight {
     private LocalTime departureTime;
     private LocalDate departureDate;
     private ArrayList<User> crew;
+    private ArrayList<Seat> seats;
+    private Plane plane;
 
     public Flight(int ID, Airport destination, LocalTime arrivalTime, LocalDate arrivalDate, Airport origin,
-            LocalTime departureTime, LocalDate departureDate) {
+        LocalTime departureTime, LocalDate departureDate, Plane plane, ArrayList<Seat> seats) {
         this.ID = ID;
         this.destination = destination;
         this.arrivalTime = arrivalTime;
@@ -23,6 +27,8 @@ public class Flight {
         this.origin = origin;
         this.departureTime = departureTime;
         this.departureDate = departureDate;
+        this.plane = plane;
+        this.seats = seats;
     }
 
     public int getID() {

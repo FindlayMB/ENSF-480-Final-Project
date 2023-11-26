@@ -25,8 +25,8 @@ public class DatabaseSingleton {
         try {
             this.dbConnection = DriverManager.getConnection(
                     "jdbc:mysql://localhost/flightsystem",
-                    "admin",
-                    "admin");
+                    "root",
+                    "");
             System.out.println("Database connection made!");
         } catch (Exception e) {
             System.out.println(e);
@@ -57,16 +57,12 @@ public class DatabaseSingleton {
 
         while (table.next()) {
             users.put(table.getInt(1),
-                    new User(
-                            table.getInt(1),
-                            table.getString(2),
-                            table.getString(3),
-                            table.getString(4),
-                            table.getString(5),
-                            table.getString(6),
-                            table.getDate(7).toLocalDate(),
-                            table.getString(8),
-                            table.getString(9)));
+            new User(
+                    table.getInt(1),
+                    table.getString(2),
+                    table.getString(3),
+                    table.getString(4),
+                    table.getString(5)));
         }
 
         return users;
@@ -139,16 +135,69 @@ public class DatabaseSingleton {
         
         while (table.next()) {
             flights.put(table.getInt(1),
-                    new Flight( 
-                            table.getInt(1),
-                            getAirport(table.getString(2)),
-                            table.getTime(3).toLocalTime(),
-                            table.getDate(4).toLocalDate(),
-                            getAirport(table.getString(5)),
-                            table.getTime(6).toLocalTime(),
-                            table.getDate(7).toLocalDate()));
+                new Flight( 
+                        table.getInt(1),
+                        getAirport(table.getString(2)),
+                        table.getTime(3).toLocalTime(),
+                        table.getDate(4).toLocalDate(),
+                        getAirport(table.getString(5)),
+                        table.getTime(6).toLocalTime(),
+                        table.getDate(7).toLocalDate(),
+                        getPlane((table.getInt(9))), //plane
+                        getPassengers(table.getInt(1)) // passengers in seats
+                        ));
             }
             return flights;
+    }
+
+    private Plane getPlane(int planeID) throws SQLException {
+        ResultSet planeResultSet = executeQuery("SELECT * FROM planes WHERE PlaneID = '" + planeID + "'");
+        if (planeResultSet.next()) {
+            return new Plane(
+                    planeResultSet.getInt(1),
+                    planeResultSet.getString(2),
+                    planeResultSet.getInt(3),
+                    planeResultSet.getInt(4),
+                    planeResultSet.getInt(5)
+            );
+        } else {
+            throw new SQLException("Plane not found for code: " + planeID);
+        }
+    }
+
+    private ArrayList<Seat> getPassengers(int flightID) throws SQLException {
+        ResultSet passengersResultSet = executeQuery("SELECT * FROM passengerlist WHERE FlightID = '" + flightID + "'");
+        ArrayList<Seat> seatList = new ArrayList<>();
+    
+        while (passengersResultSet.next()) {
+            int seatNumber = passengersResultSet.getInt(3);
+            User user = getUser(passengersResultSet.getInt(2));
+            boolean isReserved = true;
+            Seat seat = new Seat(seatNumber, user, isReserved); // Need to initialize subclass of seat depending on the class of the seat 
+            seatList.add(seat);
+        }
+    
+        if (!seatList.isEmpty()) {
+            return seatList;
+        } else {
+            throw new SQLException("No passengers found for FlightID: " + flightID);
+        }
+    }
+    
+
+    private User getUser(int userID) throws SQLException {
+        ResultSet userResultSet = executeQuery("SELECT * FROM users WHERE UserID = '" + userID + "'");
+        if (userResultSet.next()) {
+            return new User(
+                    userResultSet.getInt(1),
+                    userResultSet.getString(2),
+                    userResultSet.getString(3),
+                    userResultSet.getString(4),
+                    userResultSet.getString(5)
+            );
+        } else {
+            throw new SQLException("User not found for code: " + userID);
+        }
     }
 
 }

@@ -1,6 +1,7 @@
 package FlightSystem.objects;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 
 public class User {
 
@@ -11,31 +12,23 @@ public class User {
     }
 
     private final int ID;
-    private String userName;
-    private String password;
+
     private String firstName;
     private String lastName;
     private String email;
-    private final LocalDate signUpDate;
-    private String creditCardNumber;
     private String role;
+    private ArrayList<Purchase> purchases;
     private Crew crew = null;
 
-    public User(int ID, String userName, String password,
-            String firstName, String lastName, String email,
-            LocalDate signUpDate, String creditCardNumber, String role) {
+    public User(int ID, String firstName, String lastName, String email ,String role) {
         this.ID = ID;
-        this.userName = userName;
-        this.password = password;
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
-        this.signUpDate = signUpDate;
-        this.creditCardNumber = creditCardNumber;
+        this.purchases = new ArrayList<Purchase>();
         this.role = role;
         if (role == "employee") {
             this.crew = new Crew(ID);
         }
     }
-
 }

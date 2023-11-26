@@ -24,7 +24,7 @@ public class SelectFlightPage extends JFrame implements ActionListener, MouseLis
     private LocalDate departure;
     private LocalDate arrival;
 
-    private ArrayList<Flight> flights;
+    private HashMap<Integer,Flight> flights;
 
 
     public SelectFlightPage(String destination)
@@ -48,7 +48,9 @@ public class SelectFlightPage extends JFrame implements ActionListener, MouseLis
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.insets = new Insets(5, 5, 5, 5); // Add some padding
         gbc.gridy = 0;
-        for (Flight flight : flights) 
+
+        ArrayList<Flight> flightValues = new ArrayList<Flight>(this.flights.values());
+        for (Flight flight : flightValues) 
         {
             // Reset grid position for each flight
             gbc.gridx = 0;
@@ -122,7 +124,7 @@ public class SelectFlightPage extends JFrame implements ActionListener, MouseLis
         if(e.getSource() == nextButton) // add checks for all user types
         {
             this.dispose();
-            Seatmap nextPage = new Seatmap(flightID);// navigate to next page
+            Seatmap nextPage = new Seatmap(flights.get(flightID));// navigate to next page
         }
     }
 
