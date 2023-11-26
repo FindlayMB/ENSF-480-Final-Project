@@ -21,6 +21,7 @@ CREATE TABLE airports (
     City                VARCHAR(30) NOT NULL,
     Country             VARCHAR(30) NOT NULL,
     PRIMARY KEY(AirportCode)
+    
 );
 
 DROP TABLE IF EXISTS users;
@@ -35,7 +36,7 @@ CREATE TABLE users (
 
     CreditCardNumber    VARCHAR(19),
     Role                ENUM('member','employee','admin'),
-    PRIMARY KEY(UserID)
+    PRIMARY KEY(UserID, Username)
 );
 
 DROP TABLE IF EXISTS crews;
@@ -58,7 +59,7 @@ CREATE TABLE flights (
     DepartureDate   DATE    NOT NULL,
     CrewID          INT     NOT NULL,
     PlaneID         INT     NOT NULL,
-
+    BasePrice       FLOAT   NOT NULL,
     PRIMARY KEY(FlightID),
     FOREIGN KEY(Destination) REFERENCES airports(AirportCode),
     FOREIGN KEY(Origin) REFERENCES airports(AirportCode),
@@ -71,12 +72,20 @@ CREATE TABLE passengerlist (
     FlightID    INT NOT NULL,
     UserID      INT NOT NULL,
     SeatNumber  INT NOT NULL,
+    SeatType    ENUM('ordinary','comfort','business'),
     Insurance   BOOL NOT NULL DEFAULT false,
     PRIMARY KEY(FlightID, UserID),
     FOREIGN KEY(FlightID) REFERENCES flights(FlightID),
     FOREIGN KEY(UserID) REFERENCES users(UserID)
 );
 
+/*
+DROP TABLE IF EXISTS promos;
+CREATE TABLE promos (
+    PromoID     INT NOT NULL,
+
+);
+*/
 
 /* 
  * Create a admin user for MySQL database.
