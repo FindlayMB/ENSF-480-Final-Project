@@ -2,12 +2,13 @@ package FlightSystem.GUI;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.time.LocalDate;
 
 public class PaymentForm extends JFrame implements ActionListener, MouseListener
 {
     private String name;
     private int creditCardNumber;
-    private Date expiryDate;
+    private LocalDate expiryDate;
     private int CSV;
 
     private JLabel nameLabel;
@@ -95,10 +96,13 @@ public class PaymentForm extends JFrame implements ActionListener, MouseListener
         this.add(paymentPanel, BorderLayout.NORTH);
 
     }
+
     public static void main(String[] args)
     {
         EventQueue.invokeLater(() -> { // event queue is threading related
-            new Login().setVisible(true); // makes GUI appear on screen 
+            // new Login().setVisible(true); // makes GUI appear on screen 
+
+
         });
     }
 
@@ -107,17 +111,17 @@ public class PaymentForm extends JFrame implements ActionListener, MouseListener
     {
         name = nameInput.getText();
         creditCardNumber = Integer.parseInt(creditCardNumberInput.getText());
-        expiryDate = expiryDateInput.getText(); // CONVERT FROM STRING TO DATE OBJECT
+        //expiryDate = expiryDateInput.getText(); // CONVERT FROM STRING TO DATE OBJECT
         CSV = Integer.parseInt(CSVInput.getText());
         
-        if(validatePaymentInfo(name, creditCardNumber, expiryDate, CSV)) // add checks for all user types
-        {
-            this.dispose();
-            SelectFlightPage nextPage = new SelectFlightPage();// navigate to next page
-        }
+        // if(validatePaymentInfo(name, creditCardNumber, expiryDate, CSV)) // add checks for all user types
+        // {
+        //     this.dispose();
+        //     // SelectFlightPage nextPage = new SelectFlightPage();// navigate to next page
+        // }
     }
 
-    public boolean validatePaymentInfo(String name, int creditCardNumber, Date expiryDate, int CSV)
+    public boolean validatePaymentInfo(String name, int creditCardNumber, LocalDate expiryDate, int CSV)
     {
         // NEED TO IMPLEMENT VALIDATE PAYMENT INFO
         return true;

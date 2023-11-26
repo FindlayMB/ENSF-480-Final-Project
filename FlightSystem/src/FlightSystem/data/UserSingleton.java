@@ -45,7 +45,7 @@ public class UserSingleton {
         return onlyInstance;
     }
 
-    public List<User> getUsers() {
+    public ArrayList<User> getUsers() {
         return new ArrayList<>(users.values());
     }
     

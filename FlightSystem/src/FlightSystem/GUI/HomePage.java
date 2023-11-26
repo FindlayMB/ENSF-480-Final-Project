@@ -3,10 +3,15 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.ArrayList;
+import FlightSystem.objects.User;
+//import images.*;
+import java.awt.Image;
 
 public class HomePage extends JFrame implements ActionListener{
+    private User user;
 
-    public HomePage() {
+    public HomePage(User user) {
+
         setTitle("Air Canada");
         setSize(800, 600);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -16,6 +21,15 @@ public class HomePage extends JFrame implements ActionListener{
         JLabel headerLabel = new JLabel("Welcome to Air Company");
         JButton bookFlightButton = new JButton("Search");
         JButton signInButton = new JButton("Sign In");
+        if(user != null)
+        {   
+            //Changw the sign in button to sign out
+            signInButton.setText("Sign Out");
+            signInButton.addActionListener(this);
+            headerLabel.setText("Welcome to Air Canada, " + user.getFirstName() + " " + user.getLastName());
+            
+        }
+        // JButton signInButton = new JButton("Sign In");
         signInButton.addActionListener(this);
 
         // Set font for the title
@@ -99,7 +113,7 @@ public class HomePage extends JFrame implements ActionListener{
 
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
-            HomePage gui = new HomePage();
+            HomePage gui = new HomePage(null);
             gui.setVisible(true);
         });
     }
@@ -122,6 +136,13 @@ public class HomePage extends JFrame implements ActionListener{
             System.out.println("Sign In button clicked");
             LoginPage loginPage = new LoginPage();
             loginPage.setVisible(true);
+        }
+        else if (buttonText == "Sign Out") // let user sign in 
+        {
+            this.dispose();
+            System.out.println("Sign Out button clicked");
+            HomePage homePage = new HomePage(null);
+            homePage.setVisible(true);
         }
     }
 }

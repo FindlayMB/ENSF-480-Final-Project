@@ -1,13 +1,36 @@
 package FlightSystem.GUI;
 
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import FlightSystem.objects.User;
+import java.util.*;
+import FlightSystem.data.UserSingleton;
 
 public class LoginPage extends JFrame {
+    private ArrayList<User> users;
+    public void setusers(ArrayList<User> users)
+    {
+        this.users = users;
+    }
+    public ArrayList<User> getUsers()
+    {
+        return users;
+    }
+
 
     public LoginPage() {
+        super("Login - Air Canada");
+        //setupGUI();
+        
+    
+
+
+        
+        
+
         setTitle("Login - Air Canada");
         setSize(400, 200);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -19,7 +42,7 @@ public class LoginPage extends JFrame {
         JTextField usernameField = new JTextField();
         JPasswordField passwordField = new JPasswordField();
         JButton loginButton = new JButton("Login");
-        JButton registerButton = new JButton("Register If you don't have an account");
+        JButton registerButton = new JButton("Create Account");
 
         // Create a panel for login components using GridBagLayout
         JPanel loginPanel = new JPanel(new GridBagLayout());
@@ -60,19 +83,32 @@ public class LoginPage extends JFrame {
         gbc.anchor = GridBagConstraints.EAST;
         gbc.fill = GridBagConstraints.NONE;
         loginPanel.add(registerButton, gbc);
+
+
         
 
         // Add action listener to the login button
         loginButton.addActionListener(new ActionListener() {
+            
             @Override
             public void actionPerformed(ActionEvent e) {
                 // Check the username and password (you can replace this with your authentication logic)
                 String enteredUsername = usernameField.getText();
                 char[] enteredPassword = passwordField.getPassword();
+                setusers(UserSingleton.getOnlyInstance().getUsers());
+                //Print out the username and password
+                
+                // for (User user : users) {
+                //     System.out.println(user.getUsername() + " " + user.getPassword());
+                //     //
+                // }
                 String password = new String(enteredPassword);
 
-                if (isValidUser(enteredUsername, password)) {
+
+                if (isValidUser(enteredUsername, password)!=null) {
                     JOptionPane.showMessageDialog(LoginPage.this, "Login successful!");
+                    HomePage homePage = new HomePage(isValidUser(enteredUsername, password));
+                    homePage.setVisible(true);
                     // Add code to open the main application window or perform other actions upon successful login
                 } else {
                     JOptionPane.showMessageDialog(LoginPage.this, "Invalid username or password. Please try again.");
@@ -83,19 +119,31 @@ public class LoginPage extends JFrame {
             }
         });
         registerButton.addActionListener((e) -> {
+            
             System.out.println("Register button clicked");
+            //this.dispose();
+            //this.setVisible(false);
+            
             RegisterPage registerPage = new RegisterPage();
             registerPage.setVisible(true);
         });
+        //
 
         // Add the login panel to the JFrame
         add(loginPanel);
     }
 
-    private boolean isValidUser(String username, String password) {
-        // Add your authentication logic here
-        // For simplicity, this example always returns true
-        return true;
+    private User isValidUser(String username, String password) {
+        for (User user : users) {
+            if (user.getUsername().equals(username) && user.getPassword().equals(password)) {
+                return user;
+            }
+        }
+        //print out all the users
+        for (User user : users) {
+            System.out.println(user.getUsername() + " " + user.getPassword());}
+
+        return null;
     }
 
     public static void main(String[] args)
