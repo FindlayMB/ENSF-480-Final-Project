@@ -31,7 +31,7 @@ VALUES
 (1,6,"Pilot"),
 (2,5,"Pilot");
 
-INSERT INTO flights (FlightID, Destination, ArrivalTime, ArrivalDate, Origin, DepartureTime, DepartureDate, CrewID, PlaneID)
+INSERT INTO flights (FlightID, Destination, ArrivalTime, ArrivalDate, Origin, DepartureTime, DepartureDate, CrewID, PlaneID, BasePrice)
 VALUES
 (1,'YYC','7:50','2023-01-01','AAL','0:50','2023-01-01',1,1,50),
 (2,'YYC','7:50','2023-01-01','AAL','0:50','2023-01-01',1,1,50);

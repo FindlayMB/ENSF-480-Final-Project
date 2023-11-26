@@ -13,7 +13,7 @@ public class Seatmap extends JFrame implements ActionListener, MouseListener
 
     private int columns = 7;
 
-    private int numSeats = 13;
+    private int numSeats = 12;
 
     private ArrayList<Integer> selectedSeats;
 
@@ -32,6 +32,49 @@ public class Seatmap extends JFrame implements ActionListener, MouseListener
     
     public void setupGUI()
     {
+        // CODE FOR ADDING LEGEND OF SEAT TYPES
+        JPanel legendPanel = new JPanel();
+        
+        JLabel selectedSeatLabel = new JLabel("Select Seat");
+        legendPanel.add(selectedSeatLabel);
+        JButton selectedSeat = new JButton();
+        selectedSeat.setBackground(Color.RED);
+        selectedSeat.setPreferredSize(new Dimension(50, 20));
+        legendPanel.add(selectedSeat);
+        
+        JLabel bookedSeatLabel = new JLabel("Booked Seat");
+        legendPanel.add(bookedSeatLabel);
+        JButton bookedSeat = new JButton();
+        bookedSeat.setBackground(Color.GRAY);
+        bookedSeat.setPreferredSize(new Dimension(50, 20));
+        legendPanel.add(bookedSeat);
+
+        JLabel ordinarySeatLabel = new JLabel("Ordinary Seat");
+        legendPanel.add(ordinarySeatLabel);
+        JButton ordinarySeat = new JButton();
+        ordinarySeat.setBackground(Color.GREEN);
+        ordinarySeat.setPreferredSize(new Dimension(50, 20));
+        legendPanel.add(ordinarySeat);
+
+        JLabel comfortSeatLabel = new JLabel("Comfort Seat");
+        legendPanel.add(comfortSeatLabel);
+        JButton comfortSeat = new JButton();
+        comfortSeat.setBackground(new Color(173, 216, 230)); // Light Blue
+        comfortSeat.setPreferredSize(new Dimension(50, 20));
+        legendPanel.add(comfortSeat);
+
+        JLabel businessSeatLabel = new JLabel("Booked Seat");
+        legendPanel.add(businessSeatLabel);
+        JButton businessSeat = new JButton();
+        businessSeat.setBackground(Color.YELLOW);
+        businessSeat.setPreferredSize(new Dimension(50, 20));
+        legendPanel.add(businessSeat);
+        
+
+        
+
+        // CODE FOR ADDING SEATS TO SEAT MAP
+
         // Calculate the number of rows (rounding up)
         int rows = (int) Math.ceil((double) numSeats / 6);        
         // Initialize the seatButtons array
@@ -42,34 +85,6 @@ public class Seatmap extends JFrame implements ActionListener, MouseListener
         seatPanel.setLayout(new GridLayout(rows, columns));
 
         // Create buttons for each seat
-        
-
-        // int rowinx = 0;
-        // int colinx = 0;
-        // int seatnum = 0; 
-        // while(seatnum<numSeats)
-        // {
-        //     if(colinx == 3)
-        //     {
-        //         seatButtons[rowinx][colinx] = new JButton();
-        //         seatButtons[rowinx][colinx].setBackground(Color.WHITE);
-        //         seatPanel.add(seatButtons[rowinx][colinx]);
-        //     }
-        //     else
-        //     {
-        //         seatButtons[rowinx][colinx] = new JButton("Seat " + (rowinx * columns + colinx + 1));
-        //         seatButtons[rowinx][colinx].addActionListener(this);
-        //         seatPanel.add(seatButtons[rowinx][colinx]);
-        //         seatnum++;
-        //     }
-        //     colinx++;
-        //     if(colinx>=columns)
-        //     {
-        //         colinx = 0;
-        //         rowinx++;
-        //     }
-        // }
-        
         int seatnum = 0;
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < columns; j++) {
@@ -95,8 +110,16 @@ public class Seatmap extends JFrame implements ActionListener, MouseListener
         submitButton.addActionListener(null);
         submitPanel.add(submitButton);
 
-        this.add(seatPanel, BorderLayout.NORTH);
-        this.add(submitPanel, BorderLayout.SOUTH);
+        JPanel mainPanel = new JPanel();
+        mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
+        mainPanel.add(legendPanel);
+        mainPanel.add(Box.createVerticalStrut(10)); // Add spacing between panels
+        mainPanel.add(seatPanel);
+        mainPanel.add(Box.createVerticalStrut(10)); // Add spacing between panels
+        mainPanel.add(submitPanel);
+
+        this.add(mainPanel);
+
     }
     public static void main(String[] args)
     {
