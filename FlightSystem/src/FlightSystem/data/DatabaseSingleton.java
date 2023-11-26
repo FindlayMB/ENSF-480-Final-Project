@@ -149,31 +149,7 @@ public class DatabaseSingleton {
                             table.getTime(6).toLocalTime(),
                             table.getDate(7).toLocalDate()));
             }
-            List<Integer> keysList = new ArrayList<>(flights.keySet());
-
-            // Get ArrayList of values
-            List<Flight> valuesList = new ArrayList<>(flights.values());
-
-            // Print the ArrayLists
-            System.out.println("Keys: " + keysList);
-            System.out.println("Values: " + valuesList);
             return flights;
     }
-    
-    // public static void main(String[] args) {
-    //     try {
-            
-    //         // Replace "yourTableName" with the actual table name you want to use
-    //         DatabaseSingleton nori = new DatabaseSingleton();
-    //         HashMap<Integer, Flight> resultSet = nori.getFlightsTable();
-    //         int n;
-        
-    //         // Now you have a HashMap<Integer, Flight> with the results
-    //         // Do whatever you need with the flightMap
-    //     } catch (SQLException e) {
-    //         // Handle SQLException, log or print an error message
-    //         e.printStackTrace();
-    //     }
-    // }
 
 }

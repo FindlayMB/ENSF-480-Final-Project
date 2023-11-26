@@ -5,6 +5,7 @@ import java.util.*;
 import FlightSystem.data.DatabaseSingleton;
 import FlightSystem.objects.Airport;
 import FlightSystem.objects.Plane;
+import FlightSystem.objects.Flight;
 
 public class FlightSystem {
     private DatabaseSingleton dbConnection;
