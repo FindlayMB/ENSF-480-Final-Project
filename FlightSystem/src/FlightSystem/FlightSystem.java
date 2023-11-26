@@ -9,8 +9,11 @@ import FlightSystem.objects.Plane;
 public class FlightSystem {
     private DatabaseSingleton dbConnection;
 
-    private static HashMap<String, Airport> airports;
-    private static HashMap<Integer, Plane> planes;
+    private static HashMap<String, Airport> airports; // key = airport code
+    private static HashMap<Integer, Plane> planes; // key = plane id
+    private static HashMap<Integer, Flight> flight;
+    private static HashMap<Integer, Flight> users;
+
 
     public FlightSystem() {
         this.dbConnection = DatabaseSingleton.getInstance();

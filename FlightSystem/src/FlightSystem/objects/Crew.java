@@ -9,7 +9,7 @@ import FlightSystem.data.DatabaseSingleton;
 public class Crew {
     private String job;
 
-    private ArrayList<Integer> crewFlightIDs;
+    private ArrayList<Integer> crewFlightIDs; // id of flight their on
 
     public Crew(int ID) {
         try {
