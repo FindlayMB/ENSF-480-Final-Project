@@ -1,4 +1,4 @@
-package GUI;
+package FlightSystem.GUI;
 
 import javax.swing.*;
 import java.awt.*;

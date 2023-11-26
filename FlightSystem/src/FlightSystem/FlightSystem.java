@@ -2,62 +2,40 @@ package FlightSystem;
 
 import java.util.*;
 
-import FlightSystem.data.DatabaseSingleton;
+import javax.swing.SwingUtilities;
+
+import FlightSystem.data.*;
 import FlightSystem.objects.Airport;
 import FlightSystem.objects.Plane;
 import FlightSystem.objects.Flight;
+import FlightSystem.GUI.*;
 
 public class FlightSystem {
     private DatabaseSingleton dbConnection;
 
-    private static HashMap<String, Airport> airports; // key = airport code
-    private static HashMap<Integer, Plane> planes; // key = plane id
-    private static HashMap<Integer, Flight> flight;
-    private static HashMap<Integer, Flight> users;
+    private AirportSingleton airportSingleton;
+    private FlightSingleton flightSingleton;
+    private PlaneSingleton planeSingleton;
+    private UserSingleton userSingleton;
 
 
     public FlightSystem() {
         this.dbConnection = DatabaseSingleton.getInstance();
-
-        airports = getAirports();
-        planes = getPlanes();
-        System.out.println("Got tables!");
-
-        System.out.println("Airports");
-        for (String a : airports.keySet()) {
-            System.out.println(airports.get(a).toString());
-        }
-
-        System.out.println("Planes");
-        for (Integer i : planes.keySet()) {
-            System.out.println(planes.get(i).toString());
-        }
+        this.airportSingleton = AirportSingleton.getOnlyInstance();
+        this.flightSingleton = FlightSingleton.getOnlyInstance();
+        this.planeSingleton = PlaneSingleton.getOnlyInstance();
+        this.userSingleton = UserSingleton.getOnlyInstance();
 
     }
 
-    public HashMap<Integer, Plane> getPlanes() {
-        if (planes == null) {
-            try {
-                planes = new HashMap<Integer, Plane>(dbConnection.getPlaneTable());
-            } catch (Exception e) {
-                System.out.println(e);
-                System.out.println("Failed to get planes table!");
-            }
-
-        }
-        return planes;
+    public static void main(String[] args) {
+        FlightSystem fs = new FlightSystem();
+        SwingUtilities.invokeLater(() -> {
+            HomePage gui = new HomePage();
+            gui.setVisible(true);
+        });
     }
 
-    public HashMap<String, Airport> getAirports() {
-        if (airports == null) {
-            try {
-                airports = new HashMap<String, Airport>(dbConnection.getAirportTable());
-            } catch (Exception e) {
-                System.out.println(e);
-                System.out.println("Failed to get airports table!");
-            }
-        }
-        return airports;
-    }
+    
 
 }

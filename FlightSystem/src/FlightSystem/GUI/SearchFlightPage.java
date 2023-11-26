@@ -1,4 +1,4 @@
-package GUI;
+package FlightSystem.GUI;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
@@ -49,7 +49,7 @@ public class SearchFlightPage extends JFrame implements ActionListener{
     public void actionPerformed(ActionEvent e) // Search once search button pushed
     {
         this.dispose();
-        SelectFlightPage nextPage = new SelectFlightPage();// navigate to next page
+        SelectFlightPage nextPage = new SelectFlightPage(flightSearchInput.getText());// navigate to next page
     }
 
     

@@ -1,4 +1,4 @@
-package GUI;
+package FlightSystem.GUI;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
@@ -18,16 +18,16 @@ public class Seatmap extends JFrame implements ActionListener, MouseListener
     private ArrayList<Integer> selectedSeats;
 
 
-    public Seatmap()
+    public Seatmap(int flightID)
     {
         super("Seatmap"); // create a frame
         selectedSeats = new ArrayList<Integer>();
         setupGUI();
         this.setSize(800, 600);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        // EventQueue.invokeLater(() -> { // event queue is threading related
-        //     new Seatmap().setVisible(true); // makes GUI appear on screen 
-        // });
+        EventQueue.invokeLater(() -> { // event queue is threading related
+            this.setVisible(true); // makes GUI appear on screen 
+        });
     }
     
     public void setupGUI()
@@ -121,12 +121,12 @@ public class Seatmap extends JFrame implements ActionListener, MouseListener
         this.add(mainPanel);
 
     }
-    public static void main(String[] args)
-    {
-        EventQueue.invokeLater(() -> { // event queue is threading related
-            new Seatmap().setVisible(true); // makes GUI appear on screen 
-        });
-    }
+    // public static void main(String[] args)
+    // {
+    //     EventQueue.invokeLater(() -> { // event queue is threading related
+    //         new Seatmap().setVisible(true); // makes GUI appear on screen 
+    //     });
+    // }
 
     @Override
     public void actionPerformed(ActionEvent e) // performed for an actionListener

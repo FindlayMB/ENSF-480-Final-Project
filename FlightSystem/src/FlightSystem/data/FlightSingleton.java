@@ -1,10 +1,12 @@
-package FlightSystem.objects;
+package FlightSystem.data;
 
 import java.util.*;
-import FlightSystem.data.DatabaseSingleton;
+
+import FlightSystem.objects.Airport;
+import FlightSystem.objects.Flight;
 
 public class FlightSingleton {
-    private DatabaseSingleton dbConnection;
+    private DatabaseSingleton dbConnection = DatabaseSingleton.getInstance();
     private static FlightSingleton onlyInstance;
     private HashMap<Integer, Flight> flights;
 
@@ -48,12 +50,12 @@ public class FlightSingleton {
         return onlyInstance;
     }
 
-    public List<Flight> getFlights(Airport destination)
+    public ArrayList<Flight> getFlights(String destination)
     {
         // return all flights that go to destination
         HashMap<Integer, Flight> filteredFlights = new HashMap<>();
         for (Flight flight : flights.values()) {
-            if (flight.getDestination().equals(destination)) {
+            if (flight.getDestination().getCode().equals(destination)) {
                 filteredFlights.put(flight.getID(), flight);
             }
         }

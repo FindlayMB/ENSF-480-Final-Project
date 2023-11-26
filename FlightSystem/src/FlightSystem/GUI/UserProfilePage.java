@@ -1,4 +1,4 @@
-package GUI;
+package FlightSystem.GUI;
 
 public class UserProfilePage {
 

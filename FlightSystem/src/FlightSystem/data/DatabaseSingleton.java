@@ -73,27 +73,26 @@ public class DatabaseSingleton {
     }
     
 
+    public void getCrewFlights(Crew crew, int ID) throws SQLException {
+        String query = String.format(
+        "SELECT f.FlightID, c.Job " +
+        "FROM flights AS f " +
+        "JOIN (SELECT CrewID, Job FROM crews WHERE CrewMemberID = %d) AS c " +
+        "ON f.CrewID = c.CrewID",
+        ID);
 
-
-    // public void getCrewFlights(Crew crew, int ID) throws SQLException {
-    //     String query = String.format("""
-    //             SELECT f.FlightID,c.Job FROM flights as f
-    //             JOIN
-    //             (SELECT CrewID,Job FROM crews WHERE CrewMemberID = %d) as c
-    //             ON f.CrewID = c.CrewID;
-    //             """, ID);
-    //     ResultSet table = executeQuery(query);
-    //     while (table.next()) {
-    //         crew.addCrewFlightID(table.getInt(1));
-    //     }
-    //     crew.setJob(table.getString(2));
-    // }
+        ResultSet table = executeQuery(query);
+        while (table.next()) {
+            crew.addCrewFlightID(table.getInt(1));
+        }
+        crew.setJob(table.getString(2));
+    }
 
     public HashMap<String, Airport> getAirportTable() throws SQLException {
         HashMap<String, Airport> airports = new HashMap<String, Airport>();
         ResultSet table = getTable("airports");
 
-        while (table.next()) {
+        while (table.next()) {         
             airports.put(table.getString(1),
                     new Airport(
                             table.getString(1),

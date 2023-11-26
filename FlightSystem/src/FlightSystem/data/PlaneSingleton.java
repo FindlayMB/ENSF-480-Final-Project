@@ -1,13 +1,13 @@
-package FlightSystem.objects;
+package FlightSystem.data;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import FlightSystem.data.DatabaseSingleton;
+import FlightSystem.objects.Plane;
 
 public class PlaneSingleton {
-    private DatabaseSingleton dbConnection;
+    private DatabaseSingleton dbConnection = DatabaseSingleton.getInstance();
     private static PlaneSingleton onlyInstance;
     private HashMap<Integer, Plane> planes;
 
