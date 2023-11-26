@@ -55,10 +55,10 @@ VALUES
 
 INSERT INTO flights (FlightID, Destination, ArrivalTime, ArrivalDate, Origin, DepartureTime, DepartureDate, CrewID, PlaneID, BasePrice)
 VALUES
-(1,'YYC','7:50','2023-01-01','AAL','0:50','2023-01-03',1,1,50),
-(2,'YYC','9:50','2023-02-10','AAL','10:50','2023-2-12',1,1,50),
-(3,'YVR','13:00','2023-03-04','LAX','14:50','2023-03-04',1,2,50),
-(4,'LAX','10:00','2023-04-05','YYC','14:00','2023-04-05',1,2,50);
+(1,'YYC','7:50','2023-01-03','AAL','0:50','2023-01-01',1,1,50),
+(2,'YYC','9:50','2023-02-12','AAL','10:50','2023-2-10',1,1,50),
+(3,'YVR','14:50','2023-03-04','LAX','13:00','2023-03-04',1,2,50),
+(4,'LAX','14:00','2023-04-05','YYC','10:00','2023-04-05',1,2,50);
 
 INSERT INTO passengerlist (FlightID, UserID, SeatNumber, SeatType, Insurance)
 VALUES
