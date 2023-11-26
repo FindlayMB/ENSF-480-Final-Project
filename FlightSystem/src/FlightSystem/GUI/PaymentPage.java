@@ -2,13 +2,17 @@ package FlightSystem.GUI;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import FlightSystem.objects.*;
 
-public class PaymentForm extends JFrame implements ActionListener, MouseListener
+
+public class PaymentPage extends JFrame implements ActionListener, MouseListener
 {
     private String name;
-    private int creditCardNumber;
-    private Date expiryDate;
-    private int CSV;
+    private String creditCardNumber;
+    private LocalDate expiryDate;
+    private String CSV;
 
     private JLabel nameLabel;
     private JLabel creditCardNumberLabel;
@@ -20,14 +24,14 @@ public class PaymentForm extends JFrame implements ActionListener, MouseListener
     private JTextField expiryDateInput;
     private JTextField CSVInput;
 
-    public PaymentForm()
+    public PaymentPage(Flight selectedFlight, ArrayList<Integer> selectedSeats)
     {
         super("Payment"); // create a frame
         setupGUI();
-        this.setSize(500, 300);
+        this.setSize(500, 500);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         EventQueue.invokeLater(() -> { // event queue is threading related
-            new PaymentForm().setVisible(true); // makes GUI appear on screen 
+            this.setVisible(true); // makes GUI appear on screen 
         });
     }
     
@@ -40,16 +44,23 @@ public class PaymentForm extends JFrame implements ActionListener, MouseListener
 
 
         nameInput = new JTextField("Enter full name");
-        creditCardNumberInput = new JTextField("Enter credit card number");
+        nameInput.setColumns(20); // Set the number of columns (width)
+
+        creditCardNumberInput = new JTextField("Enter 16 digit credit card number");
+        creditCardNumberInput.setColumns(20); // Set the number of columns (width)
+
         expiryDateInput = new JTextField("Enter expiry date:");
-        CSVInput = new JTextField("Enter CSV:");
+        expiryDateInput.setColumns(20); // Set the number of columns (width)
+
+        CSVInput = new JTextField("Enter 3 digit CSV:");
+        CSVInput.setColumns(20); // Set the number of columns (width)
 
         nameInput.addMouseListener(this);
         creditCardNumberInput.addMouseListener(this);
         expiryDateInput.addMouseListener(this);
         CSVInput.addMouseListener(this);
 
-        JButton payButton = new JButton("Pay");
+        JButton payButton = new JButton("Book");
 
         payButton.addActionListener(this);
 
@@ -60,34 +71,40 @@ public class PaymentForm extends JFrame implements ActionListener, MouseListener
         GridBagConstraints gbc = new GridBagConstraints();
         
         gbc.gridx = 0;
+        gbc.gridy = 0;
         gbc.insets = new Insets(5, 5, 5, 5); // Add some padding
         paymentPanel.add(nameLabel, gbc);
 
-        gbc.gridx = 10;
+        gbc.gridx = 1;
+        gbc.gridy = 0;        
         paymentPanel.add(nameInput, gbc);
 
         gbc.gridx = 0;
-        gbc.gridy = 20;
+        gbc.gridy = 1;
         paymentPanel.add(creditCardNumberLabel, gbc);
 
-        gbc.gridx = 10;
+        gbc.gridx = 1;
+        gbc.gridy = 1;        
         paymentPanel.add(creditCardNumberInput, gbc);
 
         gbc.gridx = 0;
-        gbc.gridy = 30;
-        paymentPanel.add(expiryDateLabel);
+        gbc.gridy = 2;
+        paymentPanel.add(expiryDateLabel, gbc);
 
-        gbc.gridx = 10;
-        paymentPanel.add(expiryDateInput);
+        gbc.gridx = 1;
+        gbc.gridy = 2;
+        paymentPanel.add(expiryDateInput, gbc);
 
         gbc.gridx = 0;
-        gbc.gridy = 40;
-        paymentPanel.add(CSVLabel);
+        gbc.gridy = 3;
+        paymentPanel.add(CSVLabel, gbc);
 
-        gbc.gridx = 10;
-        paymentPanel.add(CSVInput);
+        gbc.gridx = 1;
+        gbc.gridy = 3;
+        paymentPanel.add(CSVInput, gbc);
 
-        gbc.gridy = 50;
+        gbc.gridx = 1;
+        gbc.gridy = 4;
         gbc.gridwidth = 2; // Make the button span two columns
         gbc.fill = GridBagConstraints.HORIZONTAL; // Make the button horizontally fill the cell
         paymentPanel.add(payButton, gbc);
@@ -95,31 +112,46 @@ public class PaymentForm extends JFrame implements ActionListener, MouseListener
         this.add(paymentPanel, BorderLayout.NORTH);
 
     }
-    public static void main(String[] args)
-    {
-        EventQueue.invokeLater(() -> { // event queue is threading related
-            new Login().setVisible(true); // makes GUI appear on screen 
-        });
-    }
+    // public static void main(String[] args)
+    // {
+    //     EventQueue.invokeLater(() -> { // event queue is threading related
+    //         new PaymentPage().setVisible(true); // makes GUI appear on screen 
+    //     });
+    // }
 
     @Override
     public void actionPerformed(ActionEvent e) // performed for an actionListener
     {
         name = nameInput.getText();
-        creditCardNumber = Integer.parseInt(creditCardNumberInput.getText());
-        expiryDate = expiryDateInput.getText(); // CONVERT FROM STRING TO DATE OBJECT
-        CSV = Integer.parseInt(CSVInput.getText());
+        creditCardNumber = (creditCardNumberInput.getText());
+        expiryDate = LocalDate.parse(expiryDateInput.getText()); // CONVERT FROM STRING TO DATE OBJECT
+        CSV = CSVInput.getText();
         
         if(validatePaymentInfo(name, creditCardNumber, expiryDate, CSV)) // add checks for all user types
         {
             this.dispose();
-            SelectFlightPage nextPage = new SelectFlightPage();// navigate to next page
+            HomePage nextPage = new HomePage(); // navigate to next page
         }
     }
 
-    public boolean validatePaymentInfo(String name, int creditCardNumber, Date expiryDate, int CSV)
+    public boolean validatePaymentInfo(String name, String creditCardNumber, LocalDate expiryDate, String CSV)
     {
-        // NEED TO IMPLEMENT VALIDATE PAYMENT INFO
+        if(creditCardNumber.length() != 16)
+        {
+            JOptionPane.showMessageDialog(this, "Credit card number must be 16 digits");
+            return false;
+        }
+        else if(CSV.length() != 3)
+        {
+            JOptionPane.showMessageDialog(this, "CSV must be 3 digits");
+            return false;
+        }
+        else if(expiryDate.isBefore(LocalDate.now()))
+        {
+            JOptionPane.showMessageDialog(this, "Expiry date must be in the future");
+            return false;
+        }
+        // NEED TO IMPLEMENT VALIDATE PAYMENT INFO FOR A COMPNAY CREDIT CARD
         return true;
 
     }
@@ -161,21 +193,4 @@ public class PaymentForm extends JFrame implements ActionListener, MouseListener
     public void mouseReleased(MouseEvent event) { // must have because implementing mouse listener
 
     }
-
-    public boolean validateLoginInfo(String username, String password)
-    {
-        // check username and password
-
-        if (true)
-        {
-            return(true);
-        }
-
-        else
-        {
-            JOptionPane.showMessageDialog(this, username + " or " + password + "was invalid");
-            return(false);
-        }
-    }
-    
 }

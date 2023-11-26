@@ -83,7 +83,7 @@ public class SelectFlightPage extends JFrame implements ActionListener, MouseLis
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     // set origin, dest, and dates variables
-                    int flightID = tempFlightID;
+                    flightID = tempFlightID;
 
                     String selectedOrigin = origin.getText().substring("Origin: ".length());
                     String selectedDestination = dest.getText().substring("Destination: ".length());

@@ -4,11 +4,13 @@ public class Seat {
     private int seatNumber;
     private boolean isReserved=false;
     private User passenger=null;
-    
-    public Seat(int seatNumber, User asignee, boolean isReserved){
+    private String seatClass;
+    public Seat(int seatNumber, User asignee, boolean isReserved, String seatClass){
         this.seatNumber=seatNumber;
         this.passenger=asignee;
         this.isReserved=isReserved;
+        this.seatClass=seatClass;
+
     }
     
     public void setPassenger(User passenger){

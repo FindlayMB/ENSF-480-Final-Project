@@ -95,4 +95,20 @@ public class Flight {
         this.crew.add(newCrewMember);
     }
 
+    public Plane getPlane() {
+        return plane;
+    }
+
+    public void setPlane(Plane newPlane) {
+        this.plane = newPlane;
+    }
+
+    public ArrayList<Seat> getSeats() {
+        return seats;
+    }
+
+    public void setSeats(ArrayList<Seat> newSeats) {
+        this.seats = newSeats;
+    }
+
 }

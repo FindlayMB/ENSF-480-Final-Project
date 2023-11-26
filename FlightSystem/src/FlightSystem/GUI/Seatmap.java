@@ -7,27 +7,39 @@ import FlightSystem.objects.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class Seatmap extends JFrame implements ActionListener, MouseListener
 {
     // private Aircraft aircraft; // use this to get rows and columns
     // private Flight flight; // use to find classes of each seat 
 
-
  
     private JButton[][] seatButtons;
 
     private int columns = 7;
 
-    private int numSeats = 12;
+    private int numSeats;
 
-    private ArrayList<Integer> selectedSeats;
+    private HashMap<Integer, Color> selectedSeats; // select a seat and record the color of the seat
+
+    private Flight selectFlight;
+    private ArrayList<Seat> bookedSeats;
+    private int numBusiness;
+    private int numComfort;
+    private int numRegular;
 
 
     public Seatmap(Flight selectFlight)
     {
         super("Seatmap"); // create a frame
-        selectedSeats = new ArrayList<Integer>();
+        this.selectFlight = selectFlight;
+        this.bookedSeats = selectFlight.getSeats();
+        this.numBusiness = selectFlight.getPlane().getBusinessSeatAmt();
+        this.numComfort = selectFlight.getPlane().getComfortSeatAmt();
+        this.numRegular = selectFlight.getPlane().getRegularSeatAmt();
+        numSeats = numBusiness + numComfort + numRegular;
+        selectedSeats = new HashMap<Integer,Color>();
         setupGUI();
         this.setSize(800, 600);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -69,7 +81,7 @@ public class Seatmap extends JFrame implements ActionListener, MouseListener
         comfortSeat.setPreferredSize(new Dimension(50, 20));
         legendPanel.add(comfortSeat);
 
-        JLabel businessSeatLabel = new JLabel("Booked Seat");
+        JLabel businessSeatLabel = new JLabel("Buisness Seat");
         legendPanel.add(businessSeatLabel);
         JButton businessSeat = new JButton();
         businessSeat.setBackground(Color.YELLOW);
@@ -103,7 +115,35 @@ public class Seatmap extends JFrame implements ActionListener, MouseListener
                 {
                     seatnum++;
                     seatButtons[i][j] = new JButton("Seat " + seatnum);
-                    seatButtons[i][j].addActionListener(this);
+                    boolean isSeatnumBooked = false;
+                    for (Seat seat : bookedSeats) {
+                        if (seat.getSeatNumber() == seatnum) {
+                            isSeatnumBooked = true;
+                            break; // No need to continue checking if already found
+                        }
+                    }
+                    
+                    if (numBusiness > 0) {
+                        seatButtons[i][j].setBackground(Color.YELLOW);
+                        numBusiness--;
+                        seatButtons[i][j].addActionListener(this);
+                    } 
+                    else if (numComfort > 0) {
+                        seatButtons[i][j].setBackground(new Color(173, 216, 230));
+                        numComfort--;
+                        seatButtons[i][j].addActionListener(this);
+
+                    } 
+                    else if (numRegular > 0) {
+                        seatButtons[i][j].setBackground(Color.GREEN);
+                        numRegular--;
+                        seatButtons[i][j].addActionListener(this);
+
+                    }
+                    if(isSeatnumBooked)
+                    {
+                        seatButtons[i][j].setBackground(Color.GRAY);
+                    }
                     seatPanel.add(seatButtons[i][j]);
                 }
             }
@@ -111,7 +151,23 @@ public class Seatmap extends JFrame implements ActionListener, MouseListener
 
         JPanel submitPanel = new JPanel();
         JButton submitButton = new JButton("Submit");
-        submitButton.addActionListener(null);
+        submitButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // set origin, dest, and dates variables
+                if(selectedSeats.size() == 0)
+                {
+                    JOptionPane.showMessageDialog(null, "You have not selected any seats");
+                    return;
+                }
+                ArrayList<Integer> selectedSeatList = new ArrayList<Integer>(); // list of seat numbers that have been selected
+                for (Integer seatNum : selectedSeats.keySet()) {
+                    selectedSeatList.add(seatNum);
+                }
+                dispose();
+                new PaymentPage(selectFlight, selectedSeatList);
+            }
+        });
         submitPanel.add(submitButton);
 
         JPanel mainPanel = new JPanel();
@@ -139,28 +195,46 @@ public class Seatmap extends JFrame implements ActionListener, MouseListener
         
         // Use regular expression to find the first number
         String seatNum = clickedButton.getText().replaceAll("[^0-9]+", "");
-
-        if(selectedSeats.contains(Integer.parseInt(seatNum))) // seat is already select
+       
+        if(selectedSeats.keySet().contains(Integer.parseInt(seatNum))) // seat is already select
         {
-            return;
-        }
-
-        int result = JOptionPane.showConfirmDialog(this,
-                "Do you want to proceed?",
+            int result = JOptionPane.showConfirmDialog(this,
+                "Do you want to unselect this seat?",
                 "Confirmation",
                 JOptionPane.YES_NO_OPTION);
         
-        
-        if (result == JOptionPane.YES_OPTION) {
-            // User clicked "Yes"
-            selectedSeats.add(Integer.parseInt(seatNum));
-            JOptionPane.showMessageDialog(this, "You have reserved seat " + seatNum);
-            clickedButton.setBackground(Color.RED);
-
-        } else {
-            // User clicked "No" or closed the dialog
-            JOptionPane.showMessageDialog(this, "You clicked No or closed the dialog");
+            if (result == JOptionPane.YES_OPTION) {
+                // User clicked "Yes"
+                clickedButton.setBackground(selectedSeats.get(Integer.parseInt(seatNum)));
+                selectedSeats.remove(Integer.parseInt(seatNum));
+                JOptionPane.showMessageDialog(this, "You have unreserved seat " + seatNum);
+            } 
+            else {
+                // User clicked "No" or closed the dialog
+                JOptionPane.showMessageDialog(this, "You clicked No or closed the dialog");
+            }
         }
+        
+        else if(clickedButton.getBackground() != Color.RED) // seat is not selected
+        {
+            int result = JOptionPane.showConfirmDialog(this,
+                "Do you want to select this seat?",
+                "Confirmation",
+                JOptionPane.YES_NO_OPTION);
+        
+            if (result == JOptionPane.YES_OPTION) {
+                // User clicked "Yes"
+                selectedSeats.put(Integer.parseInt(seatNum), clickedButton.getBackground());
+                JOptionPane.showMessageDialog(this, "You have reserved seat " + seatNum);
+                clickedButton.setBackground(Color.RED);
+
+            } 
+            else {
+                // User clicked "No" or closed the dialog
+                JOptionPane.showMessageDialog(this, "You clicked No or closed the dialog");
+            }
+        }
+        
         
     }
 

@@ -26,7 +26,7 @@ public class DatabaseSingleton {
             this.dbConnection = DriverManager.getConnection(
                     "jdbc:mysql://localhost/flightsystem",
                     "root",
-                    "");
+                    "$");
             System.out.println("Database connection made!");
         } catch (Exception e) {
             System.out.println(e);
@@ -173,7 +173,8 @@ public class DatabaseSingleton {
             int seatNumber = passengersResultSet.getInt(3);
             User user = getUser(passengersResultSet.getInt(2));
             boolean isReserved = true;
-            Seat seat = new Seat(seatNumber, user, isReserved); // Need to initialize subclass of seat depending on the class of the seat 
+            String seatClass = passengersResultSet.getString(4);
+            Seat seat = new Seat(seatNumber, user, isReserved, seatClass); // Need to initialize subclass of seat depending on the class of the seat 
             seatList.add(seat);
         }
     

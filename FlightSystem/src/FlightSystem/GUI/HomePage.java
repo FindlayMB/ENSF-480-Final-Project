@@ -5,7 +5,7 @@ import java.awt.event.*;
 import java.util.ArrayList;
 
 public class HomePage extends JFrame implements ActionListener{
-
+    
     public HomePage() {
         setTitle("Air Canada");
         setSize(800, 600);
