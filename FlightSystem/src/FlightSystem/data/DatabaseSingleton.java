@@ -49,6 +49,7 @@ public class DatabaseSingleton {
         return executeQuery(query);
     }
 
+
     public HashMap<Integer, User> getUserTable() throws SQLException {
         HashMap<Integer, User> users = new HashMap<Integer, User>();
         ResultSet table = getTable("Users");
@@ -69,20 +70,23 @@ public class DatabaseSingleton {
 
         return users;
     }
+    
 
-    public void getCrewFlights(Crew crew, int ID) throws SQLException {
-        String query = String.format("""
-                SELECT f.FlightID,c.Job FROM flights as f
-                JOIN
-                (SELECT CrewID,Job FROM crews WHERE CrewMemberID = %d) as c
-                ON f.CrewID = c.CrewID;
-                """, ID);
-        ResultSet table = executeQuery(query);
-        while (table.next()) {
-            crew.addCrewFlightID(table.getInt(1));
-        }
-        crew.setJob(table.getString(2));
-    }
+
+
+    // public void getCrewFlights(Crew crew, int ID) throws SQLException {
+    //     String query = String.format("""
+    //             SELECT f.FlightID,c.Job FROM flights as f
+    //             JOIN
+    //             (SELECT CrewID,Job FROM crews WHERE CrewMemberID = %d) as c
+    //             ON f.CrewID = c.CrewID;
+    //             """, ID);
+    //     ResultSet table = executeQuery(query);
+    //     while (table.next()) {
+    //         crew.addCrewFlightID(table.getInt(1));
+    //     }
+    //     crew.setJob(table.getString(2));
+    // }
 
     public HashMap<String, Airport> getAirportTable() throws SQLException {
         HashMap<String, Airport> airports = new HashMap<String, Airport>();
@@ -99,6 +103,20 @@ public class DatabaseSingleton {
         return airports;
     }
 
+    private Airport getAirport(String airportCode) throws SQLException {
+        ResultSet airportResultSet = executeQuery("SELECT * FROM airports WHERE AirportCode = '" + airportCode + "'");
+        if (airportResultSet.next()) {
+            return new Airport(
+                    airportResultSet.getString(1),
+                    airportResultSet.getString(2),
+                    airportResultSet.getString(3),
+                    airportResultSet.getString(4)
+            );
+        } else {
+            throw new SQLException("Airport not found for code: " + airportCode);
+        }
+    }
+
     public HashMap<Integer, Plane> getPlaneTable() throws SQLException {
         HashMap<Integer, Plane> planes = new HashMap<Integer, Plane>();
         ResultSet table = getTable("planes");
@@ -113,6 +131,24 @@ public class DatabaseSingleton {
                             table.getInt(5)));
         }
         return planes;
+    }
+
+    public HashMap<Integer, Flight> getFlightsTable() throws SQLException {
+        HashMap<Integer, Flight> flights = new HashMap<Integer, Flight>();
+        ResultSet table = getTable("flights");
+        
+        while (table.next()) {
+            flights.put(table.getInt(1),
+                    new Flight( 
+                            table.getInt(1),
+                            getAirport(table.getString(2)),
+                            table.getTime(3).toLocalTime(),
+                            table.getDate(4).toLocalDate(),
+                            getAirport(table.getString(5)),
+                            table.getTime(6).toLocalTime(),
+                            table.getDate(7).toLocalDate()));
+            }
+            return flights;
     }
 
 }

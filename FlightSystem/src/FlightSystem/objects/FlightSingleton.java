@@ -1,28 +1,42 @@
 package FlightSystem.objects;
 
-import java.util.HashMap;
 import java.util.*;
+import FlightSystem.data.DatabaseSingleton;
 
 public class FlightSingleton {
+    private DatabaseSingleton dbConnection;
     private static FlightSingleton onlyInstance;
     private HashMap<Integer, Flight> flights;
 
     private int flightID = 0;
 
-
     private FlightSingleton()
     {
-        // set flights arrayList equal to flight in DB
+        if (flights == null) {
+            try {
+                flights = new HashMap<Integer, Flight>(dbConnection.getFlightsTable());
+            } catch (Exception e) {
+                System.out.println(e);
+                System.out.println("Failed to get planes table!");
+            }
+
+        }
     }
 
     public void addFlight(Flight newFlight)
     {
-        flights.put(flightID, newFlight);
+        if (flightID == 0){
+            flights.put(flightID, newFlight);
+        }
+        else{
+            flightID++;
+            flights.put(flightID, newFlight);
+        }
     }
 
     public void removeFlight(Flight removeFlight)
     {
-        flights.remove(removeFlight);
+        flights.remove(flightID, removeFlight);
     }
 
     public static FlightSingleton getOnlyInstance() 
@@ -34,10 +48,16 @@ public class FlightSingleton {
         return onlyInstance;
     }
 
-    public HashMap<Integer, Flight> getFlights(Airport destination)
+    public List<Flight> getFlights(Airport destination)
     {
         // return all flights that go to destination
-        return(flights);
+        HashMap<Integer, Flight> filteredFlights = new HashMap<>();
+        for (Flight flight : flights.values()) {
+            if (flight.getDestination().equals(destination)) {
+                filteredFlights.put(flight.getID(), flight);
+            }
+        }
+        return new ArrayList<>(filteredFlights.values());
     }
     
 }
