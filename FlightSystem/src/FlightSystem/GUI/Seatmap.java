@@ -24,16 +24,18 @@ public class Seatmap extends JFrame implements ActionListener, MouseListener
     private HashMap<Integer, Color> selectedSeats; // select a seat and record the color of the seat
 
     private Flight selectFlight;
+    private User signedInUser;
     private ArrayList<Seat> bookedSeats;
     private int numBusiness;
     private int numComfort;
     private int numRegular;
 
 
-    public Seatmap(Flight selectFlight)
+    public Seatmap(User signedInUser, Flight selectFlight)
     {
         super("Seatmap"); // create a frame
         this.selectFlight = selectFlight;
+        this.signedInUser = signedInUser;
         this.bookedSeats = selectFlight.getSeats();
         this.numBusiness = selectFlight.getPlane().getBusinessSeatAmt();
         this.numComfort = selectFlight.getPlane().getComfortSeatAmt();
@@ -165,7 +167,7 @@ public class Seatmap extends JFrame implements ActionListener, MouseListener
                     selectedSeatList.add(seatNum);
                 }
                 dispose();
-                new PaymentPage(selectFlight, selectedSeatList);
+                new PaymentPage(signedInUser, selectFlight, selectedSeats);
             }
         });
         submitPanel.add(submitButton);

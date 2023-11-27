@@ -1,12 +1,21 @@
 package FlightSystem.GUI;
 import javax.swing.*;
+
+//import images.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.ArrayList;
 
+import FlightSystem.data.FlightSingleton;
+import FlightSystem.data.UserSingleton;
+import FlightSystem.objects.User;
+
 public class HomePage extends JFrame implements ActionListener{
-    
-    public HomePage() {
+    private User signedInUser;
+    private ArrayList<User> users = UserSingleton.getOnlyInstance().getUsers();
+
+    public HomePage(User user) {
+
         setTitle("Air Canada");
         setSize(800, 600);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -16,6 +25,15 @@ public class HomePage extends JFrame implements ActionListener{
         JLabel headerLabel = new JLabel("Welcome to Air Company");
         JButton bookFlightButton = new JButton("Search");
         JButton signInButton = new JButton("Sign In");
+        if(user != null)
+        {   
+            //Changw the sign in button to sign out
+            signInButton.setText("Sign Out");
+            signInButton.addActionListener(this);
+            headerLabel.setText("Welcome to Air Canada, " + user.getFirstName() + " " + user.getLastName());
+            
+        }
+        // JButton signInButton = new JButton("Sign In");
         signInButton.addActionListener(this);
 
         // Set font for the title
@@ -53,7 +71,7 @@ public class HomePage extends JFrame implements ActionListener{
         titleAndButtonsPanel.add(signInButton, gbc);
 
         // Add promotion logo
-        ImageIcon originalIcon = new ImageIcon("promotionlogo.png");
+        ImageIcon originalIcon = new ImageIcon("C:\\Users\\theo4\\ENGG Year 3\\Fall 2023\\ENSF 480\\ENSF-480-Term-Project---Group-17\\FlightSystem\\src\\FlightSystem\\GUI\\promotionlogo.png");
         Image originalImage = originalIcon.getImage();
          
         // Scale the image proportionally to fill the width
@@ -93,16 +111,18 @@ public class HomePage extends JFrame implements ActionListener{
         // Add the main panel to the JFrame
         add(mainPanel);
         // add(southPanel, BorderLayout.PAGE_END);
-     
+        EventQueue.invokeLater(() -> { // event queue is threading related
+            this.setVisible(true); // makes GUI appear on screen 
+        });
     }
     
 
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> {
-            HomePage gui = new HomePage();
-            gui.setVisible(true);
-        });
-    }
+    // public static void main(String[] args) {
+    //     SwingUtilities.invokeLater(() -> {
+    //         HomePage gui = new HomePage(null);
+    //         gui.setVisible(true);
+    //     });
+    // }
 
     @Override
     public void actionPerformed(ActionEvent e) // performed for an actionListener
@@ -113,7 +133,7 @@ public class HomePage extends JFrame implements ActionListener{
         if(buttonText == "Search Flight") // Allow user to search for flight
         {
             this.dispose();
-            new SearchFlightPage();// navigate to next page
+            new SearchFlightPage(signedInUser);// navigate to next page
         }
 
         else if (buttonText == "Sign In") // let user sign in 
@@ -122,6 +142,13 @@ public class HomePage extends JFrame implements ActionListener{
             System.out.println("Sign In button clicked");
             LoginPage loginPage = new LoginPage();
             loginPage.setVisible(true);
+        }
+        else if (buttonText == "Sign Out") // let user sign in 
+        {
+            this.dispose();
+            System.out.println("Sign Out button clicked");
+            HomePage homePage = new HomePage(null);
+            homePage.setVisible(true);
         }
     }
 }

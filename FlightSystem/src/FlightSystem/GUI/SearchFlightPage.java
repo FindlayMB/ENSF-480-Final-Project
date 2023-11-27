@@ -5,14 +5,17 @@ import java.awt.event.*;
 import java.nio.channels.SeekableByteChannel;
 import java.util.ArrayList;
 import java.util.concurrent.Flow;
+import FlightSystem.objects.*;
 public class SearchFlightPage extends JFrame implements ActionListener{
 
     private JTextField flightSearchInput;
+    private User signedInUser;
 
     // search flight by destination and move to select flight page
-    public SearchFlightPage()
+    public SearchFlightPage(User signedInUser)
     {
         super("Search Flight");
+        this.signedInUser = signedInUser;
         setupGUI();
         this.setSize(400, 400);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -49,7 +52,7 @@ public class SearchFlightPage extends JFrame implements ActionListener{
     public void actionPerformed(ActionEvent e) // Search once search button pushed
     {
         this.dispose();
-        SelectFlightPage nextPage = new SelectFlightPage(flightSearchInput.getText());// navigate to next page
+        SelectFlightPage nextPage = new SelectFlightPage(signedInUser, flightSearchInput.getText());// navigate to next page
     }
 
     

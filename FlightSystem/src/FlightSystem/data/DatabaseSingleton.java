@@ -149,6 +149,7 @@ public class DatabaseSingleton {
             }
             return flights;
     }
+    
 
     private Plane getPlane(int planeID) throws SQLException {
         ResultSet planeResultSet = executeQuery("SELECT * FROM planes WHERE PlaneID = '" + planeID + "'");
@@ -184,7 +185,19 @@ public class DatabaseSingleton {
             throw new SQLException("No passengers found for FlightID: " + flightID);
         }
     }
-    
+
+    public void addPassenger(int flightID,int userID, int seatNum,String seatClass,boolean hasInsurance) throws SQLException {
+        String sql ="INSERT INTO passengerlist (FlightID, UserID, SeatNumber, SeatType, Insurance) VALUES (?,?,?,?,?)";
+        try (PreparedStatement preparedStatement = dbConnection.prepareStatement(sql)) {
+            //preparedStatement.setInt(1,UserID);
+            preparedStatement.setInt(1,flightID);
+            preparedStatement.setInt(2,userID);
+            preparedStatement.setInt(3,seatNum);
+            preparedStatement.setString(4,seatClass);
+            preparedStatement.setBoolean(5,hasInsurance);
+            preparedStatement.executeUpdate();
+        } 
+    }
 
     private User getUser(int userID) throws SQLException {
         ResultSet userResultSet = executeQuery("SELECT * FROM users WHERE UserID = '" + userID + "'");
@@ -199,6 +212,18 @@ public class DatabaseSingleton {
         } else {
             throw new SQLException("User not found for code: " + userID);
         }
+    }
+
+    public void addUser(User newUser) throws SQLException {
+        String sql ="INSERT INTO Users (FirstName,LastName,Email,Role) VALUES (?,?,?,?)";
+        try (PreparedStatement preparedStatement = dbConnection.prepareStatement(sql)) {
+            //preparedStatement.setInt(1,UserID);
+            preparedStatement.setString(1,newUser.getFirstName());
+            preparedStatement.setString(2,newUser.getLastName());
+            preparedStatement.setString(3,newUser.getEmail());
+            preparedStatement.setString(4,newUser.getRole());
+            preparedStatement.executeUpdate();
+        } 
     }
 
 }

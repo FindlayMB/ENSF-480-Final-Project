@@ -5,14 +5,12 @@ import java.util.ArrayList;
 
 public class Purchase {
     private ArrayList<Ticket> tickets;
-    private ArrayList<Seat> seats;
     private CreditCard payment;
     private boolean purchaseInsurance;
     // private Receipt purchaseReceipt;
 
-    Purchase(ArrayList<Ticket> tickets, ArrayList<Seat> seats, CreditCard payment, boolean purchaseInsurance){
+    Purchase(ArrayList<Ticket> tickets, CreditCard payment, boolean purchaseInsurance){
         this.tickets=tickets;
-        this.seats=seats;
         this.payment=payment;
         this.purchaseInsurance=purchaseInsurance;
         // this.purchaseReceipt=purchaseReceipt;
@@ -20,9 +18,7 @@ public class Purchase {
     public ArrayList<Ticket> getTickets(){
         return tickets;
     }
-    public ArrayList<Seat> getSeats(){
-        return seats;
-    }
+    
     public CreditCard getPayment(){
         return payment;
     }
@@ -35,9 +31,7 @@ public class Purchase {
     public void setTickets(ArrayList<Ticket> tickets){
         this.tickets=tickets;
     }
-    public void setSeats(ArrayList<Seat> seats){
-        this.seats=seats;
-    }
+   
     public void setPayment(CreditCard payment){
         this.payment=payment;
     }

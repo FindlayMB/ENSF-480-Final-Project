@@ -1,22 +1,22 @@
 package FlightSystem.objects;
 public class Ticket {
     private Flight flight;
-    private Seat reservedSeat;
-    public Ticket(Flight flight, Seat reservedSeat){
+    private int reservedSeatNum;
+    public Ticket(Flight flight, int reservedSeatNum){
         this.flight=flight;
-        this.reservedSeat=reservedSeat;
+        this.reservedSeatNum=reservedSeatNum;
     }
     public Flight getFlight(){
         return flight;
     }
-    public Seat getReservedSeat(){
-        return reservedSeat;
+    public int getReservedSeat(){
+        return reservedSeatNum;
     }
     public void setFlight(Flight flight){
         this.flight=flight;
     }
     public void setReservedSeat(Seat reservedSeat){
-        this.reservedSeat=reservedSeat;
+        this.reservedSeatNum=reservedSeatNum;
     }
     public void displayTicket(){
         //TODO

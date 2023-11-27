@@ -1,9 +1,12 @@
 package FlightSystem.data;
 
+import java.awt.Color;
+import java.sql.SQLException;
 import java.util.*;
 
 import FlightSystem.objects.Airport;
 import FlightSystem.objects.Flight;
+import FlightSystem.objects.User;
 
 public class FlightSingleton {
     private DatabaseSingleton dbConnection = DatabaseSingleton.getInstance();
@@ -34,6 +37,30 @@ public class FlightSingleton {
             flightID++;
             flights.put(flightID, newFlight);
         }
+    }
+    public void addPassenger(Flight selectedFlight, User user, HashMap<Integer, Color> selectedSeats, boolean hasInsurance) throws SQLException {
+        // add passenger to flight
+        for(int seatNum : selectedSeats.keySet()) {
+            flights.get(selectedFlight.getID()).addPassenger(user, seatNum);
+            // update database
+            Color seatColor = selectedSeats.get(seatNum);
+            String seatClass;
+            if(seatColor.equals(Color.GREEN))
+            {
+                seatClass = "ordinary";
+            }
+            else if(seatColor.equals(new Color(173, 216, 230)))
+            {
+                seatClass = "comfort";
+            }
+            else
+            {
+                seatClass = "Business";
+            }
+
+            dbConnection.addPassenger(selectedFlight.getID(), user.getID(), seatNum, seatClass, hasInsurance);
+        }
+        
     }
 
     public void removeFlight(Flight removeFlight)

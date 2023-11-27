@@ -5,9 +5,7 @@ import java.util.*;
 import javax.swing.SwingUtilities;
 
 import FlightSystem.data.*;
-import FlightSystem.objects.Airport;
-import FlightSystem.objects.Plane;
-import FlightSystem.objects.Flight;
+import FlightSystem.objects.*;
 import FlightSystem.GUI.*;
 
 public class FlightSystem {
@@ -30,8 +28,10 @@ public class FlightSystem {
 
     public static void main(String[] args) {
         FlightSystem fs = new FlightSystem();
+
+        User user = null;
         SwingUtilities.invokeLater(() -> {
-            HomePage gui = new HomePage();
+            HomePage gui = new HomePage(user);
             gui.setVisible(true);
         });
     }

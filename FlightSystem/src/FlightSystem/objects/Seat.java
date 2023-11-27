@@ -10,7 +10,6 @@ public class Seat {
         this.passenger=asignee;
         this.isReserved=isReserved;
         this.seatClass=seatClass;
-
     }
     
     public void setPassenger(User passenger){
@@ -32,6 +31,9 @@ public class Seat {
     public void performDisplaySeat(){
         //TODO
         
+    }
+    public String getSeatClass() {
+        return seatClass;
     }
 
 

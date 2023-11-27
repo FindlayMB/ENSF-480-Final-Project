@@ -2,31 +2,53 @@ package FlightSystem.GUI;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.HashMap;
+
+import FlightSystem.data.FlightSingleton;
+import FlightSystem.data.UserSingleton;
 import FlightSystem.objects.*;
 
 
 public class PaymentPage extends JFrame implements ActionListener, MouseListener
 {
-    private String name;
+    private User signedInUser;
+    private UserSingleton us = UserSingleton.getOnlyInstance();
+    private FlightSingleton fs = FlightSingleton.getOnlyInstance();
+    private Flight selectedFlight;
+    private HashMap<Integer, Color> selectedSeats;
+
+    private String firstName;
+    private String lastName;
+    private String email;
     private String creditCardNumber;
     private LocalDate expiryDate;
     private String CSV;
 
-    private JLabel nameLabel;
+    private JLabel fnameLabel;
+    private JLabel lnameLabel;
+    private JLabel emailLabel;
     private JLabel creditCardNumberLabel;
     private JLabel expiryDateLabel;
     private JLabel CSVLabel;
 
-    private JTextField nameInput;
+    private JTextField fnameInput;
+    private JTextField lnameInput;
+    private JTextField emailInput;
     private JTextField creditCardNumberInput;
     private JTextField expiryDateInput;
     private JTextField CSVInput;
 
-    public PaymentPage(Flight selectedFlight, ArrayList<Integer> selectedSeats)
+    private JCheckBox insuranceCheckBox;
+
+    public PaymentPage(User signedInUser, Flight selectedFlight, HashMap<Integer, Color> selectedSeats)
     {
         super("Payment"); // create a frame
+        this.signedInUser = signedInUser;
+        this.selectedFlight = selectedFlight;
+        this.selectedSeats = selectedSeats;
         setupGUI();
         this.setSize(500, 500);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -37,14 +59,22 @@ public class PaymentPage extends JFrame implements ActionListener, MouseListener
     
     public void setupGUI()
     {
-        nameLabel = new JLabel("Full Name:");
+        fnameLabel = new JLabel("First Name:");
+        lnameLabel = new JLabel("Last Name:");
+        emailLabel = new JLabel("Email:");
         creditCardNumberLabel = new JLabel("Credit Card Number:");
         expiryDateLabel = new JLabel("Expiry Date:");
         CSVLabel = new JLabel("CSV:");
 
 
-        nameInput = new JTextField("Enter full name");
-        nameInput.setColumns(20); // Set the number of columns (width)
+        fnameInput = new JTextField("Enter first name");
+        fnameInput.setColumns(20); // Set the number of columns (width)
+
+        lnameInput = new JTextField("Enter first name");
+        lnameInput.setColumns(20); 
+
+        emailInput = new JTextField("Enter email");
+        emailInput.setColumns(20); // Set the number of columns (width)
 
         creditCardNumberInput = new JTextField("Enter 16 digit credit card number");
         creditCardNumberInput.setColumns(20); // Set the number of columns (width)
@@ -55,7 +85,11 @@ public class PaymentPage extends JFrame implements ActionListener, MouseListener
         CSVInput = new JTextField("Enter 3 digit CSV:");
         CSVInput.setColumns(20); // Set the number of columns (width)
 
-        nameInput.addMouseListener(this);
+        insuranceCheckBox = new JCheckBox("Insurance");
+
+        fnameInput.addMouseListener(this);
+        lnameInput.addMouseListener(this);
+        emailInput.addMouseListener(this);
         creditCardNumberInput.addMouseListener(this);
         expiryDateInput.addMouseListener(this);
         CSVInput.addMouseListener(this);
@@ -73,38 +107,58 @@ public class PaymentPage extends JFrame implements ActionListener, MouseListener
         gbc.gridx = 0;
         gbc.gridy = 0;
         gbc.insets = new Insets(5, 5, 5, 5); // Add some padding
-        paymentPanel.add(nameLabel, gbc);
+        paymentPanel.add(fnameLabel, gbc);
 
         gbc.gridx = 1;
         gbc.gridy = 0;        
-        paymentPanel.add(nameInput, gbc);
+        paymentPanel.add(fnameInput, gbc);
 
         gbc.gridx = 0;
         gbc.gridy = 1;
-        paymentPanel.add(creditCardNumberLabel, gbc);
+        paymentPanel.add(lnameLabel, gbc);
 
         gbc.gridx = 1;
         gbc.gridy = 1;        
+        paymentPanel.add(lnameInput, gbc);
+
+        gbc.gridx = 0;
+        gbc.gridy = 2;
+        paymentPanel.add(emailLabel, gbc);
+
+        gbc.gridx = 1;
+        gbc.gridy = 2;
+        paymentPanel.add(emailInput, gbc);
+
+        gbc.gridx = 0;
+        gbc.gridy = 3;
+        paymentPanel.add(creditCardNumberLabel, gbc);
+
+        gbc.gridx = 1;
+        gbc.gridy = 3;        
         paymentPanel.add(creditCardNumberInput, gbc);
 
         gbc.gridx = 0;
-        gbc.gridy = 2;
+        gbc.gridy = 4;
         paymentPanel.add(expiryDateLabel, gbc);
 
         gbc.gridx = 1;
-        gbc.gridy = 2;
+        gbc.gridy = 4;
         paymentPanel.add(expiryDateInput, gbc);
 
         gbc.gridx = 0;
-        gbc.gridy = 3;
+        gbc.gridy = 5;
         paymentPanel.add(CSVLabel, gbc);
 
         gbc.gridx = 1;
-        gbc.gridy = 3;
+        gbc.gridy = 5;
         paymentPanel.add(CSVInput, gbc);
 
-        gbc.gridx = 1;
-        gbc.gridy = 4;
+        gbc.gridx = 0;
+        gbc.gridy = 6;
+        paymentPanel.add(insuranceCheckBox, gbc);
+
+        gbc.gridx = 0;
+        gbc.gridy = 7;
         gbc.gridwidth = 2; // Make the button span two columns
         gbc.fill = GridBagConstraints.HORIZONTAL; // Make the button horizontally fill the cell
         paymentPanel.add(payButton, gbc);
@@ -122,17 +176,73 @@ public class PaymentPage extends JFrame implements ActionListener, MouseListener
     @Override
     public void actionPerformed(ActionEvent e) // performed for an actionListener
     {
-        name = nameInput.getText();
-        creditCardNumber = (creditCardNumberInput.getText());
-        expiryDate = LocalDate.parse(expiryDateInput.getText()); // CONVERT FROM STRING TO DATE OBJECT
+        firstName = fnameInput.getText().trim();
+        lastName = lnameInput.getText().trim();
+        email = emailInput.getText().trim();
+        creditCardNumber = creditCardNumberInput.getText().trim();
+        expiryDate = LocalDate.parse(expiryDateInput.getText().trim()); // CONVERT FROM STRING TO DATE OBJECT
         CSV = CSVInput.getText();
         
-        if(validatePaymentInfo(name, creditCardNumber, expiryDate, CSV)) // add checks for all user types
+        if(validatePaymentInfo(firstName, creditCardNumber, expiryDate, CSV)) // add checks for all user types
         {
-            this.dispose();
-            HomePage nextPage = new HomePage(); // navigate to next page
+            try {
+                    boolean hasInsurance = insuranceCheckBox.isSelected();
+                    addUserToFlight(hasInsurance);
+                    this.dispose();
+                    HomePage nextPage = new HomePage(signedInUser);
+                
+            } 
+            catch (SQLException ex) {
+                // Handle the SQLException or log it
+                ex.printStackTrace(); // You might want to log this to a proper logging system
+                // Optionally, show an error message to the user
+                JOptionPane.showMessageDialog(this, "Error adding user to flight: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            }
         }
     }
+
+    public void addUserToFlight(boolean hasInsurance) throws SQLException
+    {
+            if(signedInUser == null) // user not signed and not in DB must add to DB
+            {
+                User newUser = addUserToDBAndSingleton(firstName, lastName, email, "basic");
+                // Add user to passenger list of flight
+                addPassengerToDB(selectedFlight,newUser, selectedSeats, hasInsurance);
+                // add this as a purchase to the user who booked
+                us.setPurchase(newUser, selectedFlight, selectedSeats.keySet(), hasInsurance, creditCardNumber, expiryDate, CSV);
+            }
+            else // user is signed in
+            {
+                // Add user to passenger list of flight
+                addPassengerToDB(selectedFlight, signedInUser, selectedSeats, hasInsurance);
+                us.setPurchase(signedInUser, selectedFlight, selectedSeats.keySet(), hasInsurance, creditCardNumber, expiryDate, CSV);
+            }
+            
+    }
+    
+    public void addPassengerToDB(Flight selectedFlight, User signedInUser, HashMap<Integer, Color> selectedSeats, boolean hasInsurance) throws SQLException
+    {
+        try
+        {
+            fs.addPassenger(selectedFlight,signedInUser, selectedSeats, hasInsurance);
+        }
+        catch(SQLException e)
+        {
+            System.out.println(e);
+        }
+    }
+
+    
+public User addUserToDBAndSingleton(String firstName, String lastName, String email, String userType) throws SQLException {
+    User newUser = null;
+    try {
+        newUser = us.addUser(firstName, lastName, email, userType);
+    } catch (SQLException e) {
+        System.out.println(e);
+        // Optionally, log the exception or handle it in another way
+    }
+    return newUser;
+}
 
     public boolean validatePaymentInfo(String name, String creditCardNumber, LocalDate expiryDate, String CSV)
     {
@@ -151,7 +261,7 @@ public class PaymentPage extends JFrame implements ActionListener, MouseListener
             JOptionPane.showMessageDialog(this, "Expiry date must be in the future");
             return false;
         }
-        // NEED TO IMPLEMENT VALIDATE PAYMENT INFO FOR A COMPNAY CREDIT CARD
+        // NEED TO IMPLEMENT VALIDATE PAYMENT INFO FOR A COMPANY CREDIT CARD
         return true;
 
     }
@@ -163,9 +273,13 @@ public class PaymentPage extends JFrame implements ActionListener, MouseListener
             creditCardNumberInput.setText(""); // clear the default text
         }
 
-        if(event.getSource().equals(nameInput))
+        if(event.getSource().equals(fnameInput))
         {
-            nameInput.setText("");
+            fnameInput.setText("");
+        }
+        if(event.getSource().equals(lnameInput))
+        {
+            lnameInput.setText("");
         }
          if(event.getSource().equals(expiryDateInput))
         {
@@ -174,6 +288,10 @@ public class PaymentPage extends JFrame implements ActionListener, MouseListener
          if(event.getSource().equals(CSVInput))
         {
             CSVInput.setText("");
+        }
+        if(event.getSource().equals(emailInput))
+        {
+            emailInput.setText("");
         }
 
     }

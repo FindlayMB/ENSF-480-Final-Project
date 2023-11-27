@@ -111,4 +111,14 @@ public class Flight {
         this.seats = newSeats;
     }
 
+    public void addPassenger(User user, int selectedSeatNum) {
+        // add passenger to flight
+        for (Seat seat : seats) {
+            if(selectedSeatNum == seat.getSeatNumber())
+            {
+                seat.setPassenger(user);
+            }
+        }
+    }
+
 }

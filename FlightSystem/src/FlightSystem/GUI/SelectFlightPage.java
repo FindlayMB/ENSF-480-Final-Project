@@ -1,7 +1,7 @@
 package FlightSystem.GUI;
 import javax.swing.*;
 
-import FlightSystem.objects.Flight;
+import FlightSystem.objects.*;
 
 import java.awt.*;
 import java.awt.event.*;
@@ -24,14 +24,17 @@ public class SelectFlightPage extends JFrame implements ActionListener, MouseLis
     private LocalDate departure;
     private LocalDate arrival;
 
+    private User signedInUser;
+
     private HashMap<Integer,Flight> flights;
 
 
-    public SelectFlightPage(String destination)
+    public SelectFlightPage(User signedInUser, String destination)
     {
         super("Select Flight"); // create a frame
         fs = FlightSingleton.getOnlyInstance();
         flights = fs.getFlights(destination);
+        this.signedInUser = signedInUser;
         setupGUI();
         this.setSize(800, 600);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -124,7 +127,7 @@ public class SelectFlightPage extends JFrame implements ActionListener, MouseLis
         if(e.getSource() == nextButton) // add checks for all user types
         {
             this.dispose();
-            Seatmap nextPage = new Seatmap(flights.get(flightID));// navigate to next page
+            Seatmap nextPage = new Seatmap(signedInUser, flights.get(flightID));// navigate to next page
         }
     }
 

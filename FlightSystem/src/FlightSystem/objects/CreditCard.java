@@ -1,13 +1,15 @@
 package FlightSystem.objects;
 
+import java.time.LocalDate;
+
 public class CreditCard {
     private String cardNumber;
     private String cardHolderName;
-    private String expiryDate;
+    private LocalDate expiryDate;
     private String csv;
-    public CreditCard(String cardNumber, String cardHolderName, String expiryDate, String csv) {
+    public CreditCard(String cardNumber, String cardHolderFname, String cardHolderLname, LocalDate expiryDate, String csv) {
         this.cardNumber = cardNumber;
-        this.cardHolderName = cardHolderName;
+        this.cardHolderName = cardHolderFname + " " + cardHolderLname;
         this.expiryDate = expiryDate;
         this.csv = csv;
     }
@@ -17,7 +19,7 @@ public class CreditCard {
     public String getCardHolderName() {
         return cardHolderName;
     }
-    public String getExpiryDate() {
+    public LocalDate getExpiryDate() {
         return expiryDate;
     }
   
@@ -27,7 +29,7 @@ public class CreditCard {
     public void setCardHolderName(String cardHolderName) {
         this.cardHolderName = cardHolderName;
     }
-    public void setExpiryDate(String expiryDate) {
+    public void setExpiryDate(LocalDate expiryDate) {
         this.expiryDate = expiryDate;
     }
     public void setcsv(String csv) {
