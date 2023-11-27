@@ -90,23 +90,22 @@ public class LoginPage extends JFrame {
         // Add action listener to the login button
         loginButton.addActionListener(new ActionListener() {
             
+            
+            
             @Override
             public void actionPerformed(ActionEvent e) {
                 // Check the username and password (you can replace this with your authentication logic)
                 String enteredUsername = usernameField.getText();
                 char[] enteredPassword = passwordField.getPassword();
-                setusers(UserSingleton.getOnlyInstance().getUsers());
-                //Print out the username and password
-                
-                // for (User user : users) {
-                //     System.out.println(user.getUsername() + " " + user.getPassword());
-                //     //
-                // }
+                users = UserSingleton.getOnlyInstance().getUsers();
+                for (User user : users) {
+                    System.out.println("Username: " + user.getUsername() + " Password: " + user.getPassword());}
                 String password = new String(enteredPassword);
 
 
                 if (isValidUser(enteredUsername, password)!=null) {
                     JOptionPane.showMessageDialog(LoginPage.this, "Login successful!");
+                    LoginPage.this.dispose();
                     HomePage homePage = new HomePage(isValidUser(enteredUsername, password));
                     homePage.setVisible(true);
                     // Add code to open the main application window or perform other actions upon successful login
@@ -140,16 +139,16 @@ public class LoginPage extends JFrame {
             }
         }
         //print out all the users
-        for (User user : users) {
-            System.out.println(user.getUsername() + " " + user.getPassword());}
+        // for (User user : users) {
+        //     System.out.println("Username: " + user.getUsername() + " Password: " + user.getPassword());}
 
         return null;
     }
 
-    public static void main(String[] args)
-    {
-        EventQueue.invokeLater(() -> { // event queue is threading related
-            new LoginPage().setVisible(true); // makes GUI appear on screen 
-        });
-    }
+    // public static void main(String[] args)
+    // {
+    //     EventQueue.invokeLater(() -> { // event queue is threading related
+    //         new LoginPage().setVisible(true); // makes GUI appear on screen 
+    //     });
+    // }
 }
