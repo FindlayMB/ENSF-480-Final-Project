@@ -1,5 +1,9 @@
 package FlightSystem.objects.plane;
 
+/**
+ * 
+ * @author Findlay Brown
+ */
 public class Plane {
     private final int ID;
     private String type;

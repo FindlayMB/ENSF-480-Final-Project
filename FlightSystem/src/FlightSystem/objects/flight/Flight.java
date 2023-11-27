@@ -4,11 +4,14 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
 
-import FlightSystem.data.*;
-import FlightSystem.objects.*;
+import FlightSystem.data.DatabaseSingleton;
 import FlightSystem.objects.airport.*;
 import FlightSystem.objects.user.*;
 
+/**
+ * 
+ * @author Findlay Brown
+ */
 public class Flight {
     private final int ID;
     private Airport destination;

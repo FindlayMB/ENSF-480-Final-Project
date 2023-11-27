@@ -1,5 +1,9 @@
 package FlightSystem.objects.seats;
 
+/**
+ * 
+ * @author Findlay Brown
+ */
 public class RegularSeat extends Seat {
 
     public RegularSeat(int seatNumber) {

@@ -4,6 +4,10 @@ import java.util.*;
 import FlightSystem.objects.airport.*;
 import FlightSystem.data.DatabaseSingleton;
 
+/**
+ * 
+ * @author Findlay Brown
+ */
 public class FlightsSingleton {
     private DatabaseSingleton dbConnection = DatabaseSingleton.getInstance();
     private static FlightsSingleton flightInstance;

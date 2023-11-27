@@ -31,7 +31,6 @@ CREATE TABLE users (
     LastName            VARCHAR(30) NOT NULL,    
     Email               VARCHAR(60) NOT NULL,
     BirthDay            DATE        NOT NULL,
-    CreditCardNumber    VARCHAR(19),
     Role                ENUM('guest','member','employee','admin'),
     PRIMARY KEY(UserID)
 );
@@ -42,6 +41,9 @@ CREATE TABLE registered (
     Username            VARCHAR(30) NOT NULL,
     Password            VARCHAR(30) NOT NULL,
     SignUpDate          DATE        NOT NULL,
+    CreditCardNumber    VARCHAR(19),
+    CVV                 CHAR(3),
+    ExpiryDate          DATE,
     PRIMARY KEY(UserID, Username),
     FOREIGN KEY(UserID) REFERENCES users(UserID)
 );

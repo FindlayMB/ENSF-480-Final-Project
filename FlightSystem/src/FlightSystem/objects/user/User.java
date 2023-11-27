@@ -2,24 +2,26 @@ package FlightSystem.objects.user;
 
 import java.time.LocalDate;
 
+/**
+ * 
+ * @author Findlay Brown
+ */
 public class User {
     private final int ID;
     private String firstName;
     private String lastName;
     private LocalDate birthDay;
     private String email;
-    private String creditCardNumber;
     private String role;
-    private Person person;
+
 
     public User(int ID,
             String firstName, String lastName, String email,
-            LocalDate birthDate, String creditCardNumber, String role) {
+            LocalDate birthDate, String role) {
         this.ID = ID;
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
-        this.creditCardNumber = creditCardNumber;
         this.role = role;
     }
 
@@ -28,7 +30,6 @@ public class User {
         this.firstName = user.firstName;
         this.lastName = user.lastName;
         this.email = user.email;
-        this.creditCardNumber = user.creditCardNumber;
         this.role = user.role;
     }
 
@@ -64,14 +65,6 @@ public class User {
 
     public void setEmail(String email) {
         this.email = email;
-    }
-
-    public String getCreditCardNumber() {
-        return creditCardNumber;
-    }
-
-    public void setCreditCardNumber(String creditCardNumber) {
-        this.creditCardNumber = creditCardNumber;
     }
 
     public String getRole() {

@@ -4,6 +4,10 @@ import FlightSystem.data.DatabaseSingleton;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+/**
+ * 
+ * @author Findlay Brown
+ */
 public class PlaneSingleton {
     private DatabaseSingleton dbConnection = DatabaseSingleton.getInstance();
     private static PlaneSingleton instance;

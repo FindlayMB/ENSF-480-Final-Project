@@ -79,28 +79,30 @@ public class DatabaseSingleton {
     public HashMap<Integer, User> getUserTable() throws SQLException {
         HashMap<Integer, ArrayList<Integer>> flights = getUserFlights();
         String query = """
-                SELECT u.*,r.Username,r.Password,r.SignUpDate FROM users as u
+                SELECT u.*,r.Username,r.Password,r.SignUpDate,r.CreditCardNumber,r.CVV,r.ExpiryDate FROM users as u
                 LEFT JOIN
-                (SELECT UserID,Username,Password,SignUpDate FROM registered) as r
+                (SELECT UserID,Username,Password,SignUpDate,CreditCardNumber,CVV,ExpiryDate FROM registered) as r
                 ON u.UserID = r.UserID;""";
         ResultSet table = executeQuery(query);
         HashMap<Integer, User> users = new HashMap<Integer, User>();
 
         while (table.next()) {
             User user = new User(
-                    table.getInt(1),
-                    table.getString(2),
+                    table.getInt(1), // UserID
+                    table.getString(2), //
                     table.getString(3),
                     table.getString(4),
                     table.getDate(5).toLocalDate(),
-                    table.getString(6),
-                    table.getString(7));
-            if (table.getString(7).equals("guest") == false) {
+                    table.getString(6));
+            if (table.getString(6).equals("guest") == false) {
                 user = new RegisteredUser(user,
-                        table.getString(8),
-                        table.getString(9),
-                        table.getDate(10).toLocalDate(),
                         table.getString(7),
+                        table.getString(8),
+                        table.getDate(9).toLocalDate(),
+                        table.getString(6),
+                        new CreditCard(table.getString(10),
+                                table.getInt(11),
+                                table.getDate(12) != null ? table.getDate(12).toLocalDate() : null),
                         flights.get(table.getInt(1)));
             }
             users.put(table.getInt(1), user);

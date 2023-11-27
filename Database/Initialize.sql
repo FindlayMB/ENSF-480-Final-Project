@@ -15,46 +15,46 @@ VALUES
 ('AAL','Aalborg Airport','Aalborg','Denmark');
 
 
-INSERT INTO users (UserID, FirstName, LastName, Email, BirthDay, CreditCardNumber, Role)
+INSERT INTO users (UserID, FirstName, LastName, Email, BirthDay, Role)
 VALUES
-(1,'p1','p1','Passenger1@gmail.com','2000-01-01',NULL,'guest'),
-(2,'p2','p2','Passenger2@gmail.com','2000-01-01',NULL,'guest'),
-(3,'p3','p3','Passenger3@gmail.com','2000-01-01',NULL,'guest'),
-(4,'p4','p4','Passenger4@gmail.com','2000-01-01',NULL,'guest'),
-(5,'p5','p5','Passenger5@gmail.com','2000-01-01',NULL,'guest'),
-(6,'p6','p6','Passenger6@gmail.com','2000-01-01',NULL,'guest'),
-(7,'p7','p7','Passenger7@gmail.com','2000-01-01',NULL,'guest'),
-(8,'p8','p8','Passenger8@gmail.com','2000-01-01',NULL,'guest'),
-(9,'p9','p9','Passenger9@gmail.com','2000-01-01',NULL,'guest'),
-(10,'p10','p10','Passenger10@gmail.com','2000-01-01',NULL,'guest'),
-(11,'p11','p11','Passenger11@gmail.com','2000-01-01',NULL,'guest'),
-(12,'p12','p12','Passenger12@gmail.com','2000-01-01',NULL,'guest'),
-(13,'m1','m1','Member1@gmail.com','2000-01-01',NULL,'member'),
-(14,'m2','m2','Member2@gmail.com','2000-01-01',NULL,'member'),
-(15,'e1','e1','Employee1@companymail.com','2000-01-01',NULL,'employee'),
-(16,'e2','e2','Employee2@companymail.com','2000-01-01',NULL,'employee'),
-(17,'e3','e3','Employee3@companymail.com','2000-01-01',NULL,'employee'),
-(18,'e4','e4','Employee4@companymail.com','2000-01-01',NULL,'employee'),
-(19,'e5','e5','Employee5@companymail.com','2000-01-01',NULL,'employee'),
-(20,'e6','e6','Employee6@companymail.com','2000-01-01',NULL,'employee'),
-(21,'e7','e7','Employee7@companymail.com','2000-01-01',NULL,'employee'),
-(22,'e8','e8','Employee8@companymail.com','2000-01-01',NULL,'employee'),
-(23,'a1','a1','Admin1@companymail.com','2000-01-01',NULL,'admin');
+(1,'p1','p1','Passenger1@gmail.com','2000-01-01','guest'),
+(2,'p2','p2','Passenger2@gmail.com','2000-01-01','guest'),
+(3,'p3','p3','Passenger3@gmail.com','2000-01-01','guest'),
+(4,'p4','p4','Passenger4@gmail.com','2000-01-01','guest'),
+(5,'p5','p5','Passenger5@gmail.com','2000-01-01','guest'),
+(6,'p6','p6','Passenger6@gmail.com','2000-01-01','guest'),
+(7,'p7','p7','Passenger7@gmail.com','2000-01-01','guest'),
+(8,'p8','p8','Passenger8@gmail.com','2000-01-01','guest'),
+(9,'p9','p9','Passenger9@gmail.com','2000-01-01','guest'),
+(10,'p10','p10','Passenger10@gmail.com','2000-01-01','guest'),
+(11,'p11','p11','Passenger11@gmail.com','2000-01-01','guest'),
+(12,'p12','p12','Passenger12@gmail.com','2000-01-01','guest'),
+(13,'m1','m1','Member1@gmail.com','2000-01-01','member'),
+(14,'m2','m2','Member2@gmail.com','2000-01-01','member'),
+(15,'e1','e1','Employee1@companymail.com','2000-01-01','employee'),
+(16,'e2','e2','Employee2@companymail.com','2000-01-01','employee'),
+(17,'e3','e3','Employee3@companymail.com','2000-01-01','employee'),
+(18,'e4','e4','Employee4@companymail.com','2000-01-01','employee'),
+(19,'e5','e5','Employee5@companymail.com','2000-01-01','employee'),
+(20,'e6','e6','Employee6@companymail.com','2000-01-01','employee'),
+(21,'e7','e7','Employee7@companymail.com','2000-01-01','employee'),
+(22,'e8','e8','Employee8@companymail.com','2000-01-01','employee'),
+(23,'a1','a1','Admin1@companymail.com','2000-01-01','admin');
 
 
-INSERT INTO registered (UserID, Username, Password, SignUpDate)
+INSERT INTO registered (UserID, Username, Password, SignUpDate, CreditCardNumber, CVV, ExpiryDate)
 VALUES
-(13,'m1','m1','2023-11-20'),
-(14,'m2','m2','2023-11-20'),
-(15,'e1','e1','2023-11-20'),
-(16,'e2','e2','2023-11-20'),
-(17,'e3','e3','2023-11-20'),
-(18,'e4','e4','2023-11-20'),
-(19,'e5','e5','2023-11-20'),
-(20,'e6','e6','2023-11-20'),
-(21,'e7','e7','2023-11-20'),
-(22,'e8','e8','2023-11-20'),
-(23,'a1','a1','2023-11-20');
+(13,'m1','m1','2023-11-20',NULL,NULL,NULL),
+(14,'m2','m2','2023-11-20',NULL,NULL,NULL),
+(15,'e1','e1','2023-11-20',NULL,NULL,NULL),
+(16,'e2','e2','2023-11-20',NULL,NULL,NULL),
+(17,'e3','e3','2023-11-20',NULL,NULL,NULL),
+(18,'e4','e4','2023-11-20',NULL,NULL,NULL),
+(19,'e5','e5','2023-11-20',NULL,NULL,NULL),
+(20,'e6','e6','2023-11-20',NULL,NULL,NULL),
+(21,'e7','e7','2023-11-20',NULL,NULL,NULL),
+(22,'e8','e8','2023-11-20',NULL,NULL,NULL),
+(23,'a1','a1','2023-11-20',NULL,NULL,NULL);
 
 INSERT INTO crews (CrewID, CrewMemberID, Job)
 VALUES

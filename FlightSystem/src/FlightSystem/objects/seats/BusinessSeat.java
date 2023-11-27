@@ -1,5 +1,9 @@
 package FlightSystem.objects.seats;
 
+/**
+ * 
+ * @author Findlay Brown
+ */
 public class BusinessSeat extends Seat {
     public BusinessSeat(int seatNumber) {
         super(seatNumber);

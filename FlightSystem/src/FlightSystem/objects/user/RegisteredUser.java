@@ -3,16 +3,22 @@ package FlightSystem.objects.user;
 import java.time.LocalDate;
 import java.util.ArrayList;
 
+/**
+ * 
+ * @author Findlay Brown
+ */
 public class RegisteredUser extends User {
 
     private String username;
     private String password;
     private final LocalDate signUpDate;
+    private CreditCard creditCard;
     private String job;
     private ArrayList<Integer> onFlights = new ArrayList<Integer>();
 
     public RegisteredUser(User user, String username, String password,
-            LocalDate signUpDate, String job, ArrayList<Integer> onFlights) {
+            LocalDate signUpDate, String job, CreditCard creditCard, 
+            ArrayList<Integer> onFlights) {
         super(user);
         this.username = username;
         this.password = password;
@@ -41,6 +47,14 @@ public class RegisteredUser extends User {
 
     public LocalDate getSignUpDate() {
         return signUpDate;
+    }
+
+    public CreditCard getCreditCard() {
+        return creditCard;
+    }
+
+    public void setCreditCard(CreditCard creditCard) {
+        this.creditCard = creditCard;
     }
 
     public String getJob() {

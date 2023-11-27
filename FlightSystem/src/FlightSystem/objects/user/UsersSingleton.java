@@ -1,10 +1,13 @@
 package FlightSystem.objects.user;
 
+import FlightSystem.data.DatabaseSingleton;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import FlightSystem.data.DatabaseSingleton;
-
+/**
+ * 
+ * @author Findlay Brown
+ */
 public class UsersSingleton {
     private DatabaseSingleton dbConnection = DatabaseSingleton.getInstance();
     private static UsersSingleton usersInstance;

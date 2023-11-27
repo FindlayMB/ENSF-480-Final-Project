@@ -4,6 +4,10 @@ import java.util.ArrayList;
 
 import FlightSystem.objects.airport.Airport;
 
+/**
+ * 
+ * @author Findlay Brown
+ */
 public class FlightFilter {
 
     /**

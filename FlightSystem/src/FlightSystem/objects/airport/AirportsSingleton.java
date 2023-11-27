@@ -4,6 +4,11 @@ import FlightSystem.data.DatabaseSingleton;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+
+/**
+ * 
+ * @author Findlay Brown
+ */
 public class AirportsSingleton {
     private DatabaseSingleton dbConnection = DatabaseSingleton.getInstance();
     private static AirportsSingleton instance;

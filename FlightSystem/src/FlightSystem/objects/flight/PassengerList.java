@@ -4,6 +4,10 @@ import java.util.ArrayList;
 
 import FlightSystem.objects.seats.*;
 
+/**
+ * 
+ * @author Findlay Brown
+ */
 public class PassengerList {
     private ArrayList<Seat> passengers;
 

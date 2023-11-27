@@ -1,5 +1,9 @@
 package FlightSystem.objects.seats;
 
+/**
+ * 
+ * @author Findlay Brown
+ */
 public class SeatFactory {
     public static Seat createSeat(String seatType, int seatNumber) {
         switch (seatType) {
