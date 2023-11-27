@@ -1,7 +1,7 @@
 package FlightSystem.objects.seats;
 
 public class SeatFactory {
-    public Seat createSeat(String seatType, int seatNumber) {
+    public static Seat createSeat(String seatType, int seatNumber) {
         switch (seatType) {
             case "regular":
                 return new RegularSeat(seatNumber);
@@ -15,14 +15,14 @@ public class SeatFactory {
         }
     }
 
-    public Seat createSeat(String seatType, int seatNumber, int passengerID) {
+    public static Seat createSeat(String seatType, int seatNumber, int passengerID, boolean insurance) {
         switch (seatType) {
             case "regular":
-                return new RegularSeat(seatNumber, passengerID);
+                return new RegularSeat(seatNumber, passengerID, insurance);
             case "comfort":
-                return new ComfortSeat(seatNumber, passengerID);
+                return new ComfortSeat(seatNumber, passengerID, insurance);
             case "business":
-                return new BusinessSeat(seatNumber, passengerID);
+                return new BusinessSeat(seatNumber, passengerID, insurance);
             default:
                 System.out.println("FAILED TO CREATE SEAT!");
                 return null;

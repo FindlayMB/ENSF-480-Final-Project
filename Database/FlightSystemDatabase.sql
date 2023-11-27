@@ -30,8 +30,7 @@ CREATE TABLE users (
     FirstName           VARCHAR(30) NOT NULL,
     LastName            VARCHAR(30) NOT NULL,    
     Email               VARCHAR(60) NOT NULL,
-   
-
+    BirthDay            DATE        NOT NULL,
     CreditCardNumber    VARCHAR(19),
     Role                ENUM('guest','member','employee','admin'),
     PRIMARY KEY(UserID)
@@ -39,13 +38,13 @@ CREATE TABLE users (
 
 DROP TABLE IF EXISTS registered;
 CREATE TABLE registered (
-    UserID              INT NOT NULL,
+    UserID              INT         NOT NULL,
     Username            VARCHAR(30) NOT NULL,
     Password            VARCHAR(30) NOT NULL,
     SignUpDate          DATE        NOT NULL,
-    PRIMARY KEY(UserID),
+    PRIMARY KEY(UserID, Username),
     FOREIGN KEY(UserID) REFERENCES users(UserID)
-)
+);
 
 DROP TABLE IF EXISTS crews;
 CREATE TABLE crews (

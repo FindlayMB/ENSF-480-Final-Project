@@ -5,7 +5,12 @@ public class ComfortSeat extends Seat {
         super(seatNumber);
     }
 
-    public ComfortSeat(int seatNumber, int passengerID) {
-        super(seatNumber, passengerID);
+    public ComfortSeat(int seatNumber, int passengerID, boolean insurance) {
+        super(seatNumber, passengerID, insurance);
+    }
+
+    @Override
+    public String getSeatType() {
+        return "comfort";
     }
 }

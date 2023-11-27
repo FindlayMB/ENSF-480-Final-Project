@@ -6,8 +6,13 @@ public class RegularSeat extends Seat {
         super(seatNumber);
     }
 
-    public RegularSeat(int seatNumber, int passengerID) {
-        super(seatNumber, passengerID);
+    public RegularSeat(int seatNumber, int passengerID, boolean insurance) {
+        super(seatNumber, passengerID, insurance);
+    }
+
+    @Override
+    public String getSeatType() {
+        return "regular";
     }
 
 }

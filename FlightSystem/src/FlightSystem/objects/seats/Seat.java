@@ -10,24 +10,48 @@ public abstract class Seat {
     private int seatNumber;
     private int passengerID;
     private boolean isReserved;
+    private boolean insurance;
 
     public Seat(int seatNumber) {
         this.seatNumber = seatNumber;
         this.passengerID = 0;
         this.isReserved = false;
+        this.insurance = false;
     }
 
-    public Seat(int seatNumber, int passengerID) {
+    public Seat(int seatNumber, int passengerID, boolean insurance) {
         this.seatNumber = seatNumber;
         this.passengerID = passengerID;
         this.isReserved = true;
+        this.insurance = insurance;
     }
 
-    public String getSeatType() {
+    public abstract String getSeatType();
 
-        System.out.println(this.getClass());
+    public int getSeatNumber() {
+        return seatNumber;
+    }
 
-        return "";
+    public int getPassengerID() {
+        return passengerID;
+    }
+
+    /**
+     * Set a seat to have a passenger
+     * If passengerID is -1 then the seat is not reserved
+     * 
+     * @param passengerID
+     */
+    public void setPassengerID(int passengerID) {
+        this.passengerID = passengerID;
+        this.isReserved = (passengerID != -1);
+    }
+
+    @Override
+    public String toString() {
+        String output = String.format("Seat Number:%d  Passenger ID: %d  Seat Type: %s",
+                seatNumber, passengerID, getSeatType());
+        return output;
     }
 
 }

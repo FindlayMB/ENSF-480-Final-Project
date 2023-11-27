@@ -1,6 +1,42 @@
 
 /* Queries for getting data from data base */
 
+/*
+	Get users and registered tables left joined by UserID
+    If role != 'guest' then the user is registered and as such the columns
+    Username, Password, and SignUpDate are not null.
+    
+    This is the query for getting users from the database.
+    Since we joined the 2 tables it allows for the creation of 
+    RegisteredUser objects.
+*/
+USE FlightSystem;
+SELECT u.*,r.Username,r.Password,r.SignUpDate FROM users AS u
+LEFT JOIN
+(SELECT UserID,Username,Password,SignUpDate FROM registered) AS r
+ON u.UserID = r.UserID;
+
+
+
+/*
+	Get the FlightIDs for crew members.
+*/
+SELECT f.FlightID,c.CrewMemberID FROM flights as f
+JOIN
+(SELECT CrewID,CrewMemberID FROM crews) as c
+ON f.CrewID = c.CrewID;
+
+/*
+Get the UserIDs of crew who are on %d flight
+
+SELECT f.FlightID,c.CrewMemberID FROM flights as f
+JOIN
+(SELECT CrewID,CrewMemberID FROM crews) as c
+ON f.CrewID = c.CrewID
+WHERE f.FlightID = %d;
+*/
+
+
 
 /* 
     Get FirstName, LastName, CrewID of employees.

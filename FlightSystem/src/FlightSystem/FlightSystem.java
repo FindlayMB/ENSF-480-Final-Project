@@ -3,60 +3,68 @@ package FlightSystem;
 import java.util.*;
 
 import FlightSystem.data.DatabaseSingleton;
-import FlightSystem.objects.airport.*;
+
 import FlightSystem.objects.*;
+import FlightSystem.objects.user.*;
 import FlightSystem.objects.seats.*;
+import FlightSystem.objects.flight.*;
+import FlightSystem.objects.plane.*;
+import FlightSystem.objects.airport.*;
 
 public class FlightSystem {
-    private static SeatFactory seatFactory = new SeatFactory();
     private DatabaseSingleton dbConnection;
 
-    private static HashMap<String, Airport> airports;
-    private static HashMap<Integer, Plane> planes;
+    private static AirportsSingleton airports;
+    private static UsersSingleton users;
+    private static PlaneSingleton planes;
+    private static FlightsSingleton flights;
 
     public FlightSystem() {
-        Seat s1 = seatFactory.createSeat("regular", 1);
-        s1.getSeatType();
-        // this.dbConnection = DatabaseSingleton.getInstance();
+        this.dbConnection = DatabaseSingleton.getInstance();
 
-        // airports = getAirports();
-        // planes = getPlanes();
-        // System.out.println("Got tables!");
-
-        // System.out.println("Airports");
-        // for (String a : airports.keySet()) {
-        // System.out.println(airports.get(a).toString());
-        // }
-
-        // System.out.println("Planes");
-        // for (Integer i : planes.keySet()) {
-        // System.out.println(planes.get(i).toString());
-        // }
-    }
-
-    public HashMap<Integer, Plane> getPlanes() {
-        if (planes == null) {
-            try {
-                planes = new HashMap<Integer, Plane>(dbConnection.getPlaneTable());
-            } catch (Exception e) {
-                System.out.println(e);
-                System.out.println("Failed to get planes table!");
-            }
-
+        try {
+            dbConnection.addAirport(new Airport("AAA", "Test Name", "Test City", "Test Country"));
+        } catch (Exception e) {
+            System.out.println(e);
         }
-        return planes;
-    }
+        airports = AirportsSingleton.getInstance();
+        planes = PlaneSingleton.getInstance();
+        users = UsersSingleton.getInstance();
 
-    public HashMap<String, Airport> getAirports() {
-        if (airports == null) {
-            try {
-                airports = new HashMap<String, Airport>(dbConnection.getAirportTable());
-            } catch (Exception e) {
-                System.out.println(e);
-                System.out.println("Failed to get airports table!");
+        flights = FlightsSingleton.getInstance();
+
+        System.out.println("Airports");
+        for (Airport a : airports.getAirportList()) {
+            System.out.println(a.toString());
+        }
+
+        System.out.println("Planes");
+        for (Plane p : planes.getPlaneList()) {
+            System.out.println(p);
+        }
+
+        for (User u : users.getUsersList()) {
+            System.out.println(u.toString());
+            if (u instanceof RegisteredUser) {
+                System.out.println(((RegisteredUser) u).getFlights());
             }
         }
-        return airports;
+
+        for (Flight f : flights.getFlightList()) {
+            System.out.println(f.getPassengerList());
+        }
+
+    }
+
+    public User login(String username, String password) {
+        for (User u : UsersSingleton.getInstance().getRegisteredUsersList()) {
+            if (u instanceof RegisteredUser) {
+                if (((RegisteredUser) u).login(username, password)) {
+                    return u;
+                }
+            }
+        }
+        return null;
     }
 
 }

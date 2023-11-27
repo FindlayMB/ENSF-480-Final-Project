@@ -5,7 +5,12 @@ public class BusinessSeat extends Seat {
         super(seatNumber);
     }
 
-    public BusinessSeat(int seatNumber, int passengerID) {
-        super(seatNumber, passengerID);
+    public BusinessSeat(int seatNumber, int passengerID, boolean insurance) {
+        super(seatNumber, passengerID, insurance);
+    }
+
+    @Override
+    public String getSeatType() {
+        return "business";
     }
 }
