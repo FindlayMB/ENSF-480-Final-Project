@@ -60,4 +60,5 @@ public class UserSingleton {
         users.get(modUser.getID()).setPurchase(selectedFlight, selectedSeats, hasInsurance, creditCardNumber, expiryDate, CSV);
     }
     
+    
 }

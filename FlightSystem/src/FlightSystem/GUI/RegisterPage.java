@@ -174,10 +174,19 @@ public class RegisterPage extends JFrame {
                         System.out.println("Failed to add user to database!");
                     }
                     users = UserSingleton.getOnlyInstance().getUsers();
-                    users.add(new User(users.size()+1,username,password,fname,lname,email,LocalDate.now(),"0","member"));
+                    User newUser = new User(users.size()+1,username,password,fname,lname,email,LocalDate.now(),"0","member");
+                    UserSingleton.getOnlyInstance().addUser(newUser);
+                    
+                    
                     for (User user : users) {
                         System.out.println(user.getUsername() + " " + user.getPassword());
+                        // if(user.getUsername().equals(username)){
+                            
+                        // }
                     }
+                    System.out.println("Here is the new user"+newUser.getUsername());
+
+
 
 
 
@@ -187,8 +196,9 @@ public class RegisterPage extends JFrame {
                     //RegisterPage.this.dispose();
                     //new HomePage();
 
-                    //this.dispose();
-                    //new HomePage();
+                    RegisterPage.this.dispose();
+                    HomePage h =new HomePage(newUser);
+                    h.setVisible(true);
 
                 }
                 else{
