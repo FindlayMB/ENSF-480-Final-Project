@@ -29,13 +29,19 @@ public class UserSingleton {
         }
     }
 
-    public User addUser(String firstName, String lastName, String email, String userType) throws SQLException
+    public User addUserwithFields(String firstName, String lastName, String email, String userType) throws SQLException
     {
             User newUser = new User(userId, firstName, lastName, email, userType);
             users.put(userId, newUser); // add user to hashmap
             dbConnection.addUser(newUser); // add user to DB
             userId++;
             return(newUser); // return user ID of user that was just added
+    }
+
+    public void addUser(User newUser)
+    {
+            userId++;
+            users.put(userId, newUser);
     }
 
     public void removeUser(User removeUser) 

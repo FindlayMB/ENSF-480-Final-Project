@@ -7,6 +7,8 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+
+import FlightSystem.objects.RegisteredUser;
 import FlightSystem.objects.User;
 import java.util.*;
 import FlightSystem.data.UserSingleton;
@@ -137,9 +139,7 @@ public class RegisterPage extends JFrame {
 
             @Override
             public void actionPerformed(ActionEvent e) {
-                setusers(UserSingleton.getOnlyInstance().getUsers());
-
-
+                // setusers(UserSingleton.getOnlyInstance().getUsers());
 
                 String fname = firstNameField.getText();
                 String lname = lastNameField.getText();
@@ -168,23 +168,24 @@ public class RegisterPage extends JFrame {
                 if (registerUser(fname, lname, username, password, email)) {
                     DatabaseSingleton dbConnection = DatabaseSingleton.getInstance();
                     try {
-                        dbConnection.addUser(username,password,fname, lname, email,LocalDate.now().toString(),"0","member");
+                        dbConnection.addUserWithFields(username,password,fname, lname, email,LocalDate.now().toString(),"0","member");
                     } catch (Exception e1) {
                         System.out.println(e1);
                         System.out.println("Failed to add user to database!");
                     }
                     users = UserSingleton.getOnlyInstance().getUsers();
-                    User newUser = new User(users.size()+1,username,password,fname,lname,email,LocalDate.now(),"0","member");
+                    RegisteredUser newUser = new RegisteredUser(users.size()+1,username,password,fname,lname,email,LocalDate.now(), null); 
                     UserSingleton.getOnlyInstance().addUser(newUser);
                     
                     
                     for (User user : users) {
-                        System.out.println(user.getUsername() + " " + user.getPassword());
-                        // if(user.getUsername().equals(username)){
-                            
-                        // }
+                        if (user instanceof RegisteredUser) {
+                            RegisteredUser registeredUser = (RegisteredUser) user;
+                            System.out.println(registeredUser.getUsername() + " " + registeredUser.getPassword());
+                        }
                     }
-                    System.out.println("Here is the new user"+newUser.getUsername());
+                    
+                 //   System.out.println("Here is the new user"+ newUser.getUsername());
 
 
 

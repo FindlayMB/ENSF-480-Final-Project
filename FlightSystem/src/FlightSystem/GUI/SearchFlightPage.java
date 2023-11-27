@@ -9,10 +9,10 @@ import FlightSystem.objects.*;
 public class SearchFlightPage extends JFrame implements ActionListener{
 
     private JTextField flightSearchInput;
-    private User signedInUser;
+    private RegisteredUser signedInUser;
 
     // search flight by destination and move to select flight page
-    public SearchFlightPage(User signedInUser)
+    public SearchFlightPage(RegisteredUser signedInUser)
     {
         super("Search Flight");
         this.signedInUser = signedInUser;
@@ -42,10 +42,6 @@ public class SearchFlightPage extends JFrame implements ActionListener{
         searchPanel.add(flightSearchInput);
         searchPanel.add(searchButton);
         this.add(searchPanel);
-        
-
-        
-
     }
 
     @Override

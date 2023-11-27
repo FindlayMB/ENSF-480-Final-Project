@@ -24,14 +24,14 @@ public class Seatmap extends JFrame implements ActionListener, MouseListener
     private HashMap<Integer, Color> selectedSeats; // select a seat and record the color of the seat
 
     private Flight selectFlight;
-    private User signedInUser;
+    private RegisteredUser signedInUser;
     private ArrayList<Seat> bookedSeats;
     private int numBusiness;
     private int numComfort;
     private int numRegular;
 
 
-    public Seatmap(User signedInUser, Flight selectFlight)
+    public Seatmap(RegisteredUser signedInUser, Flight selectFlight)
     {
         super("Seatmap"); // create a frame
         this.selectFlight = selectFlight;

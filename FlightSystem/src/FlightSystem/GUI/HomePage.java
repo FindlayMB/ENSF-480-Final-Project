@@ -8,10 +8,11 @@ import java.util.ArrayList;
 
 import FlightSystem.data.FlightSingleton;
 import FlightSystem.data.UserSingleton;
+import FlightSystem.objects.RegisteredUser;
 import FlightSystem.objects.User;
 
 public class HomePage extends JFrame implements ActionListener{
-    private User user;
+    private RegisteredUser user;
     public void setUpAdminButton(JButton admiButton){
     admiButton.setBorder(null);
     admiButton.setContentAreaFilled(false);//Make the button transparent
@@ -27,10 +28,9 @@ public class HomePage extends JFrame implements ActionListener{
             admiButton.setForeground(Color.BLACK); // Reset text color on exit
     }});}
 
-    public HomePage(User user) 
+    public HomePage(RegisteredUser user) 
     {
         this.user = user;
-
         setTitle("Air Company");
         setSize(800, 600);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -222,6 +222,8 @@ public class HomePage extends JFrame implements ActionListener{
             //delete the home page
             this.setVisible(false);
             System.out.println("View Profile button clicked");
+
+            // Need to pass in registered user here
             ProfilePage profilePage = new ProfilePage(this.user);
             //profilePage.setupGUI();
         }

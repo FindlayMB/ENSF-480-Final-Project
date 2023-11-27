@@ -1,16 +1,18 @@
 package FlightSystem.objects;
 
 import java.util.ArrayList;
+import java.time.LocalDate;
 import java.util.*;
 public class RegisteredUser extends User {
     private String username;
     private String password;
     private CreditCard companyCreditCard;
-    RegisteredUser(int ID, String firstName, String lastName, String email, CreditCard creditCard, Address address ,ArrayList<Purchase> purchases, String username, String password){
-        super(ID, firstName, lastName, email,"registered user");
+    private LocalDate signUpDate;
+    RegisteredUser(int ID, String username, String password, String firstName, String lastName, String email, LocalDate singupDate, CreditCard creditCard){
+        super(ID, firstName, lastName, email,"member");
         this.username=username;
         this.password=password;
-        this.companyCreditCard=creditCard;
+        this.companyCreditCard=creditCard; // company credit card may be set to NULL they must choose to signup for company credit card
     }
     // RegisteredUser(User User, String username, String password){
     //     super(User.getFirstName(), User.getLastName(), User.getAddress(), User.getEmail(), User.getCreditCard(), User.getBirthday(), User.getPurchases());

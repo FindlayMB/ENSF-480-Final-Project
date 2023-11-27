@@ -27,13 +27,19 @@ CREATE TABLE airports (
 DROP TABLE IF EXISTS users;
 CREATE TABLE users (
     UserID              INT         NOT NULL AUTO_INCREMENT,
+    Username            VARCHAR(30),
+    Password            VARCHAR(30),
     FirstName           VARCHAR(30) NOT NULL,
     LastName            VARCHAR(30) NOT NULL,    
     Email               VARCHAR(60) NOT NULL,
-
-    Role                ENUM('member','basic','employee','admin'),
-    PRIMARY KEY(UserID)
+    SignUpDate          DATE        ,
+    CreditCardNumber    VARCHAR(19),
+    CreditCardExpiry    DATE,
+    CreaitCardCSV       INT,
+    Role                ENUM('member','employee','admin'),
+    PRIMARY KEY(UserID, Username)
 );
+
 
 DROP TABLE IF EXISTS crews;
 CREATE TABLE crews (

@@ -3,14 +3,16 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.ArrayList;
+
+import FlightSystem.objects.RegisteredUser;
 //import User;
 import FlightSystem.objects.User;
 
 
 public class ProfilePage {
-    private User User;
-    public ProfilePage(User User) {
-        this.User = User;
+    private RegisteredUser user;
+    public ProfilePage(RegisteredUser User) {
+        this.user = User;
         setupGUI();
     }
     public void setupGUI(){
@@ -25,10 +27,10 @@ public class ProfilePage {
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.insets = new Insets(5, 5, 5, 5);
 
-        JLabel usernameLabel = new JLabel("Username: " + User.getUsername());
-        JLabel emailLabel = new JLabel("Email: " + User.getEmail());
-        JLabel firstNameLabel = new JLabel("First Name: " + User.getFirstName());
-        JLabel lastNameLabel = new JLabel("Last Name: " + User.getLastName());
+        JLabel usernameLabel = new JLabel("Username: " + user.getUsername());
+        JLabel emailLabel = new JLabel("Email: " + user.getEmail());
+        JLabel firstNameLabel = new JLabel("First Name: " + user.getFirstName());
+        JLabel lastNameLabel = new JLabel("Last Name: " + user.getLastName());
 
         JButton backButton = new JButton("Back");
         backButton.addActionListener(new ActionListener() {
@@ -37,7 +39,7 @@ public class ProfilePage {
                 
 
                 frame.dispose();
-                HomePage homePage = new HomePage(User);
+                HomePage homePage = new HomePage(user);
                 homePage.setVisible(true);
 
             }

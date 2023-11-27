@@ -24,12 +24,12 @@ public class SelectFlightPage extends JFrame implements ActionListener, MouseLis
     private LocalDate departure;
     private LocalDate arrival;
 
-    private User signedInUser;
+    private RegisteredUser signedInUser;
 
     private HashMap<Integer,Flight> flights;
 
 
-    public SelectFlightPage(User signedInUser, String destination)
+    public SelectFlightPage(RegisteredUser signedInUser, String destination)
     {
         super("Select Flight"); // create a frame
         fs = FlightSingleton.getOnlyInstance();

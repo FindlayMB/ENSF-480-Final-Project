@@ -225,5 +225,21 @@ public class DatabaseSingleton {
             preparedStatement.executeUpdate();
         } 
     }
+    public void addUserWithFields(String Username,String Password,String FirstName,String LastName,String Email,String signUpDate,String creditCardNumber,String Role) throws SQLException {
+        String sql ="INSERT INTO Users (Username,Password,FirstName,LastName,Email,SignUpDate,creditCardNumber,Role) VALUES (?,?,?,?,?,?,?,?)";
+        try (PreparedStatement preparedStatement = dbConnection.prepareStatement(sql)) {
+            //preparedStatement.setInt(1,UserID);
+            preparedStatement.setString(1,Username);
+            preparedStatement.setString(2,Password);
+            preparedStatement.setString(3,FirstName);
+            preparedStatement.setString(4,LastName);
+            preparedStatement.setString(5,Email);
+            preparedStatement.setString(6,signUpDate);
+            preparedStatement.setString(7,creditCardNumber);
+            preparedStatement.setString(8,Role);
+
+            preparedStatement.executeUpdate();
+        } 
+    }
 
 }

@@ -49,9 +49,6 @@ public class User {
         return role;
     }
 
-    public String getRole() {
-        return role;
-    }
     public int getID() {
         return ID;
     }

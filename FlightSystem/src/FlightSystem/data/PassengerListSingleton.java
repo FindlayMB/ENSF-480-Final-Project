@@ -24,21 +24,21 @@ public class PassengerListSingleton {
         }
     }
 
-    public void addFlight(Flight newFlight)
-    {
-        if (flightID == 0){
-            flights.put(flightID, newFlight);
-        }
-        else{
-            flightID++;
-            flights.put(flightID, newFlight);
-        }
-    }
+    // public void addFlight(Flight newFlight)
+    // {
+    //     if (flightID == 0){
+    //         flights.put(flightID, newFlight);
+    //     }
+    //     else{
+    //         flightID++;
+    //         flights.put(flightID, newFlight);
+    //     }
+    // }
 
-    public void removeFlight(Flight removeFlight)
-    {
-        flights.remove(flightID, removeFlight);
-    }
+    // public void removeFlight(Flight removeFlight)
+    // {
+    //     flights.remove(flightID, removeFlight);
+    // }
 
     public static PassengerListSingleton getOnlyInstance() 
     {
@@ -49,14 +49,14 @@ public class PassengerListSingleton {
         return onlyInstance;
     }
 
-    public HashMap<Integer, Flight> getFlights(String destination) {
-        // return all flights that go to destination
-        HashMap<Integer, Flight> filteredFlights = new HashMap<>();
-        for (Flight flight : flights.values()) {
-            if (flight.getDestination().getCode().equals(destination)) {
-                filteredFlights.put(flight.getID(), flight);
-            }
-        }
-        return filteredFlights;
-    }
+    // public HashMap<Integer, Flight> getFlights(String destination) {
+    //     // return all flights that go to destination
+    //     HashMap<Integer, Flight> filteredFlights = new HashMap<>();
+    //     for (Flight flight : flights.values()) {
+    //         if (flight.getDestination().getCode().equals(destination)) {
+    //             filteredFlights.put(flight.getID(), flight);
+    //         }
+    //     }
+    //     return filteredFlights;
+    // }
 }

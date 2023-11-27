@@ -5,17 +5,19 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+
+import FlightSystem.objects.RegisteredUser;
 import FlightSystem.objects.User;
 import java.util.*;
 import FlightSystem.data.UserSingleton;
 
 public class LoginPage extends JFrame {
-    private ArrayList<User> users;
-    public void setusers(ArrayList<User> users)
+    private ArrayList<RegisteredUser> users; // list that only contain users with accounts
+    public void setusers(ArrayList<RegisteredUser> users)
     {
         this.users = users;
     }
-    public ArrayList<User> getUsers()
+    public ArrayList<RegisteredUser> getUsers()
     {
         return users;
     }
@@ -24,13 +26,7 @@ public class LoginPage extends JFrame {
     public LoginPage() {
         super("Login - Air Canada");
         //setupGUI();
-        
-    
-
-
-        
-        
-
+        users = new ArrayList<RegisteredUser>();
         setTitle("Login - Air Canada");
         setSize(400, 200);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -89,16 +85,20 @@ public class LoginPage extends JFrame {
 
         // Add action listener to the login button
         loginButton.addActionListener(new ActionListener() {
-            
-            
-            
             @Override
             public void actionPerformed(ActionEvent e) {
                 // Check the username and password (you can replace this with your authentication logic)
                 String enteredUsername = usernameField.getText();
                 char[] enteredPassword = passwordField.getPassword();
-                users = UserSingleton.getOnlyInstance().getUsers();
-                for (User user : users) {
+                ArrayList<User> tmpListUsers= UserSingleton.getOnlyInstance().getUsers();
+                for(User user: tmpListUsers)
+                {
+                    if(user.getRole().equals("member") || user.getRole().equals("admin") || user.getRole().equals("employee"))
+                    {
+                        users.add((RegisteredUser)user);
+                    }
+                }
+                for (RegisteredUser user : users) {
                     System.out.println("Username: " + user.getUsername() + " Password: " + user.getPassword());}
                 String password = new String(enteredPassword);
 
@@ -132,8 +132,8 @@ public class LoginPage extends JFrame {
         add(loginPanel);
     }
 
-    private User isValidUser(String username, String password) {
-        for (User user : users) {
+    private RegisteredUser isValidUser(String username, String password) {
+        for (RegisteredUser user : users) {
             if (user.getUsername().equals(username) && user.getPassword().equals(password)) {
                 return user;
             }

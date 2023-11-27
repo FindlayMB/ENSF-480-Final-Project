@@ -14,7 +14,7 @@ import FlightSystem.objects.*;
 
 public class PaymentPage extends JFrame implements ActionListener, MouseListener
 {
-    private User signedInUser;
+    private RegisteredUser signedInUser;
     private UserSingleton us = UserSingleton.getOnlyInstance();
     private FlightSingleton fs = FlightSingleton.getOnlyInstance();
     private Flight selectedFlight;
@@ -43,7 +43,7 @@ public class PaymentPage extends JFrame implements ActionListener, MouseListener
 
     private JCheckBox insuranceCheckBox;
 
-    public PaymentPage(User signedInUser, Flight selectedFlight, HashMap<Integer, Color> selectedSeats)
+    public PaymentPage(RegisteredUser signedInUser, Flight selectedFlight, HashMap<Integer, Color> selectedSeats)
     {
         super("Payment"); // create a frame
         this.signedInUser = signedInUser;
@@ -236,7 +236,7 @@ public class PaymentPage extends JFrame implements ActionListener, MouseListener
 public User addUserToDBAndSingleton(String firstName, String lastName, String email, String userType) throws SQLException {
     User newUser = null;
     try {
-        newUser = us.addUser(firstName, lastName, email, userType);
+        newUser = us.addUserwithFields(firstName, lastName, email, userType);
     } catch (SQLException e) {
         System.out.println(e);
         // Optionally, log the exception or handle it in another way

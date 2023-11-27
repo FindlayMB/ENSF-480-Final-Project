@@ -29,7 +29,7 @@ public class FlightSystem {
     public static void main(String[] args) {
         FlightSystem fs = new FlightSystem();
 
-        User user = null;
+        RegisteredUser user = null;
         SwingUtilities.invokeLater(() -> {
             HomePage gui = new HomePage(user);
             gui.setVisible(true);
