@@ -58,42 +58,48 @@ public class AdminPage extends JFrame implements ActionListener {
                 buttonPanel.add(adminButtons[i][j]);
             }
         }
+        
 
 
         // Add the button panel to the frame
         //frame.add(buttonPanel, BorderLayout.CENTER);
-        JPanel southPanel = new JPanel(new GridLayout(5, 2, 10, 10));
-        //southPanel.setVisible(false);
-        JLabel label1 = new JLabel("Text 1:");
-        JLabel label2 = new JLabel("Text 2:");
-        JLabel label3 = new JLabel("Text 3:");
-        JLabel label4 = new JLabel("Text 4:");
-        JLabel label5 = new JLabel("Text 5:");
+        // JPanel southPanel = new JPanel(new GridLayout(5, 2, 10, 10));
+        // //southPanel.setVisible(false);
+        // JLabel label1 = new JLabel("Text 1:");
+        // JLabel label2 = new JLabel("Text 2:");
+        // JLabel label3 = new JLabel("Text 3:");
+        // JLabel label4 = new JLabel("Text 4:");
+        // JLabel label5 = new JLabel("Text 5:");
 
-        // TextFields for the second column
-        JTextField textField1 = new JTextField();
-        JTextField textField2 = new JTextField();
-        JTextField textField3 = new JTextField();
-        JTextField textField4 = new JTextField();
-        JTextField textField5 = new JTextField();
+        // // TextFields for the second column
+        // JTextField textField1 = new JTextField();
+        // JTextField textField2 = new JTextField();
+        // JTextField textField3 = new JTextField();
+        // JTextField textField4 = new JTextField();
+        // JTextField textField5 = new JTextField();
         
         
 
-        // Add labels and text fields to the panel
-        southPanel.add(label1);
-        southPanel.add(textField1);
-        southPanel.add(label2);
-        southPanel.add(textField2);
-        southPanel.add(label3);
-        southPanel.add(textField3);
-        southPanel.add(label4);
-        southPanel.add(textField4);
-        southPanel.add(label5);
-        southPanel.add(textField5);
-        southPanel.setVisible(false);
+        // // Add labels and text fields to the panel
+        // southPanel.add(label1);
+        // southPanel.add(textField1);
+        // southPanel.add(label2);
+        // southPanel.add(textField2);
+        // southPanel.add(label3);
+        // southPanel.add(textField3);
+        // southPanel.add(label4);
+        // southPanel.add(textField4);
+        // southPanel.add(label5);
+        // southPanel.add(textField5);
+        // southPanel.setVisible(false);
         
         // frame.add(southPanel, BorderLayout.SOUTH);
-        
+        //Add another button to modify flight
+        JButton modifyFlightButton = new JButton("Modify Flight");   
+        modifyFlightButton.setPreferredSize(new Dimension(150, 50));
+        modifyFlightButton.addActionListener(this);
+        buttonPanel.add(modifyFlightButton);
+   
 
 
 
@@ -103,7 +109,7 @@ public class AdminPage extends JFrame implements ActionListener {
         // frame.add(southPanel, BorderLayout.SOUTH);
         
         frame.add(buttonPanel, BorderLayout.CENTER);
-        buttonPanel.add(southPanel);
+        // buttonPanel.add(southPanel);
         //Add the go back button at the bottom
         JButton backButton = new JButton("Go Back");
         backButton.setPreferredSize(new Dimension(100, 50));
@@ -142,11 +148,18 @@ public class AdminPage extends JFrame implements ActionListener {
         
         //Add action listener to the back button
         backButton.addActionListener(e -> {
+            //frame.dispose();
+            //dispose();
+
             frame.dispose();
+            frame.setVisible(false);
             HomePage homePage = new HomePage(user);
             homePage.setVisible(true);});
-        //     //add action listener to the buttons
-        //hide the text fields and its label
+            dispose();
+
+
+
+
 
 
 
@@ -168,6 +181,7 @@ public class AdminPage extends JFrame implements ActionListener {
             disableButton(clickedButton);
             printUsers();
             enableButton();
+
 
         }
         else if(buttonText=="Browse List Flights"){
@@ -196,13 +210,16 @@ public class AdminPage extends JFrame implements ActionListener {
             enableButton();
         }
         else if(buttonText=="Add Crew"){
+            //dispose the admin page
             //make a function call handle add crew
+
             disableButton(clickedButton);
             System.out.println("Add Crew button clicked");
             //make a call to new page PerForm Admin
             PerformAdmin a =new PerformAdmin(this.user,"Add Crew"); 
             a.setVisible(true);          
             enableButton();
+            dispose();
             
         }
         else if(buttonText=="Add Aircraft"){
@@ -212,6 +229,7 @@ public class AdminPage extends JFrame implements ActionListener {
             PerformAdmin a =new PerformAdmin(this.user,"Add Aircraft"); 
             a.setVisible(true);          
             enableButton();
+            dispose();
 
         }
         else if(buttonText=="Add Flight Destination"){
@@ -238,27 +256,64 @@ public class AdminPage extends JFrame implements ActionListener {
             disableButton(clickedButton);
             System.out.println("Remove Crew button clicked");
             //make a call to new page PerForm Admin
-            PerformAdmin a =new PerformAdmin(this.user,"Add Flight Info"); 
+            PerformAdmin a =new PerformAdmin(this.user,"Remove Crew");
             a.setVisible(true);          
             enableButton();}
 
             
             
+        else if(buttonText=="Remove Aircraft"){
+            //make a function call handle remove crew
+            disableButton(clickedButton);
+            System.out.println("Remove Aircaft button clicked");
+            //make a call to new page PerForm Admin
+            PerformAdmin a =new PerformAdmin(this.user,"Remove Aircraft");
+            a.setVisible(true);          
+            enableButton();
         }
-    //     else if(buttonText=="Remove Aircraft"){
-    //         //make a function call handle remove aircraft
-    //         removeAircraft();
-    //     }
-    //     else if(buttonText=="Remove Flight Destination"){
-    //         //make a function call handle remove flight destination
-    //         removeFlightDestination();
-    //     }
-    //     else if(buttonText=="Remove Flight Info"){
-    //         //make a function call handle remove flight info
-    //         removeFlightInfo();
-    //     }
+        else if(buttonText=="Remove Flight Destination"){
+            //make a function call handle remove crew
+            disableButton(clickedButton);
+            System.out.println("Remove Flight button clicked");
+            //make a call to new page PerForm Admin
+            PerformAdmin a =new PerformAdmin(this.user,"Remove Flight Destination");
+            a.setVisible(true);          
+            enableButton();
+            // dispose();
+        }
+        else if(buttonText=="Remove Flight Info"){
+            //make a function call handle remove crew
+            disableButton(clickedButton);
+            System.out.println("Remove Flight Info button clicked");
+            //make a call to new page PerForm Admin
+            PerformAdmin a =new PerformAdmin(this.user,"Remove Flight Info");
+            a.setVisible(true);          
+            enableButton();
+        }
+        else if(buttonText=="Modify Flight"){
+            //make a function call handle remove crew
+            disableButton(clickedButton);
+            System.out.println("Modify Flight button clicked");
+            //make a call to new page PerForm Admin
+            PerformAdmin a =new PerformAdmin(this.user,"Modify Flight");
+            a.setVisible(true);          
+            enableButton();
+        }
+        else if (buttonText=="Go Back"){
+            //make a function call handle remove crew
+            disableButton(clickedButton);
+            System.out.println("Go Back button clicked");
+            //make a call to new page PerForm Admin
+            HomePage homePage = new HomePage(user);
+            homePage.setVisible(true);          
+            enableButton();
+            dispose();
+        }
+        else{
+            System.out.println("Error");
+        }
 
-    // }
+    }
     //make a function that only one button is function when user click on it and the rest disable and make it transparent
     public void disableButton(JButton notHideButton){
         //disable all the buttons
@@ -316,5 +371,6 @@ public class AdminPage extends JFrame implements ActionListener {
             new AdminPage(null);
         });
     }
+    
 }
 

@@ -223,8 +223,9 @@ public class HomePage extends JFrame implements ActionListener{
         else if (buttonText.equals("Admin")) // let user sign in 
         {
             this.dispose();
+            dispose();
             //delete the home page
-            this.setVisible(false);
+            //this.setVisible(false);
             System.out.println("Admin button clicked");
 
             AdminPage adminPage = new AdminPage(this.user);
