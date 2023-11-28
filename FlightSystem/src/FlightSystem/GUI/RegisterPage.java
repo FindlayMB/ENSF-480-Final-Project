@@ -8,10 +8,12 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
-import FlightSystem.objects.RegisteredUser;
-import FlightSystem.objects.User;
+import FlightSystem.objects.user.RegisteredUser;
+import FlightSystem.objects.user.User;
+import FlightSystem.objects.user.UsersSingleton;
+
 import java.util.*;
-import FlightSystem.data.UserSingleton;
+
 import FlightSystem.data.DatabaseSingleton;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -20,12 +22,12 @@ import java.sql.SQLException;
 import java.time.LocalDate;
 
 public class RegisterPage extends JFrame {
-    private ArrayList<User> users;
-    public void setusers(ArrayList<User> users)
+    private ArrayList<RegisteredUser> users;
+    public void setusers(ArrayList<RegisteredUser> users)
     {
         this.users = users;
     }
-    public ArrayList<User> getUsers()
+    public ArrayList<RegisteredUser> getUsers()
     {
         return users;
     }
@@ -135,8 +137,6 @@ public class RegisterPage extends JFrame {
 
         // Add action listener to the register button
         registerButton.addActionListener(new ActionListener(){
-
-
             @Override
             public void actionPerformed(ActionEvent e) {
                 // setusers(UserSingleton.getOnlyInstance().getUsers());
@@ -164,18 +164,26 @@ public class RegisterPage extends JFrame {
 
                 //System.out.println(email);
 
-                //Check passWords is repeated, username is not taken, email is not taken. if astisfied, add user to database
+                //Check passWords is repeated, username is not taken, email is not taken. if satisfied, add user to database
                 if (registerUser(fname, lname, username, password, email)) {
                     DatabaseSingleton dbConnection = DatabaseSingleton.getInstance();
                     try {
                         dbConnection.addUserWithFields(username,password,fname, lname, email,LocalDate.now().toString(),"0","member");
-                    } catch (Exception e1) {
+                    } 
+                    catch (Exception e1) {
                         System.out.println(e1);
                         System.out.println("Failed to add user to database!");
                     }
-                    users = UserSingleton.getOnlyInstance().getUsers();
-                    RegisteredUser newUser = new RegisteredUser(users.size()+1,username,password,fname,lname,email,LocalDate.now(), null); 
-                    UserSingleton.getOnlyInstance().addUser(newUser);
+
+                    users = UsersSingleton.getInstance().getRegisteredUsersList();
+                    
+                    RegisteredUser newUser = new RegisteredUser(users.size()+1,username,password,fname,lname,email,LocalDate.now(), null); // FINS FUNCION GOES HERE
+                    
+                    // public RegisteredUser(User user, String username, String password,
+                    // LocalDate signUpDate, String job, CreditCard creditCard, 
+                    // ArrayList<Integer> onFlights) {
+                    
+                    UsersSingleton.getInstance().addRegisteredUser(newUser); // FINS FUNCTION GOES HERE
                     
                     
                     for (User user : users) {
@@ -200,9 +208,9 @@ public class RegisterPage extends JFrame {
                     RegisterPage.this.dispose();
                     HomePage h =new HomePage(newUser);
                     h.setVisible(true);
-
                 }
-                else{
+                else
+                {
                     JOptionPane.showMessageDialog(RegisterPage.this, "Registration failed!");
                 }
 
@@ -213,7 +221,7 @@ public class RegisterPage extends JFrame {
     }
 
     private boolean registerUser(String fname, String lname, String username, String password, String email) {
-        for (User user : users) {
+        for (RegisteredUser user : users) {
             System.out.println(user.getUsername());
             if(user.getUsername().equals(username)){
                 System.out.println(user.getUsername());

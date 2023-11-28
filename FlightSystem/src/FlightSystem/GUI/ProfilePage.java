@@ -4,9 +4,8 @@ import java.awt.*;
 import java.awt.event.*;
 import java.util.ArrayList;
 
-import FlightSystem.objects.RegisteredUser;
-//import User;
-import FlightSystem.objects.User;
+import FlightSystem.objects.user.RegisteredUser;
+import FlightSystem.objects.user.User;
 
 
 public class ProfilePage {

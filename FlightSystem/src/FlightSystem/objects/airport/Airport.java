@@ -1,5 +1,9 @@
-package FlightSystem.objects;
+package FlightSystem.objects.airport;
 
+/**
+ * 
+ * @author Findlay Brown
+ */
 public class Airport {
     private String Code;
     private String Name;

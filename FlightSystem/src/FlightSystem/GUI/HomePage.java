@@ -6,10 +6,10 @@ import java.awt.*;
 import java.awt.event.*;
 import java.util.ArrayList;
 
-import FlightSystem.data.FlightSingleton;
-import FlightSystem.data.UserSingleton;
-import FlightSystem.objects.RegisteredUser;
-import FlightSystem.objects.User;
+import FlightSystem.objects.flight.FlightsSingleton;
+import FlightSystem.objects.user.RegisteredUser;
+import FlightSystem.objects.user.User;
+import FlightSystem.objects.user.UsersSingleton;
 
 public class HomePage extends JFrame implements ActionListener{
     private RegisteredUser user;
@@ -121,6 +121,7 @@ public class HomePage extends JFrame implements ActionListener{
         JButton bookFlightButton2 = new JButton("Book Flight");
         JButton myBookingsButton = new JButton("Flight Status");
         JButton cancelButton = new JButton("Cancel Flight");
+        cancelButton.addActionListener(this);
 
         // Create a panel for the middle buttons
         JPanel middleButtonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 20, 20));
@@ -171,10 +172,11 @@ public class HomePage extends JFrame implements ActionListener{
                 admiButton.setVisible(true);
                 
             }
-            EventQueue.invokeLater(() -> { // event queue is threading related
+         
+        }
+        EventQueue.invokeLater(() -> { // event queue is threading related
                 this.setVisible(true); // makes GUI appear on screen 
             });
-        }
      
     }
     
@@ -237,9 +239,11 @@ public class HomePage extends JFrame implements ActionListener{
             AdminPage adminPage = new AdminPage(this.user);
             adminPage.setVisible(true);
             //adminPage.setVisible(true);
-
-
-        // }
-
-    }
+        }
+        else if (buttonText.equals("Cancel Flight"))
+        {
+            this.dispose();
+            System.out.println("Cancel Flight button clicked");
+            CancelFlightPage nextPage = new CancelFlightPage(user);
+        }
 }}

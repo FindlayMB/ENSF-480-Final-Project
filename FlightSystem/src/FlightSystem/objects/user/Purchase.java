@@ -1,7 +1,9 @@
-package FlightSystem.objects;
+package FlightSystem.objects.user;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
+
+import FlightSystem.objects.Ticket;
 
 public class Purchase {
     private ArrayList<Ticket> tickets;

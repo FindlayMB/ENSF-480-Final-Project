@@ -6,13 +6,15 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import FlightSystem.objects.RegisteredUser;
-import FlightSystem.objects.User;
+import FlightSystem.objects.user.RegisteredUser;
+import FlightSystem.objects.user.User;
+import FlightSystem.objects.user.UsersSingleton;
+
 import java.util.*;
-import FlightSystem.data.UserSingleton;
 
 public class LoginPage extends JFrame {
     private ArrayList<RegisteredUser> users; // list that only contain users with accounts
+    private JButton backButton = new JButton("Back"); // need for action listener
     public void setusers(ArrayList<RegisteredUser> users)
     {
         this.users = users;
@@ -80,6 +82,15 @@ public class LoginPage extends JFrame {
         gbc.fill = GridBagConstraints.NONE;
         loginPanel.add(registerButton, gbc);
 
+        gbc.gridy++;
+        loginPanel.add(backButton, gbc);
+        backButton.addActionListener((e) -> {
+            System.out.println("Back button clicked");
+            this.dispose();
+            this.setVisible(false);
+            HomePage homePage = new HomePage(null);
+            homePage.setVisible(true);
+        });
 
         
 
@@ -90,7 +101,7 @@ public class LoginPage extends JFrame {
                 // Check the username and password (you can replace this with your authentication logic)
                 String enteredUsername = usernameField.getText();
                 char[] enteredPassword = passwordField.getPassword();
-                ArrayList<User> tmpListUsers= UserSingleton.getOnlyInstance().getUsers();
+                ArrayList<RegisteredUser> tmpListUsers= UsersSingleton.getInstance().getRegisteredUsersList();
                 for(User user: tmpListUsers)
                 {
                     if(user.getRole().equals("member") || user.getRole().equals("admin") || user.getRole().equals("employee"))

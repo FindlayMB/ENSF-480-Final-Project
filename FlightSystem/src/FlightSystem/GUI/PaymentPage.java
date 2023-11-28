@@ -7,18 +7,23 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import FlightSystem.data.FlightSingleton;
-import FlightSystem.data.UserSingleton;
 import FlightSystem.objects.*;
+import FlightSystem.objects.flight.Flight;
+import FlightSystem.objects.flight.FlightsSingleton;
+import FlightSystem.objects.seats.*;
+import FlightSystem.objects.user.RegisteredUser;
+import FlightSystem.objects.user.User;
+import FlightSystem.objects.user.UsersSingleton;
+import FlightSystem.GUI.Seatmap;
 
 
 public class PaymentPage extends JFrame implements ActionListener, MouseListener
 {
     private RegisteredUser signedInUser;
-    private UserSingleton us = UserSingleton.getOnlyInstance();
-    private FlightSingleton fs = FlightSingleton.getOnlyInstance();
+    private UsersSingleton us = UsersSingleton.getInstance();
+    private FlightsSingleton fs = FlightsSingleton.getInstance();
     private Flight selectedFlight;
-    private HashMap<Integer, Color> selectedSeats;
+   private double seatPriceMultipler;
 
     private String firstName;
     private String lastName;
@@ -33,6 +38,8 @@ public class PaymentPage extends JFrame implements ActionListener, MouseListener
     private JLabel creditCardNumberLabel;
     private JLabel expiryDateLabel;
     private JLabel CSVLabel;
+    private JLabel priceLabel;
+
 
     private JTextField fnameInput;
     private JTextField lnameInput;
@@ -43,12 +50,33 @@ public class PaymentPage extends JFrame implements ActionListener, MouseListener
 
     private JCheckBox insuranceCheckBox;
 
-    public PaymentPage(RegisteredUser signedInUser, Flight selectedFlight, HashMap<Integer, Color> selectedSeats)
+    public PaymentPage(RegisteredUser signedInUser, Flight selectedFlight, Integer selectedSeatNum, Color selectedSeatColor)
     {
         super("Payment"); // create a frame
         this.signedInUser = signedInUser;
         this.selectedFlight = selectedFlight;
-        this.selectedSeats = selectedSeats;
+        
+         // convert seat to correct type
+            if(selectedSeatColor.equals(Color.GREEN))
+            {
+                this.seatPriceMultipler =  RegularSeat.getPriceMultipler();
+                System.out.println(seatPriceMultipler + "regular");
+            }
+            if(selectedSeatColor.equals(new Color(173, 216, 230)))
+            {
+                this.seatPriceMultipler = ComfortSeat.getPriceMultipler();
+                System.out.println(seatPriceMultipler + "comfort");
+
+            }
+                
+            if(selectedSeatColor.equals(Color.YELLOW))
+            { 
+                this.seatPriceMultipler = BusinessSeat .getPriceMultipler();
+                System.out.println(seatPriceMultipler + "business");
+            }
+                
+            
+        
         setupGUI();
         this.setSize(500, 500);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -65,6 +93,9 @@ public class PaymentPage extends JFrame implements ActionListener, MouseListener
         creditCardNumberLabel = new JLabel("Credit Card Number:");
         expiryDateLabel = new JLabel("Expiry Date:");
         CSVLabel = new JLabel("CSV:");
+        priceLabel = new JLabel("Total: " + String.valueOf((double) selectedFlight.getBasePrice() * seatPriceMultipler)+"$"); // Need to multiply based on seat class
+        Font labelFont = priceLabel.getFont();
+        priceLabel.setFont(new Font(labelFont.getName(), Font.BOLD, 16)); // Adjust the size (16 is just an example)
 
 
         fnameInput = new JTextField("Enter first name");
@@ -95,8 +126,16 @@ public class PaymentPage extends JFrame implements ActionListener, MouseListener
         CSVInput.addMouseListener(this);
 
         JButton payButton = new JButton("Book");
-
         payButton.addActionListener(this);
+
+        JButton backButton = new JButton("Back");
+        backButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                dispose();
+                Seatmap nextPage = new Seatmap(signedInUser, selectedFlight);
+            }
+        });
 
 
         JPanel paymentPanel = new JPanel();
@@ -159,9 +198,16 @@ public class PaymentPage extends JFrame implements ActionListener, MouseListener
 
         gbc.gridx = 0;
         gbc.gridy = 7;
+        paymentPanel.add(priceLabel, gbc);
+
+        gbc.gridx = 0;
+        gbc.gridy = 8;
         gbc.gridwidth = 2; // Make the button span two columns
         gbc.fill = GridBagConstraints.HORIZONTAL; // Make the button horizontally fill the cell
         paymentPanel.add(payButton, gbc);
+
+        gbc.gridy++;
+        paymentPanel.add(backButton, gbc);
 
         this.add(paymentPanel, BorderLayout.NORTH);
 
@@ -203,46 +249,46 @@ public class PaymentPage extends JFrame implements ActionListener, MouseListener
 
     public void addUserToFlight(boolean hasInsurance) throws SQLException
     {
-            if(signedInUser == null) // user not signed and not in DB must add to DB
-            {
-                User newUser = addUserToDBAndSingleton(firstName, lastName, email, "basic");
-                // Add user to passenger list of flight
-                addPassengerToDB(selectedFlight,newUser, selectedSeats, hasInsurance);
-                // add this as a purchase to the user who booked
-                us.setPurchase(newUser, selectedFlight, selectedSeats.keySet(), hasInsurance, creditCardNumber, expiryDate, CSV);
-            }
-            else // user is signed in
-            {
-                // Add user to passenger list of flight
-                addPassengerToDB(selectedFlight, signedInUser, selectedSeats, hasInsurance);
-                us.setPurchase(signedInUser, selectedFlight, selectedSeats.keySet(), hasInsurance, creditCardNumber, expiryDate, CSV);
-            }
+            // if(signedInUser == null) // user not signed and not in DB must add to DB
+            // {
+            //     User newUser = addUserToDBAndSingleton(firstName, lastName, email, "basic"); // FINS FUNCTION GOES HERE
+            //     // Add user to passenger list of flight
+            //     addPassengerToDB(selectedFlight,newUser, selectedSeats, hasInsurance); // FINS FUNCTION GOES HERE
+            //     // add this as a purchase to the user who booked
+            //    // us.setPurchase(newUser, selectedFlight, selectedSeats.keySet(), hasInsurance, creditCardNumber, expiryDate, CSV); MIGHT NOT NEED
+            // }
+            // else // user is signed in
+            // {
+            //     // Add user to passenger list of flight
+            //     addPassengerToDB(selectedFlight, signedInUser, selectedSeats, hasInsurance); // FINS FUNCTION GOES HERE
+            //     //us.setPurchase(signedInUser, selectedFlight, selectedSeats.keySet(), hasInsurance, creditCardNumber, expiryDate, CSV); MIGHT NOT NEED
+            // }
             
     }
     
-    public void addPassengerToDB(Flight selectedFlight, User signedInUser, HashMap<Integer, Color> selectedSeats, boolean hasInsurance) throws SQLException
-    {
-        try
-        {
-            fs.addPassenger(selectedFlight,signedInUser, selectedSeats, hasInsurance);
-        }
-        catch(SQLException e)
-        {
-            System.out.println(e);
-        }
-    }
+//     public void addPassengerToDB(Flight selectedFlight, User signedInUser, HashMap<Integer, Color> selectedSeats, boolean hasInsurance) throws SQLException
+//     {
+//         try
+//         {
+//             fs.addPassenger(selectedFlight,signedInUser, selectedSeats, hasInsurance);
+//         }
+//         catch(SQLException e)
+//         {
+//             System.out.println(e);
+//         }
+//     }
 
     
-public User addUserToDBAndSingleton(String firstName, String lastName, String email, String userType) throws SQLException {
-    User newUser = null;
-    try {
-        newUser = us.addUserwithFields(firstName, lastName, email, userType);
-    } catch (SQLException e) {
-        System.out.println(e);
-        // Optionally, log the exception or handle it in another way
-    }
-    return newUser;
-}
+// public User addUserToDBAndSingleton(String firstName, String lastName, String email, String userType) throws SQLException {
+//     User newUser = null;
+//     try {
+//         newUser = us.addUserwithFields(firstName, lastName, email, userType);
+//     } catch (SQLException e) {
+//         System.out.println(e);
+//         // Optionally, log the exception or handle it in another way
+//     }
+//     return newUser;
+// }
 
     public boolean validatePaymentInfo(String name, String creditCardNumber, LocalDate expiryDate, String CSV)
     {

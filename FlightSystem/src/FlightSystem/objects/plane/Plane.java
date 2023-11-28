@@ -1,5 +1,9 @@
-package FlightSystem.objects;
+package FlightSystem.objects.plane;
 
+/**
+ * 
+ * @author Findlay Brown
+ */
 public class Plane {
     private final int ID;
     private String type;
@@ -51,6 +55,7 @@ public class Plane {
         this.businessSeatAmt = businessSeatAmt;
     }
 
+    @Override
     public String toString() {
         String output = String.format("%d: %s  %d\t%d\t%d", ID, type, regularSeatAmt, comfortSeatAmt, businessSeatAmt);
         return output;

@@ -27,19 +27,26 @@ CREATE TABLE airports (
 DROP TABLE IF EXISTS users;
 CREATE TABLE users (
     UserID              INT         NOT NULL AUTO_INCREMENT,
-    Username            VARCHAR(30),
-    Password            VARCHAR(30),
     FirstName           VARCHAR(30) NOT NULL,
     LastName            VARCHAR(30) NOT NULL,    
     Email               VARCHAR(60) NOT NULL,
-    SignUpDate          DATE        ,
-    CreditCardNumber    VARCHAR(19),
-    CreditCardExpiry    DATE,
-    CreaitCardCSV       INT,
-    Role                ENUM('member','employee','admin'),
-    PRIMARY KEY(UserID, Username)
+    BirthDay            DATE        NOT NULL,
+    Role                ENUM('guest','member','employee','admin'),
+    PRIMARY KEY(UserID)
 );
 
+DROP TABLE IF EXISTS registered;
+CREATE TABLE registered (
+    UserID              INT         NOT NULL,
+    Username            VARCHAR(30) NOT NULL,
+    Password            VARCHAR(30) NOT NULL,
+    SignUpDate          DATE        NOT NULL,
+    CreditCardNumber    VARCHAR(19),
+    CVV                 CHAR(3),
+    ExpiryDate          DATE,
+    PRIMARY KEY(UserID, Username),
+    FOREIGN KEY(UserID) REFERENCES users(UserID)
+);
 
 DROP TABLE IF EXISTS crews;
 CREATE TABLE crews (
@@ -74,7 +81,7 @@ CREATE TABLE passengerlist (
     FlightID    INT NOT NULL,
     UserID      INT NOT NULL,
     SeatNumber  INT NOT NULL,
-    SeatType    ENUM('ordinary','comfort','business'),
+    SeatType    ENUM('regular','comfort','business'),
     Insurance   BOOL NOT NULL DEFAULT false,
     PRIMARY KEY(FlightID, UserID),
     FOREIGN KEY(FlightID) REFERENCES flights(FlightID),

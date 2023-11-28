@@ -6,10 +6,13 @@ import java.nio.channels.SeekableByteChannel;
 import java.util.ArrayList;
 import java.util.concurrent.Flow;
 import FlightSystem.objects.*;
+import FlightSystem.objects.user.RegisteredUser;
 public class SearchFlightPage extends JFrame implements ActionListener{
 
     private JTextField flightSearchInput;
     private RegisteredUser signedInUser;
+    private JButton searchButton = new JButton("Search");
+    private JButton backButton = new JButton("Back");
 
     // search flight by destination and move to select flight page
     public SearchFlightPage(RegisteredUser signedInUser)
@@ -22,7 +25,6 @@ public class SearchFlightPage extends JFrame implements ActionListener{
         EventQueue.invokeLater(() -> { // event queue is threading related
             this.setVisible(true); // makes GUI appear on screen 
         });
-
     }
 
     public void setupGUI()
@@ -33,14 +35,15 @@ public class SearchFlightPage extends JFrame implements ActionListener{
         flightSearchInput.setColumns(20); // Set the preferred number of columns
 
 
-        JButton searchButton = new JButton("Search");
         searchButton.addActionListener(this);
+        backButton.addActionListener(this);
 
         // Create a panel with FlowLayout for label and text field
         JPanel searchPanel = new JPanel(new FlowLayout());
         searchPanel.add(flightSearchLabel);
         searchPanel.add(flightSearchInput);
         searchPanel.add(searchButton);
+        searchPanel.add(backButton);
         this.add(searchPanel);
     }
 
@@ -48,7 +51,14 @@ public class SearchFlightPage extends JFrame implements ActionListener{
     public void actionPerformed(ActionEvent e) // Search once search button pushed
     {
         this.dispose();
-        SelectFlightPage nextPage = new SelectFlightPage(signedInUser, flightSearchInput.getText());// navigate to next page
+        if(e.getSource() == searchButton)
+        {
+            SelectFlightPage nextPage = new SelectFlightPage(signedInUser, flightSearchInput.getText()); // navigate to next page
+        }
+        else if(e.getSource() == backButton)
+        {
+            HomePage homePage = new HomePage(signedInUser);
+        }
     }
 
     

@@ -1,4 +1,7 @@
 package FlightSystem.objects;
+
+import FlightSystem.objects.flight.Flight;
+
 public class Ticket {
     private Flight flight;
     private int reservedSeatNum;

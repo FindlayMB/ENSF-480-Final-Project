@@ -5,14 +5,14 @@ package FlightSystem.GUI;
 
 import javax.swing.*;
 
-import FlightSystem.objects.User;
+import FlightSystem.objects.user.User;
+import FlightSystem.objects.user.UserSingleton;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.Arrays;
-import FlightSystem.data.UserSingleton;
 
 public class AdminPage extends JFrame implements ActionListener {
     private User user;
