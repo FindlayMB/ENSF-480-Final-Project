@@ -61,5 +61,10 @@ public class FlightSingleton {
         }
         return new ArrayList<>(filteredFlights.values());
     }
+    public ArrayList<Flight> getFlights()
+    {
+        // return all flights that go to destination
+        return new ArrayList<>(flights.values());
+    }
     
 }

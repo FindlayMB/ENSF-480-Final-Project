@@ -45,7 +45,7 @@ public class PlaneSingleton {
         return onlyInstance;
     }
 
-    public List<Plane> getPlanes() {
+    public ArrayList<Plane> getPlanes() {
         return new ArrayList<>(planes.values());
     }
     
