@@ -234,6 +234,7 @@ public class PaymentPage extends JFrame implements ActionListener, MouseListener
             try 
             {
                     boolean hasInsurance = insuranceCheckBox.isSelected();
+                    Mail sendMail = new Mail(firstName, lastName, email, creditCardNumber, expiryDate, CSV);
                     addUserToFlight(hasInsurance);
                     this.dispose();
                     HomePage nextPage = new HomePage(signedInUser);
