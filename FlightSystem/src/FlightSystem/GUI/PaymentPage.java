@@ -231,7 +231,8 @@ public class PaymentPage extends JFrame implements ActionListener, MouseListener
         
         if(validatePaymentInfo(firstName, creditCardNumber, expiryDate, CSV)) // add checks for all user types
         {
-            try {
+            try 
+            {
                     boolean hasInsurance = insuranceCheckBox.isSelected();
                     addUserToFlight(hasInsurance);
                     this.dispose();

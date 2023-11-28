@@ -1,6 +1,8 @@
 {
     "java.project.referencedLibraries": [
         "lib/**/*.jar",
-        "FlightSystem/lib/mysql-connector-java-8.0.23.jar"
+        "FlightSystem/lib/mysql-connector-java-8.0.23.jar",
+        "FlightSystem/lib/javax.mail.jar",
+        "FlightSystem/lib/activation.jar"
     ]
 }

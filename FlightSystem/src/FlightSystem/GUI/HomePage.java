@@ -140,6 +140,7 @@ public class HomePage extends JFrame implements ActionListener{
         mainPanel.add(titleAndButtonsPanel, BorderLayout.NORTH);
         mainPanel.add(imageLabel, BorderLayout.CENTER);
         mainPanel.add(middleButtonPanel, BorderLayout.SOUTH);
+        myBookingsButton.setVisible(false);
 
         // Add the main panel to the JFrame
         add(mainPanel);
@@ -165,11 +166,15 @@ public class HomePage extends JFrame implements ActionListener{
                 admiButton.addActionListener(this);
                 
             }
+           
             else if(user.getRole().equals("employee"))
             {   
                 admiButton.setText("Employee");
                 setUpAdminButton(admiButton);
                 admiButton.setVisible(true);
+                myBookingsButton.setVisible(true);
+                myBookingsButton.setText("View Passenger List");
+                myBookingsButton.addActionListener(this);
                 
             }
          
@@ -246,4 +251,7 @@ public class HomePage extends JFrame implements ActionListener{
             System.out.println("Cancel Flight button clicked");
             CancelFlightPage nextPage = new CancelFlightPage(user);
         }
+        else if(buttonText.equals("View Passenger List")){
+            JOptionPane.showMessageDialog(this, "Successfully view");
+         }
 }}

@@ -39,12 +39,25 @@ public class FlightsSingleton {
         return flights;
     }
 
+
     public ArrayList<Flight> getFlightList() {
         return new ArrayList<Flight>(flights.values());
     }
 
     public Flight getFlight(int flightID) {
         return flights.get(flightID);
+    }
+
+    public ArrayList<Flight> getFlight(String destination)
+    {
+        // return all flights that go to destination
+        HashMap<Integer, Flight> filteredFlights = new HashMap<>();
+        for (Flight flight : flights.values()) {
+            if (flight.getDestination().getCode().equals(destination)) {
+                filteredFlights.put(flight.getID(), flight);
+            }
+        }
+        return new ArrayList<>(filteredFlights.values());
     }
 
     public void addFlight(Flight newFlight) {
