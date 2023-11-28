@@ -126,10 +126,7 @@ public class HomePage extends JFrame implements ActionListener{
         middleButtonPanel.add(myBookingsButton);
         middleButtonPanel.add(cancelButton);
 
-        // // Create a panel for the south buttons
-        // JButton sButton = new JButton("South Button");
-        // JPanel southPanel = new JPanel(new BorderLayout());
-        // southPanel.add(sButton);
+
 
         // Create a panel for main content using BorderLayout
         JPanel mainPanel = new JPanel(new BorderLayout());
@@ -140,12 +137,7 @@ public class HomePage extends JFrame implements ActionListener{
 
         // Add the main panel to the JFrame
         add(mainPanel);
-        // if(user.getRole().equals("Employee")){
-        //     myBookingsButton.setVisible(true);
-        //     myBookingsButton.addActionListener(this);
-        //     myBookingsButton.setText("View Passenger List");
-        // }
-            // add(southPanel, BorderLayout.PAGE_END);
+
         if(user != null)
         {   
             //Changw the sign in button to sign out

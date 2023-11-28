@@ -58,55 +58,12 @@ public class AdminPage extends JFrame implements ActionListener {
                 buttonPanel.add(adminButtons[i][j]);
             }
         }
-        
 
-
-        // Add the button panel to the frame
-        //frame.add(buttonPanel, BorderLayout.CENTER);
-        // JPanel southPanel = new JPanel(new GridLayout(5, 2, 10, 10));
-        // //southPanel.setVisible(false);
-        // JLabel label1 = new JLabel("Text 1:");
-        // JLabel label2 = new JLabel("Text 2:");
-        // JLabel label3 = new JLabel("Text 3:");
-        // JLabel label4 = new JLabel("Text 4:");
-        // JLabel label5 = new JLabel("Text 5:");
-
-        // // TextFields for the second column
-        // JTextField textField1 = new JTextField();
-        // JTextField textField2 = new JTextField();
-        // JTextField textField3 = new JTextField();
-        // JTextField textField4 = new JTextField();
-        // JTextField textField5 = new JTextField();
-        
-        
-
-        // // Add labels and text fields to the panel
-        // southPanel.add(label1);
-        // southPanel.add(textField1);
-        // southPanel.add(label2);
-        // southPanel.add(textField2);
-        // southPanel.add(label3);
-        // southPanel.add(textField3);
-        // southPanel.add(label4);
-        // southPanel.add(textField4);
-        // southPanel.add(label5);
-        // southPanel.add(textField5);
-        // southPanel.setVisible(false);
-        
-        // frame.add(southPanel, BorderLayout.SOUTH);
-        //Add another button to modify flight
         JButton modifyFlightButton = new JButton("Modify Flight");   
         modifyFlightButton.setPreferredSize(new Dimension(150, 50));
         modifyFlightButton.addActionListener(this);
         buttonPanel.add(modifyFlightButton);
    
-
-
-
-
-
-        // Add the panel to the frame
-        // frame.add(southPanel, BorderLayout.SOUTH);
         
         frame.add(buttonPanel, BorderLayout.CENTER);
         // buttonPanel.add(southPanel);
@@ -129,13 +86,6 @@ public class AdminPage extends JFrame implements ActionListener {
             }
         });
         frame.add(backButton, BorderLayout.PAGE_END);
- 
-        //frame.add(backButton, BorderLayout.PAGE_END);
-        // Create text fields
-        // 2 coloms and 5 rows with first colum dislplay the label text1, text2, text3, text4, text 5 and second colum display the text field
-
-       
-
 
         //All title to the top
         JLabel headerLabel = new JLabel("Welcome to the Administator Page "+user.getFirstName() + " " + user.getLastName());
@@ -156,20 +106,6 @@ public class AdminPage extends JFrame implements ActionListener {
             HomePage homePage = new HomePage(user);
             homePage.setVisible(true);});
             dispose();
-
-
-
-
-
-
-
-
-  
-
-
-
-
-
         frame.setVisible(true);
     }
     @Override
