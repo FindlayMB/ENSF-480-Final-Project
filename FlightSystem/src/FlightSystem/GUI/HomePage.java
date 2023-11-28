@@ -136,9 +136,15 @@ public class HomePage extends JFrame implements ActionListener{
         mainPanel.add(titleAndButtonsPanel, BorderLayout.NORTH);
         mainPanel.add(imageLabel, BorderLayout.CENTER);
         mainPanel.add(middleButtonPanel, BorderLayout.SOUTH);
+        myBookingsButton.setVisible(false);
 
         // Add the main panel to the JFrame
         add(mainPanel);
+        // if(user.getRole().equals("Employee")){
+        //     myBookingsButton.setVisible(true);
+        //     myBookingsButton.addActionListener(this);
+        //     myBookingsButton.setText("View Passenger List");
+        // }
             // add(southPanel, BorderLayout.PAGE_END);
         if(user != null)
         {   
@@ -166,6 +172,9 @@ public class HomePage extends JFrame implements ActionListener{
                 admiButton.setText("Employee");
                 setUpAdminButton(admiButton);
                 admiButton.setVisible(true);
+                myBookingsButton.setVisible(true);
+                myBookingsButton.setText("View Passenger List");
+                myBookingsButton.addActionListener(this);
                 
             }
         
@@ -208,6 +217,7 @@ public class HomePage extends JFrame implements ActionListener{
             //delete the home page
             this.setVisible(false);
             System.out.println("Sign Out button clicked");
+            //HomePage homePage = new HomePage(null);
             HomePage homePage = new HomePage(null);
             homePage.setVisible(true);
         }
@@ -231,9 +241,13 @@ public class HomePage extends JFrame implements ActionListener{
             AdminPage adminPage = new AdminPage(this.user);
             adminPage.setVisible(true);
             //adminPage.setVisible(true);
+         }
+         else if(buttonText.equals("View Passenger List")){
+            JOptionPane.showMessageDialog(this, "Successfully view");
 
 
-        // }
+         }
 
-    }
+
+    
 }}
