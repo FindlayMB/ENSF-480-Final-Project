@@ -1,5 +1,6 @@
 package FlightSystem;
 
+import java.time.LocalDate;
 import java.util.*;
 
 import javax.swing.SwingUtilities;
@@ -15,47 +16,58 @@ import FlightSystem.objects.plane.*;
 import FlightSystem.objects.airport.*;
 
 public class FlightSystem {
-    private DatabaseSingleton dbConnection;
+    private static DatabaseSingleton dbConnection;
 
     private static AirportsSingleton airports;
-    private static UsersSingleton users;
     private static PlaneSingleton planes;
+    private static UsersSingleton users;
     private static FlightsSingleton flights;
 
     public FlightSystem() {
-        this.dbConnection = DatabaseSingleton.getInstance();
-
-        try {
-            dbConnection.addAirport(new Airport("AAA", "Test Name", "Test City", "Test Country"));
-        } catch (Exception e) {
-            System.out.println(e);
-        }
-        airports = AirportsSingleton.getInstance();
-        planes = PlaneSingleton.getInstance();
+        dbConnection = DatabaseSingleton.getInstance();
         users = UsersSingleton.getInstance();
 
-        flights = FlightsSingleton.getInstance();
+        // users.addUser(new User(0, "John", "Doe", "JohnDoe@gmail.com", "guest"));
 
-        System.out.println("Airports");
-        for (Airport a : airports.getAirportList()) {
-            System.out.println(a.toString());
-        }
+        users.addRegisteredUser(new RegisteredUser(
+                users.addUser(new User(0, "John", "Doe", "JohnDoe@gmail.com", "member")),
+                "johnDoe", "doeJohn", LocalDate.now(), "member", null, null));
 
-        System.out.println("Planes");
-        for (Plane p : planes.getPlaneList()) {
-            System.out.println(p);
-        }
-
-        for (User u : users.getUsersList()) {
+        users.getUsersMap().values().forEach((u) -> {
             System.out.println(u.toString());
-            if (u instanceof RegisteredUser) {
-                System.out.println(((RegisteredUser) u).getFlights());
-            }
-        }
+        });
+        // try {
+        // dbConnection.addAirport(new Airport("AAA", "Test Name", "Test City", "Test
+        // Country"));
+        // } catch (Exception e) {
+        // System.out.println(e);
+        // }
+        // airports = AirportsSingleton.getInstance();
+        // planes = PlaneSingleton.getInstance();
+        // users = UsersSingleton.getInstance();
 
-        for (Flight f : flights.getFlightList()) {
-            System.out.println(f.getPassengerList());
-        }
+        // flights = FlightsSingleton.getInstance();
+
+        // System.out.println("Airports");
+        // for (Airport a : airports.getAirportList()) {
+        // System.out.println(a.toString());
+        // }
+
+        // System.out.println("Planes");
+        // for (Plane p : planes.getPlaneList()) {
+        // System.out.println(p);
+        // }
+
+        // for (User u : users.getUsersList()) {
+        // System.out.println(u.toString());
+        // if (u instanceof RegisteredUser) {
+        // System.out.println(((RegisteredUser) u).getFlights());
+        // }
+        // }
+
+        // for (Flight f : flights.getFlightList()) {
+        // System.out.println(f.getPassengerList());
+        // }
 
     }
 
@@ -73,13 +85,13 @@ public class FlightSystem {
     public static void main(String[] args) {
         FlightSystem fs = new FlightSystem();
 
-        RegisteredUser user = null;
-        SwingUtilities.invokeLater(() -> {
-            HomePage gui = new HomePage(user); // pass registered user object accross pages to keep track of possible logged in user
-            // gui.setVisible(true);
-        });
+        // RegisteredUser user = null;
+        // SwingUtilities.invokeLater(() -> {
+        // HomePage gui = new HomePage(user); // pass registered user object accross
+        // pages to keep track of possible
+        // // logged in user
+        // // gui.setVisible(true);
+        // });
     }
-
-    
 
 }

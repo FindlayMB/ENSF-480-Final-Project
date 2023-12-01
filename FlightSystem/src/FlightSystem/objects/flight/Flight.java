@@ -5,6 +5,8 @@ import java.time.LocalTime;
 import java.util.ArrayList;
 
 import FlightSystem.data.DatabaseSingleton;
+import FlightSystem.objects.Crew;
+import FlightSystem.objects.ToQuery;
 import FlightSystem.objects.airport.*;
 import FlightSystem.objects.plane.Plane;
 import FlightSystem.objects.user.*;
@@ -13,7 +15,7 @@ import FlightSystem.objects.user.*;
  * 
  * @author Findlay Brown
  */
-public class Flight {
+public class Flight implements ToQuery {
     private final int ID;
     private Airport destination;
     private LocalTime arrivalTime;
@@ -22,7 +24,9 @@ public class Flight {
     private LocalTime departureTime;
     private LocalDate departureDate;
     private Float basePrice;
-    private ArrayList<RegisteredUser> crew;
+    // private int crewID;
+    // private ArrayList<RegisteredUser> crew;
+    private Crew crew;
     private PassengerList passengerList;
     private Plane plane;
 
@@ -46,7 +50,7 @@ public class Flight {
             System.out.println("Failed to get passenger list for Flight: " + ID);
         }
         try {
-            this.crew = DatabaseSingleton.getInstance().getCrewList(ID);
+            this.crew = new Crew(ID);
         } catch (Exception e) {
             System.out.println(e);
             System.out.println("Failed to get crew list for Flight: " + crewID);
@@ -54,19 +58,67 @@ public class Flight {
 
     }
 
+    public Flight(int ID, Flight flight) {
+        this.ID = ID;
+        this.destination = flight.destination;
+        this.arrivalTime = flight.arrivalTime;
+        this.arrivalDate = flight.arrivalDate;
+        this.origin = flight.origin;
+        this.departureTime = flight.departureTime;
+        this.departureDate = flight.departureDate;
+        this.basePrice = flight.basePrice;
+        this.plane = flight.plane;
+
+        try {
+            this.passengerList = DatabaseSingleton.getInstance().getPassengerList(ID);
+        } catch (Exception e) {
+            System.out.println(e);
+            System.out.println("Failed to get passenger list for Flight: " + ID);
+        }
+        try {
+            this.crew = new Crew(ID);
+        } catch (Exception e) {
+            System.out.println(e);
+            System.out.println("Failed to get crew list for Flight: " + ID);
+        }
+    }
+
     @Override
     public String toString() {
         String output = String.format(
                 "%s @ %s %s to %s @ %s %s",
-                origin, departureTime, departureDate, destination, arrivalTime, arrivalDate
-        );
+                origin, departureTime, departureDate, destination, arrivalTime, arrivalDate);
         return output;
     }
-    
+
+    public String toQuery() {
+        String output = String.format("'%s','%s','%s','%s','%s','%s',%d,%d,%f",
+                destination.getCode(),
+                arrivalTime.toString(),
+                arrivalDate.toString(),
+                origin.getCode(),
+                departureTime.toString(),
+                departureDate.toString(),
+                crew.getCrewID(),
+                plane.getID(),
+                basePrice);
+        return output;
+    }
 
     public int getID() {
         return ID;
     }
+
+    /**
+     * ONLY TO BE USED BY DatabaseSingleton function addFlight
+     * since the flight ID is determined by the
+     * autoincrement of the MySQL database
+     * 
+     * @param iD
+     */
+    // public void setID(int ID) {
+    // this.ID = ID;
+    // }
 
     public Airport getDestination() {
         return destination;
@@ -116,16 +168,12 @@ public class Flight {
         this.departureDate = departureDate;
     }
 
-    public ArrayList<RegisteredUser> getCrew() {
+    public Crew getCrew() {
         return crew;
     }
 
-    public void setCrew(ArrayList<RegisteredUser> crew) {
+    public void setCrew(Crew crew) {
         this.crew = crew;
-    }
-
-    public void addCrew(RegisteredUser newCrewMember) {
-        this.crew.add(newCrewMember);
     }
 
     public PassengerList getPassengerList() {

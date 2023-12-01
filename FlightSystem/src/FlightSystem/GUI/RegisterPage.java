@@ -22,15 +22,7 @@ import java.sql.SQLException;
 import java.time.LocalDate;
 
 public class RegisterPage extends JFrame {
-    private ArrayList<RegisteredUser> users;
-    public void setusers(ArrayList<RegisteredUser> users)
-    {
-        this.users = users;
-    }
-    public ArrayList<RegisteredUser> getUsers()
-    {
-        return users;
-    }
+    private UsersSingleton usersSingleton = UsersSingleton.getInstance();
 
     public RegisterPage() {
         setTitle("Register - Air Canada");
@@ -44,7 +36,6 @@ public class RegisterPage extends JFrame {
         JLabel username = new JLabel("Username:");
         JLabel password = new JLabel("Password:");
         JLabel passwordRepeat = new JLabel("Repeat Password:");
-
 
         JTextField emailField = new JTextField();
         JTextField firstNameField = new JTextField();
@@ -87,7 +78,6 @@ public class RegisterPage extends JFrame {
         gbc.fill = GridBagConstraints.NONE;
         registerPanel.add(lastName, gbc);
 
-
         gbc.gridx = 1;
         gbc.gridy = 2;
         gbc.fill = GridBagConstraints.HORIZONTAL;
@@ -109,10 +99,10 @@ public class RegisterPage extends JFrame {
         gbc.gridy = 4;
         gbc.fill = GridBagConstraints.NONE;
         registerPanel.add(password, gbc);
-        
+
         gbc.gridx = 1;
         gbc.gridy = 4;
-        gbc.fill = GridBagConstraints.HORIZONTAL;   
+        gbc.fill = GridBagConstraints.HORIZONTAL;
         registerPanel.add(passwordField, gbc);
 
         // Add password repeat label and password repeat field
@@ -133,10 +123,8 @@ public class RegisterPage extends JFrame {
         gbc.fill = GridBagConstraints.NONE;
         registerPanel.add(registerButton, gbc);
 
-
-
         // Add action listener to the register button
-        registerButton.addActionListener(new ActionListener(){
+        registerButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 // setusers(UserSingleton.getOnlyInstance().getUsers());
@@ -149,93 +137,109 @@ public class RegisterPage extends JFrame {
                 String password = new String(enteredPassword);
                 char[] enteredPasswordRepeat = passwordRepeatField.getPassword();
                 String passwordRepeat = new String(enteredPasswordRepeat);
-                //Check username is same as
-                
-                //Check if email is valid{
+                // Check username is same as
 
-                //Print passord and passwordRepeat
-                //System.out.println(password);
-                //System.out.println(passwordRepeat);
+                // Check if email is valid{
 
-                if(!password.equals(passwordRepeat)){
+                // Print passord and passwordRepeat
+                // System.out.println(password);
+                // System.out.println(passwordRepeat);
+
+                if (!password.equals(passwordRepeat)) {
                     JOptionPane.showMessageDialog(RegisterPage.this, "Password is not the same");
-                    
+
                 }
 
-                //System.out.println(email);
+                // System.out.println(email);
 
-                //Check passWords is repeated, username is not taken, email is not taken. if satisfied, add user to database
+                // Check passWords is repeated, username is not taken, email is not taken. if
+                // satisfied, add user to database
                 if (registerUser(fname, lname, username, password, email)) {
-                    DatabaseSingleton dbConnection = DatabaseSingleton.getInstance();
+                    UsersSingleton usersSingleton = UsersSingleton.getInstance();
+                    RegisteredUser newUser = null;
                     try {
-                        dbConnection.addUserWithFields(username,password,fname, lname, email,LocalDate.now().toString(),"0","member");
-                    } 
-                    catch (Exception e1) {
+                        newUser = usersSingleton.addRegisteredUser(
+                                new RegisteredUser(usersSingleton.addUser(
+                                        new User(0, fname, lname, email, "member")),
+                                        username, password, LocalDate.now(), passwordRepeat,
+                                        null, null));
+                    } catch (Exception e1) {
                         System.out.println(e1);
                         System.out.println("Failed to add user to database!");
                     }
 
-                    users = UsersSingleton.getInstance().getRegisteredUsersList();
-                    
-                    RegisteredUser newUser = new RegisteredUser(users.size()+1,username,password,fname,lname,email,LocalDate.now(), null); // FINS FUNCION GOES HERE
-                    
+                    /*
+                     * ArrayList<RegisteredUser> users =
+                     * UsersSingleton.getInstance().getRegisteredUsersList();
+                     * 
+                     * RegisteredUser newUser = new RegisteredUser(
+                     * new User(users.size() + 1, fname, lname, email, "member"),
+                     * username, password, LocalDate.now(), "", null, null); // FINS FUNCION GOES
+                     * HERE
+                     */
                     // public RegisteredUser(User user, String username, String password,
-                    // LocalDate signUpDate, String job, CreditCard creditCard, 
+                    // LocalDate signUpDate, String job, CreditCard creditCard,
                     // ArrayList<Integer> onFlights) {
-                    
-                    UsersSingleton.getInstance().addRegisteredUser(newUser); // FINS FUNCTION GOES HERE
-                    
-                    
-                    for (User user : users) {
-                        if (user instanceof RegisteredUser) {
-                            RegisteredUser registeredUser = (RegisteredUser) user;
-                            System.out.println(registeredUser.getUsername() + " " + registeredUser.getPassword());
-                        }
+
+                    // UsersSingleton.getInstance().addRegisteredUser(newUser); // FINS FUNCTION
+                    // GOES HERE
+
+                    for (RegisteredUser user : UsersSingleton.getInstance().getRegisteredUsersList()) {
+
+                        System.out.println(user.getUsername() + " " + user.getPassword());
+
                     }
-                    
-                 //   System.out.println("Here is the new user"+ newUser.getUsername());
 
-
-
-
-
+                    // System.out.println("Here is the new user"+ newUser.getUsername());
 
                     JOptionPane.showMessageDialog(RegisterPage.this, "Registration successful!");
-                    //close the register page and open the home page
-                    //RegisterPage.this.dispose();
-                    //new HomePage();
+                    // close the register page and open the home page
+                    // RegisterPage.this.dispose();
+                    // new HomePage();
 
                     RegisterPage.this.dispose();
-                    HomePage h =new HomePage(newUser);
+                    HomePage h = new HomePage(newUser);
                     h.setVisible(true);
-                }
-                else
-                {
+                } else {
                     JOptionPane.showMessageDialog(RegisterPage.this, "Registration failed!");
                 }
 
-            }});
+            }
+        });
 
         // Add the register panel to the JFrame
         add(registerPanel);
     }
 
     private boolean registerUser(String fname, String lname, String username, String password, String email) {
-        for (RegisteredUser user : users) {
-            System.out.println(user.getUsername());
-            if(user.getUsername().equals(username)){
-                System.out.println(user.getUsername());
-                JOptionPane.showMessageDialog(RegisterPage.this, "Username is already taken");
-                return false;
-            }
+        if (usersSingleton.checkUsername(username) == false) {
+            JOptionPane.showMessageDialog(RegisterPage.this, "Username is already taken");
+            return false;
         }
-        for (User user : users) {
-            if(user.getEmail().equals(email)){
-                JOptionPane.showMessageDialog(RegisterPage.this, "Email is already taken");
-                return false;
-            }
+
+        if (usersSingleton.checkEmail(email) == false) {
+            JOptionPane.showMessageDialog(RegisterPage.this, "Email is already taken");
+            return false;
         }
 
         return true;
+
+        // for (RegisteredUser user : users) {
+        // System.out.println(user.getUsername());
+        // if (user.getUsername().equals(username)) {
+        // System.out.println(user.getUsername());
+        // JOptionPane.showMessageDialog(RegisterPage.this, "Username is already
+        // taken");
+        // return false;
+        // }
+        // }
+        // for (User user : users) {
+        // if (user.getEmail().equals(email)) {
+        // JOptionPane.showMessageDialog(RegisterPage.this, "Email is already taken");
+        // return false;
+        // }
+        // }
+
+        // return true;
     }
 }

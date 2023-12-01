@@ -9,14 +9,13 @@ import java.util.HashMap;
  * @author Findlay Brown
  */
 public class PlaneSingleton {
-    private DatabaseSingleton dbConnection = DatabaseSingleton.getInstance();
     private static PlaneSingleton instance;
     private HashMap<Integer, Plane> planes;
 
     private PlaneSingleton() {
         if (planes == null) {
             try {
-                planes = new HashMap<Integer, Plane>(dbConnection.getPlaneTable());
+                planes = new HashMap<Integer, Plane>(DatabaseSingleton.getInstance().getPlaneTable());
             } catch (Exception e) {
                 System.out.println(e);
                 System.out.println("Failed to get airports table!");
@@ -24,7 +23,7 @@ public class PlaneSingleton {
         }
     }
 
-    public static PlaneSingleton getInstance() {
+    public static synchronized PlaneSingleton getInstance() {
         if (instance == null) {
             instance = new PlaneSingleton();
         }
@@ -41,6 +40,11 @@ public class PlaneSingleton {
 
     public Plane getPlane(int planeID) {
         return planes.get(planeID);
+    }
+
+    public synchronized void addPlane(Plane newPlane) {
+        newPlane = DatabaseSingleton.getInstance().addPlane(newPlane);
+        planes.put(newPlane.getID(), newPlane);
     }
 
 }

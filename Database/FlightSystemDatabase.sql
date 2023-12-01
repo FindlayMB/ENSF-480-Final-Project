@@ -30,7 +30,6 @@ CREATE TABLE users (
     FirstName           VARCHAR(30) NOT NULL,
     LastName            VARCHAR(30) NOT NULL,    
     Email               VARCHAR(60) NOT NULL,
-    BirthDay            DATE        NOT NULL,
     Role                ENUM('guest','member','employee','admin'),
     PRIMARY KEY(UserID)
 );
@@ -54,7 +53,7 @@ CREATE TABLE crews (
     CrewMemberID    INT NOT NULL,
     Job             VARCHAR(30) NOT NULL,
     PRIMARY KEY(CrewID, CrewMemberID),
-    FOREIGN KEY(CrewMemberID) REFERENCES users(UserID)
+    FOREIGN KEY(CrewMemberID) REFERENCES registered(UserID)
 );
 
 DROP TABLE IF EXISTS flights;
@@ -70,10 +69,10 @@ CREATE TABLE flights (
     PlaneID         INT     NOT NULL,
     BasePrice       FLOAT   NOT NULL,
     PRIMARY KEY(FlightID),
-    FOREIGN KEY(Destination) REFERENCES airports(AirportCode),
-    FOREIGN KEY(Origin) REFERENCES airports(AirportCode),
+    FOREIGN KEY(Destination) REFERENCES airports(AirportCode) ON DELETE CASCADE,
+    FOREIGN KEY(Origin) REFERENCES airports(AirportCode) ON DELETE CASCADE,
     FOREIGN KEY(CrewID) REFERENCES crews(CrewID),
-    FOREIGN KEY(PlaneID) REFERENCES planes(PlaneID)
+    FOREIGN KEY(PlaneID) REFERENCES planes(PlaneID) ON DELETE CASCADE
 );
 
 DROP TABLE IF EXISTS passengerlist;
@@ -84,7 +83,7 @@ CREATE TABLE passengerlist (
     SeatType    ENUM('regular','comfort','business'),
     Insurance   BOOL NOT NULL DEFAULT false,
     PRIMARY KEY(FlightID, UserID),
-    FOREIGN KEY(FlightID) REFERENCES flights(FlightID),
+    FOREIGN KEY(FlightID) REFERENCES flights(FlightID) ON DELETE CASCADE,
     FOREIGN KEY(UserID) REFERENCES users(UserID)
 );
 

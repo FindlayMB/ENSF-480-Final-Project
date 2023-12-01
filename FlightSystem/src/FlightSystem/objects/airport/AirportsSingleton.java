@@ -4,7 +4,6 @@ import FlightSystem.data.DatabaseSingleton;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-
 /**
  * 
  * @author Findlay Brown
@@ -18,7 +17,6 @@ public class AirportsSingleton {
         if (airports == null) {
             try {
                 airports = new HashMap<String, Airport>(dbConnection.getAirportTable());
-                // System.out.println("Got airports");
             } catch (Exception e) {
                 System.out.println(e);
                 System.out.println("Failed to get airports table!");
@@ -26,7 +24,7 @@ public class AirportsSingleton {
         }
     }
 
-    public static AirportsSingleton getInstance() {
+    public static synchronized AirportsSingleton getInstance() {
         if (instance == null) {
             instance = new AirportsSingleton();
         }
@@ -35,10 +33,13 @@ public class AirportsSingleton {
 
     public void addAirport(Airport newAirport) {
         airports.put(newAirport.getCode(), newAirport);
-    }
+        try {
+            dbConnection.addAirport(newAirport);
+        } catch (Exception e) {
+            System.out.println("Failed to add airport!");
+            System.out.println(e);
+        }
 
-    public void addAirport(String code, Airport newAirport) {
-        airports.put(code, newAirport);
     }
 
     public void removeAirport(Airport removeAirport) {

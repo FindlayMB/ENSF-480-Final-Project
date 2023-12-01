@@ -2,29 +2,32 @@ package FlightSystem.objects;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import FlightSystem.FlightSystem;
 import FlightSystem.data.DatabaseSingleton;
+import FlightSystem.objects.user.RegisteredUser;
 
 public class Crew {
-    private String job;
+    private int crewID;
+    private ArrayList<RegisteredUser> crew;
 
     private ArrayList<Integer> crewFlightIDs; // id of flight their on
 
-    public Crew(int ID) {
+    public Crew(int flightID) {
         try {
-            DatabaseSingleton.getInstance().getCrewFlights(this, ID);
+            DatabaseSingleton.getInstance().getCrewList(this, flightID);
         } catch (Exception e) {
             System.out.println("Failed to get crew table!");
         }
     }
 
-    public String getJob() {
-        return job;
+    public int getCrewID() {
+        return crewID;
     }
 
-    public void setJob(String job) {
-        this.job = job;
+    public void setCrewID(int crewID) {
+        this.crewID = crewID;
     }
 
     public ArrayList<Integer> getCrewFlightIDs() {

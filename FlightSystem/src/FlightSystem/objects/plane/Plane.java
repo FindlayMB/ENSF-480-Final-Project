@@ -1,10 +1,12 @@
 package FlightSystem.objects.plane;
 
+import FlightSystem.objects.ToQuery;
+
 /**
  * 
  * @author Findlay Brown
  */
-public class Plane {
+public class Plane implements ToQuery {
     private final int ID;
     private String type;
     private int regularSeatAmt;
@@ -17,6 +19,14 @@ public class Plane {
         this.regularSeatAmt = regularSeatAmt;
         this.comfortSeatAmt = comfortSeatAmt;
         this.businessSeatAmt = businessSeatAmt;
+    }
+
+    public Plane(int ID, Plane plane) {
+        this.ID = ID;
+        this.type = plane.type;
+        this.regularSeatAmt = plane.regularSeatAmt;
+        this.comfortSeatAmt = plane.comfortSeatAmt;
+        this.businessSeatAmt = plane.businessSeatAmt;
     }
 
     public int getID() {
@@ -57,7 +67,14 @@ public class Plane {
 
     @Override
     public String toString() {
-        String output = String.format("%d: %s  %d\t%d\t%d", ID, type, regularSeatAmt, comfortSeatAmt, businessSeatAmt);
+        String output = String.format("%d: %s  %d\t%d\t%d",
+                ID, type, regularSeatAmt, comfortSeatAmt, businessSeatAmt);
+        return output;
+    }
+
+    public String toQuery() {
+        String output = String.format("'%s',%d,%d,%d",
+                type, regularSeatAmt, comfortSeatAmt, businessSeatAmt);
         return output;
     }
 }
