@@ -165,6 +165,7 @@ public class PerformAdmin extends JFrame {
                     String departureDate = text3Field.getText();
                     ArrayList<Flight> flightList = FlightsSingleton.getInstance().getFlight(destination);
                     String message = "";
+                    // TODO
                     for (Flight flight : flightList) {
                         System.out.println(flight.getDestination().getCity() + flight.getOrigin().getCode()
                                 + flight.getDepartureDate().toString());
@@ -203,9 +204,11 @@ public class PerformAdmin extends JFrame {
                     // String destination = text2Field.getText();
                     ArrayList<Flight> flightList = FlightsSingleton.getInstance().getFlightList();
                     String message = "";
+
+                    // TODO
                     for (Flight flight : flightList) {
                         if (flight.getID() == Integer.parseInt(flightID)) {
-                            for (User crew : flight.getCrew().getCrew()) {
+                            for (User crew : flight.getCrew().getCrewMembers()) {
                                 message += crew.getFirstName() + " " + crew.getLastName() + ", ";
                             }
                             message += "\n";
@@ -237,6 +240,8 @@ public class PerformAdmin extends JFrame {
                     String totalRegularSeat = text2Field.getText();
                     String totalComfortSeat = text3Field.getText();
                     String totalBussinessSeat = text4Field.getText();
+
+                    // TODO
                     // need to add to database and singleton
                     System.out.println("Aircraft Type: " + aircraftType + "Total Regular Seat: " + totalRegularSeat
                             + "Total Comfort Seat: " + totalComfortSeat + "Total Bussiness Seat: "
@@ -280,6 +285,8 @@ public class PerformAdmin extends JFrame {
                     String totalRegularSeat = text2Field.getText();
                     String totalComfortSeat = text3Field.getText();
                     String totalBussinessSeat = text4Field.getText();
+
+                    // TODO
                     // need to add to database and singleton
                     System.out.println("Aircraft Type: " + aircraftType + "Total Regular Seat: " + totalRegularSeat
                             + "Total Comfort Seat: " + totalComfortSeat + "Total Bussiness Seat: "
@@ -304,6 +311,8 @@ public class PerformAdmin extends JFrame {
                 public void actionPerformed(ActionEvent e) {
                     String crewID = text1Field.getText();
                     String flightID = text2Field.getText();
+
+                    // TODO
                     // need to add to database and singleton
                     System.out.println("Crew ID: " + crewID + "Flight ID: " + flightID);
                 }
@@ -324,6 +333,8 @@ public class PerformAdmin extends JFrame {
                 public void actionPerformed(ActionEvent e) {
                     String crewID = text1Field.getText();
                     String flightID = text2Field.getText();
+
+                    // TODO
                     // need to add to database and singleton
                     System.out.println("Crew ID: " + crewID + "Flight ID: " + flightID);
                 }
@@ -344,6 +355,8 @@ public class PerformAdmin extends JFrame {
                     String airportCode = text2Field.getText();
                     String city = text3Field.getText();
                     String country = text4Field.getText();
+
+                    // TODO
                     // need to add to database and singleton
                     System.out.println("Airport Name: " + airportName + "Airport Code: " + airportCode + "City: " + city
                             + "Country: " + country);
@@ -364,6 +377,8 @@ public class PerformAdmin extends JFrame {
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     String AirportCode = text1Field.getText();
+
+                    // TODO
                     // need to add to database and singleton
                     System.out.println("Airport Code removed: " + AirportCode);
                 }
@@ -413,6 +428,8 @@ public class PerformAdmin extends JFrame {
                     String crewID = text8Field.getText();
                     String planeID = text9Field.getText();
                     String basePrice = text10Field.getText();
+
+                    // TODO
                     // need to add to database and singleton
                     System.out.println("Flight ID: " + flightID);
                     System.out.println("Destination: " + destination);
@@ -489,6 +506,8 @@ public class PerformAdmin extends JFrame {
                     String crewID = text8Field.getText();
                     String planeID = text9Field.getText();
                     String basePrice = text10Field.getText();
+
+                    // TODO
                     // need to add to database and singleton
                     System.out.println("Flight ID: " + flightID);
                     System.out.println("Destination: " + destination);
