@@ -20,7 +20,7 @@ public class RegularSeat extends Seat {
         return "regular";
     }
 
-    public double getPriceMultipler() {
+    public static double getPriceMultipler() {
         return priceMultipler;
     }
 

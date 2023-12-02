@@ -20,7 +20,7 @@ public class BusinessSeat extends Seat {
         return "business";
     }
 
-    public double getPriceMultipler() {
+    public static double getPriceMultipler() {
         return priceMultipler;
     }
 }

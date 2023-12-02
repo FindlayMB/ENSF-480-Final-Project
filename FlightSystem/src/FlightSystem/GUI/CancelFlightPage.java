@@ -4,6 +4,7 @@ import javax.swing.*;
 import FlightSystem.objects.*;
 import FlightSystem.objects.flight.Flight;
 import FlightSystem.objects.flight.FlightsSingleton;
+import FlightSystem.objects.seats.Seat;
 import FlightSystem.objects.user.RegisteredUser;
 import FlightSystem.objects.user.User;
 import FlightSystem.objects.user.UsersSingleton;
@@ -199,7 +200,20 @@ public class CancelFlightPage extends JFrame implements ActionListener{
         else if(e.getSource() == nextButton)
         {
             // FINS STUFF TO CANCEL FLIGHT GOES HERE
-
+            Flight bookedFlight = FlightsSingleton.getInstance().getFlightMap().get(flightID); // get the flight
+            ArrayList<Seat> bookedSeats = bookedFlight.getPassengerList().getPassengers(); 
+            Seat bookedSeat = null;   
+            for (Seat seat : bookedSeats) {
+                if (seat.getPassengerID() == user.getID()) {
+                    // Found the seat with the specified passenger ID
+                    bookedSeat = seat; // get seat and price of seat
+                }
+            }                                                              
+            
+            double seatPrice = bookedSeat.getPrice();
+                                                                     // multiply seat by multiplier to get price of seat
+                                                                        // decrease if insurance
+            Mail.sendCancellation(user, flightID, bookedSeat.getInsurance());
             JOptionPane.showMessageDialog(this, "Flight cancelled");
             this.dispose();
             if(user.getRole().equals("guest"))

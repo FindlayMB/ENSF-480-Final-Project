@@ -28,6 +28,7 @@ public class PaymentPage extends JFrame implements ActionListener, MouseListener
     private Integer selectedSeatNum;
     private double seatPriceMultipler;
     private int totalPrice;
+    private Color selectedSeatColor;
 
     private String firstName;
     private String lastName;
@@ -60,6 +61,7 @@ public class PaymentPage extends JFrame implements ActionListener, MouseListener
         this.signedInUser = signedInUser;
         this.selectedFlight = selectedFlight;
         this.selectedSeatNum = selectedSeatNum;
+        this.selectedSeatColor = selectedSeatColor; 
         
          // convert seat to correct type
             if(selectedSeatColor.equals(Color.GREEN))
@@ -240,8 +242,36 @@ public class PaymentPage extends JFrame implements ActionListener, MouseListener
                 try 
                 {
                         boolean hasInsurance = insuranceCheckBox.isSelected();
-                        Mail sendMail = new Mail(firstName, lastName, email, creditCardNumber, expiryDate, CSV, selectedFlight, selectedSeatNum, totalPrice);
-                        addUserToFlight(hasInsurance);
+                        Mail.emailTicket(firstName, lastName, email, creditCardNumber, expiryDate, CSV, selectedFlight, selectedSeatNum, totalPrice);
+                        String seatType = "";
+                        if(selectedSeatColor.equals(Color.GREEN))
+                        {
+                            seatType = "regular";
+                        }
+                        if(selectedSeatColor.equals(new Color(173, 216, 230)))
+                        {
+                            seatType = "comfort";
+                        }
+                            
+                        if(selectedSeatColor.equals(Color.YELLOW))
+                        { 
+                            seatType = "business";
+                        }
+
+                        if(signedInUser != null) // User is signed in 
+                        {
+                            Seat newSeat = SeatFactory.createSeat(seatType, selectedSeatNum, signedInUser.getID() ,hasInsurance);
+                            selectedFlight.addPassenger(newSeat); // add passenger to flight in DB
+                        }
+
+                        else // user is not signed in 
+                        {
+                            User newUser = UsersSingleton.getInstance.add(firstName, lastName, email, "basic");
+                            Seat newSeat = SeatFactory.createSeat(seatType, selectedSeatNum, newUser.getID() ,hasInsurance);
+                            selectedFlight.addPassenger(newSeat); // add passenger to flight in DB
+
+                        }
+
                         this.dispose();
                         HomePage nextPage = new HomePage(signedInUser);
                     

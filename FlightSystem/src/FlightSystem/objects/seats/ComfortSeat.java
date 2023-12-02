@@ -20,7 +20,7 @@ public class ComfortSeat extends Seat {
         return "comfort";
     }
 
-    public double getPriceMultipler() {
+    public static double getPriceMultipler() {
         return priceMultipler;
     }
 }
