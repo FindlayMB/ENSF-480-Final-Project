@@ -3,6 +3,9 @@ package FlightSystem.data;
 import java.sql.*;
 import java.util.*;
 
+import com.mysql.cj.jdbc.exceptions.SQLExceptionsMapping;
+import com.mysql.cj.xdevapi.Result;
+
 import FlightSystem.objects.*;
 import FlightSystem.objects.airport.*;
 import FlightSystem.objects.flight.*;
@@ -113,10 +116,20 @@ public class DatabaseSingleton {
                                 table.getInt(10),
                                 table.getDate(11) != null ? table.getDate(12).toLocalDate() : null),
                         flights.get(table.getInt(1)));
+                ((RegisteredUser) user).setPromos(getPromoTable((RegisteredUser) user));
             }
             users.put(table.getInt(1), user);
         }
         return users;
+    }
+
+    public HashMap<String, Float> getPromoTable(RegisteredUser user) throws SQLException {
+        HashMap<String, Float> promos = new HashMap<String, Float>();
+        ResultSet table = getTableWhere("promos", "UserID", user.getID());
+        while (table.next()) {
+            promos.put(table.getString(2), table.getFloat(3));
+        }
+        return promos;
     }
 
     public HashMap<String, Airport> getAirportTable() throws SQLException {
@@ -299,6 +312,16 @@ public class DatabaseSingleton {
         return insertInto("registered", columns, regUser);
     }
 
+    public void addPromo(int userID, String promoCode, Float discountPercent) throws SQLException {
+        String query = String.format("""
+                INSERT INTO promos (UserID,PromoCode,DiscountPercent)
+                VALUES
+                (%d,'%s',%f);
+
+                """, userID, promoCode, discountPercent);
+        execute(query);
+    }
+
     public void addCrew(Crew crew) {
         String[] columns = { "CrewID", "CrewMemberID", "Job" };
         crew.getCrew().forEach((cMember) -> {
@@ -311,10 +334,6 @@ public class DatabaseSingleton {
                 System.out.println("Failed to add crewmember" + cMember.getID());
             }
         });
-    }
-
-    public void addCrewMember(RegisteredUser crewMember, int crewID, String job) {
-
     }
 
     public Flight addFlight(Flight flight) {

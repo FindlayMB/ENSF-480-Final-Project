@@ -88,6 +88,15 @@ CREATE TABLE passengerlist (
 );
 
 
+DROP TABLE IF EXISTS promos;
+CREATE TABLE promos (
+    UserId INT NOT NULL,
+    PromoCode VARCHAR(10) NOT NULL,
+    DiscountPercent FLOAT NOT NULL,
+    PRIMARY KEY(UserID, PromoCode),
+    FOREIGN KEY(UserID) REFERENCES registered(UserID) ON DELETE CASCADE
+)
+
 /* 
  * Create a admin user for MySQL database.
  * This user is used to connect to the MySQL server/database
