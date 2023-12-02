@@ -31,7 +31,6 @@ public abstract class Seat implements ToQuery {
 
     public abstract String getSeatType();
 
-    public abstract double getPriceMultipler();
 
     public int getSeatNumber() {
         return seatNumber;
@@ -54,6 +53,9 @@ public abstract class Seat implements ToQuery {
 
     public void setPrice(int price) {
         this.price = price;
+    }
+    public double getPrice() {
+        return price;
     }
 
     public boolean getInsurance() {

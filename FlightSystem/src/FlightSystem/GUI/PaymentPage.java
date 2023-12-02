@@ -1,4 +1,6 @@
 package FlightSystem.GUI;
+import javax.mail.MessagingException;
+import javax.mail.internet.AddressException;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
@@ -23,7 +25,10 @@ public class PaymentPage extends JFrame implements ActionListener, MouseListener
     private UsersSingleton us = UsersSingleton.getInstance();
     private FlightsSingleton fs = FlightsSingleton.getInstance();
     private Flight selectedFlight;
-   private double seatPriceMultipler;
+    private Integer selectedSeatNum;
+    private double seatPriceMultipler;
+    private int totalPrice;
+    private Color selectedSeatColor;
 
     private String firstName;
     private String lastName;
@@ -55,6 +60,8 @@ public class PaymentPage extends JFrame implements ActionListener, MouseListener
         super("Payment"); // create a frame
         this.signedInUser = signedInUser;
         this.selectedFlight = selectedFlight;
+        this.selectedSeatNum = selectedSeatNum;
+        this.selectedSeatColor = selectedSeatColor; 
         
          // convert seat to correct type
             if(selectedSeatColor.equals(Color.GREEN))
@@ -93,6 +100,7 @@ public class PaymentPage extends JFrame implements ActionListener, MouseListener
         creditCardNumberLabel = new JLabel("Credit Card Number:");
         expiryDateLabel = new JLabel("Expiry Date:");
         CSVLabel = new JLabel("CSV:");
+        this.totalPrice = (int) (selectedFlight.getBasePrice() * seatPriceMultipler);
         priceLabel = new JLabel("Total: " + String.valueOf((double) selectedFlight.getBasePrice() * seatPriceMultipler)+"$"); // Need to multiply based on seat class
         Font labelFont = priceLabel.getFont();
         priceLabel.setFont(new Font(labelFont.getName(), Font.BOLD, 16)); // Adjust the size (16 is just an example)
@@ -219,35 +227,64 @@ public class PaymentPage extends JFrame implements ActionListener, MouseListener
     //     });
     // }
 
-    @Override
-    public void actionPerformed(ActionEvent e) // performed for an actionListener
-    {
-        firstName = fnameInput.getText().trim();
-        lastName = lnameInput.getText().trim();
-        email = emailInput.getText().trim();
-        creditCardNumber = creditCardNumberInput.getText().trim();
-        expiryDate = LocalDate.parse(expiryDateInput.getText().trim()); // CONVERT FROM STRING TO DATE OBJECT
-        CSV = CSVInput.getText();
-        
-        if(validatePaymentInfo(firstName, creditCardNumber, expiryDate, CSV)) // add checks for all user types
+        @Override
+        public void actionPerformed(ActionEvent e)  // performed for an actionListener
         {
-            try 
+            firstName = fnameInput.getText().trim();
+            lastName = lnameInput.getText().trim();
+            email = emailInput.getText().trim();
+            creditCardNumber = creditCardNumberInput.getText().trim();
+            expiryDate = LocalDate.parse(expiryDateInput.getText().trim()); // CONVERT FROM STRING TO DATE OBJECT
+            CSV = CSVInput.getText();
+            
+            if(validatePaymentInfo(firstName, creditCardNumber, expiryDate, CSV)) // add checks for all user types
             {
-                    boolean hasInsurance = insuranceCheckBox.isSelected();
-                    Mail sendMail = new Mail(firstName, lastName, email, creditCardNumber, expiryDate, CSV);
-                    addUserToFlight(hasInsurance);
-                    this.dispose();
-                    HomePage nextPage = new HomePage(signedInUser);
-                
-            } 
-            catch (SQLException ex) {
-                // Handle the SQLException or log it
-                ex.printStackTrace(); // You might want to log this to a proper logging system
-                // Optionally, show an error message to the user
-                JOptionPane.showMessageDialog(this, "Error adding user to flight: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+                try 
+                {
+                        boolean hasInsurance = insuranceCheckBox.isSelected();
+                        Mail.emailTicket(firstName, lastName, email, creditCardNumber, expiryDate, CSV, selectedFlight, selectedSeatNum, totalPrice);
+                        String seatType = "";
+                        if(selectedSeatColor.equals(Color.GREEN))
+                        {
+                            seatType = "regular";
+                        }
+                        if(selectedSeatColor.equals(new Color(173, 216, 230)))
+                        {
+                            seatType = "comfort";
+                        }
+                            
+                        if(selectedSeatColor.equals(Color.YELLOW))
+                        { 
+                            seatType = "business";
+                        }
+
+                        if(signedInUser != null) // User is signed in 
+                        {
+                            Seat newSeat = SeatFactory.createSeat(seatType, selectedSeatNum, signedInUser.getID() ,hasInsurance);
+                            selectedFlight.addPassenger(newSeat); // add passenger to flight in DB
+                        }
+
+                        else // user is not signed in 
+                        {   User newUser = new User(0 , firstName, lastName, email,  "guest"); // temporarily set ID to 0
+                            UsersSingleton.getInstance().addUser(newUser); // add user to DB
+                            ArrayList<User> dbUsers = UsersSingleton.getInstance().getUsersList(); 
+                            newUser = dbUsers.get(dbUsers.size()-1);                                                                       // get user from DB with correct ID, ID has been incremented in DB
+                            Seat newSeat = SeatFactory.createSeat(seatType, selectedSeatNum, newUser.getID(), hasInsurance);
+                            selectedFlight.addPassenger(newSeat); // add passenger to flight in DB
+                        }
+                        this.dispose();
+                        HomePage nextPage = new HomePage(signedInUser);
+                    
+                } 
+             
+                catch (MessagingException ex) {
+                    // Handle AddressException and MessagingException here
+                    ex.printStackTrace(); // You might want to log this to a proper logging system
+                    // Optionally, show an error message to the user
+                    JOptionPane.showMessageDialog(this, "Error sending email: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+                }
             }
         }
-    }
 
     public void addUserToFlight(boolean hasInsurance) throws SQLException
     {
