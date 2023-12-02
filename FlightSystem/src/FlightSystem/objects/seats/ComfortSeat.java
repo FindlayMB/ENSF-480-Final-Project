@@ -11,7 +11,7 @@ public class ComfortSeat extends Seat {
         super(seatNumber);
     }
 
-    public ComfortSeat(int seatNumber, int passengerID, boolean insurance, float pricePaid) {
+    public ComfortSeat(int seatNumber, int passengerID, boolean insurance, Float pricePaid) {
         super(seatNumber, passengerID, insurance, pricePaid);
     }
 

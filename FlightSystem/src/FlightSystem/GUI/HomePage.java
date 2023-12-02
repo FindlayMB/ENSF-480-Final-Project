@@ -253,7 +253,7 @@ public class HomePage extends JFrame implements ActionListener{
         }
         else if(buttonText.equals("View Passenger List")){
             this.dispose();
-            ViewPassengerListPage nextPage = new ViewPassengerListPage(user);// get list of flights they are on 
+            viewPassengerListPage nextPage = new viewPassengerListPage(user);// get list of flights they are on 
 
             // let them select flight
 
