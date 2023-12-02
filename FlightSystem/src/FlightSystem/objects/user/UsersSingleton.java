@@ -154,4 +154,16 @@ public class UsersSingleton {
     public RegisteredUser getRegisteredUser(int ID) {
         return registeredUsers.get(ID);
     }
+
+    public void addPromo(String promoCode, Float discountPercent) {
+        registeredUsers.forEach((uID, u) -> {
+            u.addPromo(promoCode, discountPercent);
+        });
+    }
+
+    public void removePromo(String promoCode) {
+        registeredUsers.forEach((uID, u) -> {
+            u.removePromo(promoCode);
+        });
+    }
 }
