@@ -127,4 +127,13 @@ public class RegisteredUser extends User {
             System.out.println("Failed to add promo!");
         }
     }
+
+    public void removePromo(String promoCode) {
+        try {
+            promos.remove(promoCode);
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.out.println("Failed to remove promo code!");
+        }
+    }
 }
