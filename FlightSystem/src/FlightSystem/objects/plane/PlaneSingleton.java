@@ -1,6 +1,8 @@
 package FlightSystem.objects.plane;
 
 import FlightSystem.data.DatabaseSingleton;
+import FlightSystem.objects.flight.FlightsSingleton;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -45,6 +47,17 @@ public class PlaneSingleton {
     public synchronized void addPlane(Plane newPlane) {
         newPlane = DatabaseSingleton.getInstance().addPlane(newPlane);
         planes.put(newPlane.getID(), newPlane);
+    }
+
+    public void removePlane(Plane removePlane) {
+        try {
+            DatabaseSingleton.getInstance().removePlane(removePlane);
+            planes.remove(removePlane.getID());
+            FlightsSingleton.getInstance().removeFlights(removePlane);
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.out.println("Failed to remove plane: " + removePlane);
+        }
     }
 
 }

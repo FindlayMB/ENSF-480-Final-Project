@@ -31,6 +31,11 @@ public class RegisteredUser extends User {
     }
 
     @Override
+    public String toString() {
+        return String.format("%d %s %s %s", super.getID(), username, job, super.getRole());
+    }
+
+    @Override
     public String toQuery() {
         if (creditCard == null) {
             String output = String.format("%d,'%s','%s','%s',NULL,NULL,NULL",

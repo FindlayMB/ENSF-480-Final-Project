@@ -84,16 +84,9 @@ CREATE TABLE passengerlist (
     Insurance   BOOL NOT NULL DEFAULT false,
     PRIMARY KEY(FlightID, UserID),
     FOREIGN KEY(FlightID) REFERENCES flights(FlightID) ON DELETE CASCADE,
-    FOREIGN KEY(UserID) REFERENCES users(UserID)
+    FOREIGN KEY(UserID) REFERENCES users(UserID) ON DELETE CASCADE
 );
 
-/*
-DROP TABLE IF EXISTS promos;
-CREATE TABLE promos (
-    PromoID     INT NOT NULL,
-
-);
-*/
 
 /* 
  * Create a admin user for MySQL database.

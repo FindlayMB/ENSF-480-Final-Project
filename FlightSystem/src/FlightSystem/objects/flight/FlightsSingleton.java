@@ -2,6 +2,7 @@ package FlightSystem.objects.flight;
 
 import java.util.*;
 import FlightSystem.objects.airport.*;
+import FlightSystem.objects.plane.Plane;
 import FlightSystem.data.DatabaseSingleton;
 
 /**
@@ -62,7 +63,25 @@ public class FlightsSingleton {
     }
 
     public void removeFlight(Flight removeFlight) {
-        flights.remove(removeFlight.getID(), removeFlight);
+        try {
+            DatabaseSingleton.getInstance().removeFlight(removeFlight);
+            flights.remove(removeFlight.getID(), removeFlight);
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.out.println("Failed to remove flight: " + removeFlight.toString());
+        }
+    }
+
+    public void removeFlight(ArrayList<Flight> toRemove) {
+        try {
+            for (Flight f : toRemove) {
+                DatabaseSingleton.getInstance().removeFlight(f);
+                flights.remove(f.getID());
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.out.println("Failed to remove flights");
+        }
     }
 
     /**
@@ -72,11 +91,29 @@ public class FlightsSingleton {
      * @param removedAirport
      */
     public void removeFlights(Airport removedAirport) {
-        for (Flight f : flights.values()) {
+        ArrayList<Flight> toRemove = new ArrayList<Flight>();
+        flights.values().forEach((f) -> {
             if (f.getDestination().equals(removedAirport) || f.getOrigin().equals(removedAirport)) {
-                flightInstance.removeFlight(f);
+                toRemove.add(f);
+            }
+        });
+        removeFlight(toRemove);
+    }
+
+    /**
+     * If a plane is removed, remove all flights that
+     * use that plane.
+     * 
+     * @param removePlane
+     */
+    public void removeFlights(Plane removePlane) {
+        ArrayList<Flight> toRemove = new ArrayList<Flight>();
+        for (Flight f : flights.values()) {
+            if (f.getPlane().getID() == removePlane.getID()) {
+                toRemove.add(f);
             }
         }
+        removeFlight(toRemove);
     }
 
     /**

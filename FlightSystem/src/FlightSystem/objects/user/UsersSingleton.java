@@ -1,8 +1,11 @@
 package FlightSystem.objects.user;
 
 import FlightSystem.data.DatabaseSingleton;
+import FlightSystem.objects.flight.FlightsSingleton;
+
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 
 /**
  * 
@@ -11,19 +14,19 @@ import java.util.HashMap;
 public class UsersSingleton {
     private DatabaseSingleton dbConnection = DatabaseSingleton.getInstance();
     private static UsersSingleton usersInstance;
-    private HashMap<Integer, User> users;
-    private HashMap<Integer, RegisteredUser> registeredUsers;
+    private LinkedHashMap<Integer, User> users;
+    private LinkedHashMap<Integer, RegisteredUser> registeredUsers;
 
     private UsersSingleton() {
         if (users == null) {
             try {
-                users = new HashMap<Integer, User>(dbConnection.getUserTable());
+                users = new LinkedHashMap<Integer, User>(dbConnection.getUserTable());
             } catch (Exception e) {
                 System.out.println(e);
                 System.out.println("Failed to get users table!");
             }
         }
-        registeredUsers = new HashMap<Integer, RegisteredUser>();
+        registeredUsers = new LinkedHashMap<Integer, RegisteredUser>();
 
         users.forEach((key, value) -> {
             if (value instanceof RegisteredUser) {
@@ -47,12 +50,45 @@ public class UsersSingleton {
 
     public synchronized RegisteredUser addRegisteredUser(RegisteredUser user) {
         try {
-            registeredUsers.put(DatabaseSingleton.getInstance().addRegisteredUser(user), user);
+            registeredUsers.put(user.getID(), user);
         } catch (Exception e) {
             e.printStackTrace();
             System.out.println("Failed to add registered user: " + user.toString());
         }
         return user;
+    }
+
+    public synchronized void removeUser(User user) {
+        try {
+            DatabaseSingleton.getInstance().removeUser(user);
+            users.remove(user.getID());
+            if (user instanceof RegisteredUser) {
+                removeRegisteredUser(((RegisteredUser) user));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.out.println("Failed to remove user: " + user.toString());
+        }
+    }
+
+    public synchronized void removeRegisteredUser(RegisteredUser user) {
+        try {
+            DatabaseSingleton.getInstance().removeRegisteredUser(user);
+
+            if (user.getRole() == "employee" || user.getRole() == "admin") {
+                user.getFlights().forEach((fID) -> {
+                    FlightsSingleton.getInstance().getFlightMap().get(fID).removeCrewMember(user);
+                });
+            }
+
+            registeredUsers.remove(user.getID());
+            if (users.get(user.getID()) != null) {
+                users.get(user.getID()).setRole("guest");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.out.println("Failed to remove user: " + user.toString());
+        }
     }
 
     public boolean login(String username, String password) {
@@ -94,7 +130,7 @@ public class UsersSingleton {
         return null;
     }
 
-    public HashMap<Integer, User> getUsersMap() {
+    public LinkedHashMap<Integer, User> getUsersMap() {
         return users;
     }
 
@@ -106,7 +142,7 @@ public class UsersSingleton {
         return users.get(ID);
     }
 
-    public HashMap<Integer, RegisteredUser> getRegisteredUsersMap() {
+    public LinkedHashMap<Integer, RegisteredUser> getRegisteredUsersMap() {
         return registeredUsers;
     }
 

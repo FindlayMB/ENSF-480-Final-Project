@@ -43,6 +43,7 @@ public class User implements ToQuery {
         this.role = user.role;
     }
 
+    @Override
     public String toQuery() {
         String output = String.format("'%s','%s','%s','%s'",
                 firstName, lastName, email, role);
@@ -51,7 +52,7 @@ public class User implements ToQuery {
 
     @Override
     public String toString() {
-        return String.format("%d %s %s", ID, firstName, lastName);
+        return String.format("%d %s %s %s", ID, firstName, lastName, role);
     }
 
     public ArrayList<Flight> getUserFlights() {

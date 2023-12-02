@@ -45,6 +45,10 @@ public class DatabaseSingleton {
         return dbInstance;
     }
 
+    /*
+     * Functions that execute queries on the database
+     */
+
     public ResultSet executeQuery(String query) throws SQLException {
         Statement statement = dbConnection.createStatement();
         return statement.executeQuery(query);
@@ -54,6 +58,10 @@ public class DatabaseSingleton {
         Statement statement = dbConnection.createStatement();
         return statement.execute(query);
     }
+
+    /*
+     * Functions to get data from database
+     */
 
     public ResultSet getTable(String tableName) throws SQLException {
         String query = String.format("SELECT * FROM %s", tableName);
@@ -227,9 +235,14 @@ public class DatabaseSingleton {
             regUser.setJob(table.getString(4));
             crewMembers.add(regUser);
         } while (table.next());
+        crew.setCrew(crewMembers);
     }
 
-    public Integer insertInto(String tableName, String[] columns, ToQuery object) throws SQLException {
+    /*
+     * Functions to insert objects into the database
+     */
+
+    public Integer insertInto(String tableName, String[] columns, String values) throws SQLException {
         String columnString = "";
         for (String s : columns) {
             columnString += s + ",";
@@ -239,13 +252,17 @@ public class DatabaseSingleton {
                 INSERT INTO %s (%s)
                 VALUES
                 (%s);
-                """, tableName, columnString, object.toQuery());
+                """, tableName, columnString, values);
         Statement statement = dbConnection.createStatement();
         statement.executeUpdate(query, Statement.RETURN_GENERATED_KEYS);
 
         ResultSet table = statement.getGeneratedKeys();
         table.next();
         return table.getRow() != 0 ? table.getInt(1) : 0;
+    }
+
+    public Integer insertInto(String tableName, String[] columns, ToQuery object) throws SQLException {
+        return insertInto(tableName, columns, object.toQuery());
     }
 
     public Plane addPlane(Plane plane) {
@@ -282,6 +299,24 @@ public class DatabaseSingleton {
         return insertInto("registered", columns, regUser);
     }
 
+    public void addCrew(Crew crew) {
+        String[] columns = { "CrewID", "CrewMemberID", "Job" };
+        crew.getCrew().forEach((cMember) -> {
+            try {
+                insertInto("crews", columns,
+                        String.format("%d,%d,'%s'",
+                                crew.getCrewID(), cMember.getID(), cMember.getJob()));
+            } catch (Exception e) {
+                e.printStackTrace();
+                System.out.println("Failed to add crewmember" + cMember.getID());
+            }
+        });
+    }
+
+    public void addCrewMember(RegisteredUser crewMember, int crewID, String job) {
+
+    }
+
     public Flight addFlight(Flight flight) {
         String[] columns = { "Destination", "ArrivalTime", "ArrivalDate", "Origin", "DepartureTime",
                 "DepartureDate", "CrewID", "PlaneID", "BasePrice" };
@@ -293,6 +328,13 @@ public class DatabaseSingleton {
             System.out.println("Failed to insert new flight: " + flight.toString());
         }
         return newFlight;
+    }
+
+    public void addPassenger(Seat passenger, int flightID) throws SQLException {
+        String[] columns = { "FlightID", "UserID", "SeatNumber", "SeatType", "Insurance" };
+
+        insertInto("passengerlist", columns,
+                String.format("%d,%s", flightID, passenger.toQuery()));
     }
 
     public void addUserWithFields(String Username, String Password, String FirstName, String LastName, String Email,
@@ -313,6 +355,10 @@ public class DatabaseSingleton {
         }
     }
 
+    /*
+     * Functions to remove objects from database tables
+     */
+
     public void removeFrom(String table, String column, int value) throws SQLException {
         String query = String.format("""
                 DELETE FROM %s WHERE %s = %d
@@ -324,6 +370,14 @@ public class DatabaseSingleton {
         String query = String.format("""
                 DELETE FROM %s WHERE %s = '%s'
                 """, table, column, value);
+        execute(query);
+    }
+
+    public void removeFrom(String table, String[] columns, int[] values) throws SQLException {
+        String query = String.format("""
+                DELETE FROM %s WHERE %s = %d and %s = %d;
+                """, table, columns[0], values[0], columns[1], values[1]);
+        execute(query);
     }
 
     public void removePlane(Plane plane) throws SQLException {
@@ -338,7 +392,7 @@ public class DatabaseSingleton {
         removeFrom("users", "UserID", user.getID());
     }
 
-    public void removeUser(RegisteredUser user) throws SQLException {
+    public void removeRegisteredUser(RegisteredUser user) throws SQLException {
         removeFrom("registered", "UserID", user.getID());
     }
 
@@ -348,14 +402,23 @@ public class DatabaseSingleton {
                 DELETE FROM crews WHERE CrewMemberID = %d;
                 SET FOREIGN_KEY_CHECKS=1;
                 """;
-        crew.getCrewFlightIDs().forEach((eID) -> {
+        crew.getCrew().forEach((cMember) -> {
             try {
-                execute(String.format(query, eID));
+                execute(String.format(query, cMember.getID()));
             } catch (Exception e) {
                 e.printStackTrace();
-                System.out.println("Failed to remove crewID: " + eID);
+                System.out.println("Failed to remove crewID: " + cMember.getID());
             }
         });
     }
 
+    public void removeFlight(Flight flight) throws SQLException {
+        removeFrom("flights", "FlightID", flight.getID());
+    }
+
+    public void removePassenger(Seat passenger, int flightID) throws SQLException {
+        String[] columns = { "FlightID", "UserID" };
+        int[] values = { flightID, passenger.getPassengerID() };
+        removeFrom("passengerlist", columns, values);
+    }
 }

@@ -1,6 +1,8 @@
 package FlightSystem.objects.airport;
 
 import FlightSystem.data.DatabaseSingleton;
+import FlightSystem.objects.flight.FlightsSingleton;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -43,11 +45,29 @@ public class AirportsSingleton {
     }
 
     public void removeAirport(Airport removeAirport) {
-        airports.remove(removeAirport.getCode(), removeAirport);
+        try {
+            DatabaseSingleton.getInstance().removeAirport(removeAirport);
+            airports.remove(removeAirport.getCode(), removeAirport);
+            FlightsSingleton.getInstance().removeFlights(removeAirport);
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.out.println("Failed to remove airport: " + removeAirport);
+        }
     }
 
     public void removeAirport(String code, Airport removeAirport) {
-        airports.remove(code, removeAirport);
+        if (code.equals(removeAirport.getCode()) != true) {
+            System.out.println("Code does not match airport!");
+            System.out.println("Did not remove an airport!");
+            return;
+        }
+        try {
+            DatabaseSingleton.getInstance().removeAirport(removeAirport);
+            airports.remove(code, removeAirport);
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.out.println("Failed to remove airport: " + removeAirport);
+        }
     }
 
     public HashMap<String, Airport> getAirportMap() {

@@ -8,7 +8,8 @@ import FlightSystem.data.DatabaseSingleton;
 import FlightSystem.objects.Crew;
 import FlightSystem.objects.ToQuery;
 import FlightSystem.objects.airport.*;
-import FlightSystem.objects.plane.Plane;
+import FlightSystem.objects.plane.*;
+import FlightSystem.objects.seats.*;
 import FlightSystem.objects.user.*;
 
 /**
@@ -109,17 +110,6 @@ public class Flight implements ToQuery {
         return ID;
     }
 
-    /**
-     * ONLY TO BE USED BY DatabaseSingleton function addFlight
-     * since the flight ID is determined by the
-     * autoincrement of the MySQL database
-     * 
-     * @param iD
-     */
-    // public void setID(int ID) {
-    // this.ID = ID;
-    // }
-
     public Airport getDestination() {
         return destination;
     }
@@ -176,12 +166,40 @@ public class Flight implements ToQuery {
         this.crew = crew;
     }
 
+    public void addCrewMember(RegisteredUser crewMember, String job) {
+        crew.addCrewMember(crewMember, job);
+    }
+
+    public void removeCrewMember(RegisteredUser crewMember) {
+        crew.removeCrewMember(crewMember);
+    }
+
     public PassengerList getPassengerList() {
         return passengerList;
     }
 
     public void setPassengerList(PassengerList passengerList) {
         this.passengerList = passengerList;
+    }
+
+    public void addPassenger(Seat passenger) {
+        try {
+            DatabaseSingleton.getInstance().addPassenger(passenger, ID);
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.out.println("Failed to add passenger: " + passenger.toString());
+        }
+        this.passengerList.addPassenger(passenger);
+    }
+
+    public void removePassenger(Seat passenger) {
+        try {
+            DatabaseSingleton.getInstance().removePassenger(passenger, ID);
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.out.println("Failed to remove passenger:" + passenger.toString());
+        }
+        this.passengerList.removePassenger(passenger);
     }
 
     public Float getBasePrice() {
