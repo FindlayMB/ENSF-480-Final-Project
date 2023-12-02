@@ -204,6 +204,19 @@ public class PaymentPage extends JFrame implements ActionListener, MouseListener
         gbc.gridy = 6;
         paymentPanel.add(insuranceCheckBox, gbc);
 
+        //add promote text field and apply button next to insurance checkbox
+        JTextField promoteTextField = new JTextField("Promotion code");
+        promoteTextField.setColumns(20); // Set the number of columns (width)
+        JButton applyButton = new JButton("Apply");
+        gbc.gridx = 1;
+        gbc.gridy = 6;
+        paymentPanel.add(promoteTextField, gbc);
+        gbc.gridx = 2;
+        gbc.gridy = 6;
+        paymentPanel.add(applyButton, gbc);
+
+
+
         gbc.gridx = 0;
         gbc.gridy = 7;
         paymentPanel.add(priceLabel, gbc);
@@ -216,16 +229,35 @@ public class PaymentPage extends JFrame implements ActionListener, MouseListener
 
         gbc.gridy++;
         paymentPanel.add(backButton, gbc);
+        if(signedInUser == null){
+            promoteTextField.setVisible(false);
+            applyButton.setVisible(false);
+        }
 
         this.add(paymentPanel, BorderLayout.NORTH);
+        payButton.addActionListener(this);
+
+        //add promote text field and apply button
+        applyButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String promotionCode = promoteTextField.getText();
+                if(promotionCode.equals("1234")) {
+                    JOptionPane.showMessageDialog(null, "Promotion code applied!");
+                    totalPrice = (int) (totalPrice * 0.9);
+                    priceLabel.setText("Total: " + String.valueOf(totalPrice)+"$");
+                }
+                else {
+                    JOptionPane.showMessageDialog(null, "Invalid promotion code!");
+                }
+            }
+        });
+
+        
+
 
     }
-    // public static void main(String[] args)
-    // {
-    //     EventQueue.invokeLater(() -> { // event queue is threading related
-    //         new PaymentPage().setVisible(true); // makes GUI appear on screen 
-    //     });
-    // }
+        
 
         @Override
         public void actionPerformed(ActionEvent e)  // performed for an actionListener
