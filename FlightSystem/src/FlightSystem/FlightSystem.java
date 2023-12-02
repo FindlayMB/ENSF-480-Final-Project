@@ -25,17 +25,19 @@ public class FlightSystem {
 
     public FlightSystem() {
         dbConnection = DatabaseSingleton.getInstance();
+        airports = AirportsSingleton.getInstance();
+        planes = PlaneSingleton.getInstance();
         users = UsersSingleton.getInstance();
-
+        flights = FlightsSingleton.getInstance();
         // users.addUser(new User(0, "John", "Doe", "JohnDoe@gmail.com", "guest"));
 
-        users.addRegisteredUser(new RegisteredUser(
-                users.addUser(new User(0, "John", "Doe", "JohnDoe@gmail.com", "member")),
-                "johnDoe", "doeJohn", LocalDate.now(), "member", null, null));
+        // users.addRegisteredUser(new RegisteredUser(
+        // users.addUser(new User(0, "John", "Doe", "JohnDoe@gmail.com", "member")),
+        // "johnDoe", "doeJohn", LocalDate.now(), "member", null, null));
 
-        users.getUsersMap().values().forEach((u) -> {
-            System.out.println(u.toString());
-        });
+        // users.getUsersMap().values().forEach((u) -> {
+        // System.out.println(u.toString());
+        // });
         // try {
         // dbConnection.addAirport(new Airport("AAA", "Test Name", "Test City", "Test
         // Country"));
@@ -85,13 +87,13 @@ public class FlightSystem {
     public static void main(String[] args) {
         FlightSystem fs = new FlightSystem();
 
-        // RegisteredUser user = null;
-        // SwingUtilities.invokeLater(() -> {
-        // HomePage gui = new HomePage(user); // pass registered user object accross
-        // pages to keep track of possible
-        // // logged in user
-        // // gui.setVisible(true);
-        // });
+        RegisteredUser user = null;
+        SwingUtilities.invokeLater(() -> {
+            HomePage gui = new HomePage(user); // pass registered user object accross
+            // pages to keep track of possible
+            // logged in user
+            gui.setVisible(true);
+        });
     }
 
 }

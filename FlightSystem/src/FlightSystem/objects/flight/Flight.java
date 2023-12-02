@@ -25,8 +25,6 @@ public class Flight implements ToQuery {
     private LocalTime departureTime;
     private LocalDate departureDate;
     private Float basePrice;
-    // private int crewID;
-    // private ArrayList<RegisteredUser> crew;
     private Crew crew;
     private PassengerList passengerList;
     private Plane plane;

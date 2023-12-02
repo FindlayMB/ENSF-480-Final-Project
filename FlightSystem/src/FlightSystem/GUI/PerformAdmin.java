@@ -1,6 +1,8 @@
 package FlightSystem.GUI;
-import javax.swing.*;
 
+import javax.swing.*;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import FlightSystem.objects.flight.Flight;
 import FlightSystem.objects.user.User;
 
@@ -14,24 +16,27 @@ import FlightSystem.objects.flight.FlightsSingleton;
 import FlightSystem.objects.user.RegisteredUser;
 import FlightSystem.objects.user.User;
 import FlightSystem.objects.user.UsersSingleton;
+
 public class PerformAdmin extends JFrame {
     private User user;
     private String name;
-    public PerformAdmin(User user,String name){
-        //dispose the previous frame
+
+    public PerformAdmin(User user, String name) {
+        // dispose the previous frame
         dispose();
         this.user = user;
         System.out.println("hello");
-        this.name=name;
+        this.name = name;
         setupUI(this.name);
 
     }
+
     public void setupUI(String name) {
         setTitle("Perform Admin");
         setSize(500, 600);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
-    
+
         JLabel text1 = new JLabel("Text1:");
         JLabel text2 = new JLabel("Text2:");
         JLabel text3 = new JLabel("Text3:");
@@ -43,7 +48,6 @@ public class PerformAdmin extends JFrame {
         JLabel text9 = new JLabel("Text9:");
         JLabel text10 = new JLabel("Text10:");
 
-    
         JTextField text1Field = new JTextField(20);
         JTextField text2Field = new JTextField(20);
         JTextField text3Field = new JTextField(20);
@@ -54,20 +58,20 @@ public class PerformAdmin extends JFrame {
         JTextField text8Field = new JTextField(20);
         JTextField text9Field = new JTextField(20);
         JTextField text10Field = new JTextField(20);
-    
+
         JButton submitButton = new JButton("Submit");
-        //Add goback button
+        // Add goback button
         JButton goBackButton = new JButton("Go Back");
-    
+
         JPanel registerPanel = new JPanel(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
         // gbc.insets = new Insets(5, 5, 5, 5);
-        // gbc.anchor = GridBagConstraints.WEST;  // Align components to the left
-        // gbc.fill = GridBagConstraints.HORIZONTAL;  // Allow horizontal resizing
+        // gbc.anchor = GridBagConstraints.WEST; // Align components to the left
+        // gbc.fill = GridBagConstraints.HORIZONTAL; // Allow horizontal resizing
         gbc.insets = new Insets(5, 5, 5, 5);
-        gbc.anchor = GridBagConstraints.WEST;  // Align components to the left
-        gbc.fill = GridBagConstraints.HORIZONTAL;  // Allow horizontal resizing
-    
+        gbc.anchor = GridBagConstraints.WEST; // Align components to the left
+        gbc.fill = GridBagConstraints.HORIZONTAL; // Allow horizontal resizing
+
         // Add components with consistent GridBagConstraints
         addComponent(registerPanel, text1, gbc, 0, 0);
         addComponent(registerPanel, text2, gbc, 0, 1);
@@ -80,8 +84,6 @@ public class PerformAdmin extends JFrame {
         addComponent(registerPanel, text9, gbc, 0, 8);
         addComponent(registerPanel, text10, gbc, 0, 9);
 
-
-    
         gbc.fill = GridBagConstraints.HORIZONTAL;
         addComponent(registerPanel, text1Field, gbc, 1, 0);
         addComponent(registerPanel, text2Field, gbc, 1, 1);
@@ -93,7 +95,7 @@ public class PerformAdmin extends JFrame {
         addComponent(registerPanel, text8Field, gbc, 1, 7);
         addComponent(registerPanel, text9Field, gbc, 1, 8);
         addComponent(registerPanel, text10Field, gbc, 1, 9);
-        //hide text5 to 10 and text5Field to 10Field    
+        // hide text5 to 10 and text5Field to 10Field
         text5.setVisible(false);
         text5Field.setVisible(false);
         text6.setVisible(false);
@@ -107,58 +109,53 @@ public class PerformAdmin extends JFrame {
         text10.setVisible(false);
         text10Field.setVisible(false);
 
-
-    
         gbc.gridx = 0;
         gbc.gridy = 4;
-        gbc.gridwidth = 2;  // Span across both columns
+        gbc.gridwidth = 2; // Span across both columns
         addComponent(registerPanel, submitButton, gbc, 0, 10);
 
         gbc.gridx = 0;
         gbc.gridy = 5;
-        gbc.gridwidth = 2;  // Span across both columns
+        gbc.gridwidth = 2; // Span across both columns
         addComponent(registerPanel, goBackButton, gbc, 0, 11);
 
-
-    
         add(registerPanel);
         // goBackButton.addActionListener(new ActionListener() {
-        //     //dispose the current frame and open the previous frame
-        //     @Override
-        //     public void actionPerformed(ActionEvent e) {
-        //         dispose();
-        //         AdminPage adminPage = new AdminPage(user);
-        //         adminPage.setVisible(true);
-        //     }
+        // //dispose the current frame and open the previous frame
+        // @Override
+        // public void actionPerformed(ActionEvent e) {
+        // dispose();
+        // AdminPage adminPage = new AdminPage(user);
+        // adminPage.setVisible(true);
+        // }
         // });
 
         goBackButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 // Create and make visible the new AdminPage frame first
-                //AdminPage adminPage = new AdminPage(user);
-                //adminPage.setVisible(true);
-        
+                // AdminPage adminPage = new AdminPage(user);
+                // adminPage.setVisible(true);
+
                 // Then dispose of the current PerformAdmin frame
                 dispose();
             }
         });
-        
 
-        if(name =="Browse List Flights"){
-            
-            //change title
+        if (name == "Browse List Flights") {
+
+            // change title
             setTitle("Browse List Flights");
-            //hide text4 and text4Field
+            // hide text4 and text4Field
             text4.setVisible(false);
             text4Field.setVisible(false);
-            //change text1 to "Origin"
+            // change text1 to "Origin"
             text1.setText("Origin");
-            //change text2 to "Destination"
+            // change text2 to "Destination"
             text2.setText("Destination");
-            //change text3 to "Depature Date"
+            // change text3 to "Depature Date"
             text3.setText("Depature Date");
-            //change submitButton to "Search"   
+            // change submitButton to "Search"
             submitButton.setText("Search");
             submitButton.addActionListener(new ActionListener() {
                 @Override
@@ -167,29 +164,35 @@ public class PerformAdmin extends JFrame {
                     String destination = text2Field.getText();
                     String departureDate = text3Field.getText();
                     ArrayList<Flight> flightList = FlightsSingleton.getInstance().getFlight(destination);
-                    String message="";
+                    String message = "";
                     for (Flight flight : flightList) {
-                        System.out.println(flight.getDestination().getCity()+flight.getOrigin().getCode()+flight.getDepartureDate().toString());
-                        if(destination.toUpperCase()==flight.getDestination().getCode().toUpperCase() && origin.toUpperCase()==flight.getOrigin().getCode().toUpperCase() && departureDate==flight.getDepartureDate().toString()){
-                            message+="From: "+origin+"To: "+destination+"Departure Time: "+departureDate.toString()+"Arrival time:"+flight.getArrivalDate().toString()+"\n";
+                        System.out.println(flight.getDestination().getCity() + flight.getOrigin().getCode()
+                                + flight.getDepartureDate().toString());
+                        if (destination.toUpperCase() == flight.getDestination().getCode().toUpperCase()
+                                && origin.toUpperCase() == flight.getOrigin().getCode().toUpperCase()
+                                && departureDate == flight.getDepartureDate().toString()) {
+                            message += "From: " + origin + "To: " + destination + "Departure Time: "
+                                    + departureDate.toString() + "Arrival time:" + flight.getArrivalDate().toString()
+                                    + "\n";
                         }
                     }
-                    JOptionPane.showMessageDialog(PerformAdmin.this,message, "Flight List", JOptionPane.INFORMATION_MESSAGE);
+                    JOptionPane.showMessageDialog(PerformAdmin.this, message, "Flight List",
+                            JOptionPane.INFORMATION_MESSAGE);
                 }
-            });}
-        else if(name =="Browse List Crews"){
-            
+            });
+        } else if (name == "Browse List Crews") {
+
             setTitle("Browse List Crews");
-            //hide text4 and text4Field, text3 and text3Field, text2 and text2Field
+            // hide text4 and text4Field, text3 and text3Field, text2 and text2Field
 
             text4.setVisible(false);
             text4Field.setVisible(false);
-            //change text1 to "Flight ID"
+            // change text1 to "Flight ID"
             text3.setVisible(false);
             text3Field.setVisible(false);
             text2.setVisible(false);
             text2Field.setVisible(false);
-   
+
             text1.setText("Flight ID");
             // text2.setText("Destination");
             submitButton.setText("Search");
@@ -199,32 +202,31 @@ public class PerformAdmin extends JFrame {
                     String flightID = text1Field.getText();
                     // String destination = text2Field.getText();
                     ArrayList<Flight> flightList = FlightsSingleton.getInstance().getFlightList();
-                    String message="";
+                    String message = "";
                     for (Flight flight : flightList) {
-                        if(flight.getID()==Integer.parseInt(flightID)){
-                            for (User crew : flight.getCrew()) {
-                                message+=crew.getFirstName()+" "+crew.getLastName()+", ";
+                        if (flight.getID() == Integer.parseInt(flightID)) {
+                            for (User crew : flight.getCrew().getCrew()) {
+                                message += crew.getFirstName() + " " + crew.getLastName() + ", ";
                             }
-                            message+="\n";
+                            message += "\n";
                         }
-                        
+
                     }
-                    JOptionPane.showMessageDialog(PerformAdmin.this,message, "Flight List", JOptionPane.INFORMATION_MESSAGE);
+                    JOptionPane.showMessageDialog(PerformAdmin.this, message, "Flight List",
+                            JOptionPane.INFORMATION_MESSAGE);
                 }
             });
 
-
-        }
-        else if(name =="Add Aircraft"){
+        } else if (name == "Add Aircraft") {
             dispose();
             setTitle("Add AirCraft");
-            //hide text4 and text4Field, text3 and text3Field, text2 and text2Field
+            // hide text4 and text4Field, text3 and text3Field, text2 and text2Field
 
             text4.setText("Total bussiness seat");
-            //change text1 to "Flight ID"
+            // change text1 to "Flight ID"
             text3.setText("Total Comfort seat");
             text2.setText("Total Regular seat");
-   
+
             text1.setText("AirCraft Type");
             // text2.setText("Destination");
             submitButton.setText("Add Aircraft");
@@ -235,31 +237,32 @@ public class PerformAdmin extends JFrame {
                     String totalRegularSeat = text2Field.getText();
                     String totalComfortSeat = text3Field.getText();
                     String totalBussinessSeat = text4Field.getText();
-                    //need to add to database and singleton
-                    System.out.println("Aircraft Type: "+aircraftType+"Total Regular Seat: "+totalRegularSeat+"Total Comfort Seat: "+totalComfortSeat+"Total Bussiness Seat: "+totalBussinessSeat);
+                    // need to add to database and singleton
+                    System.out.println("Aircraft Type: " + aircraftType + "Total Regular Seat: " + totalRegularSeat
+                            + "Total Comfort Seat: " + totalComfortSeat + "Total Bussiness Seat: "
+                            + totalBussinessSeat);
                 }
             });
             goBackButton.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     // Create and make visible the new AdminPage frame first
-                    //AdminPage adminPage = new AdminPage(user);
-                    //adminPage.setVisible(true);
-            
+                    // AdminPage adminPage = new AdminPage(user);
+                    // adminPage.setVisible(true);
+
                     // Then dispose of the current PerformAdmin frame
                     dispose();
                 }
             });
-        }
-        else if(name=="Remove Aircraft"){
+        } else if (name == "Remove Aircraft") {
             setTitle("Remove AirCraft");
-            //hide text4 and text4Field, text3 and text3Field, text2 and text2Field
+            // hide text4 and text4Field, text3 and text3Field, text2 and text2Field
 
             // text4.setText("Total bussiness seat");
             // //change text1 to "Flight ID"
             // text3.setText("Total Comfort seat");
             // text2.setText("Total Regular seat");
-            //set text2,3,4 to invisible
+            // set text2,3,4 to invisible
             text2.setVisible(false);
             text2Field.setVisible(false);
             text3.setVisible(false);
@@ -267,7 +270,6 @@ public class PerformAdmin extends JFrame {
             text4.setVisible(false);
             text4Field.setVisible(false);
 
-   
             text1.setText("AirCraftID to remove:");
             // text2.setText("Destination");
             submitButton.setText("Add Aircraft");
@@ -278,19 +280,18 @@ public class PerformAdmin extends JFrame {
                     String totalRegularSeat = text2Field.getText();
                     String totalComfortSeat = text3Field.getText();
                     String totalBussinessSeat = text4Field.getText();
-                    //need to add to database and singleton
-                    System.out.println("Aircraft Type: "+aircraftType+"Total Regular Seat: "+totalRegularSeat+"Total Comfort Seat: "+totalComfortSeat+"Total Bussiness Seat: "+totalBussinessSeat);
+                    // need to add to database and singleton
+                    System.out.println("Aircraft Type: " + aircraftType + "Total Regular Seat: " + totalRegularSeat
+                            + "Total Comfort Seat: " + totalComfortSeat + "Total Bussiness Seat: "
+                            + totalBussinessSeat);
                 }
             });
 
+        } else if (name == "Add Crew") {
 
-        }
-        else if(name =="Add Crew"){
-            
             setTitle("Add Crew");
             text1.setText("Crew ID:");
             text2.setText("Flight ID: ");
-
 
             text3.setVisible(false);
             text3Field.setVisible(false);
@@ -303,16 +304,14 @@ public class PerformAdmin extends JFrame {
                 public void actionPerformed(ActionEvent e) {
                     String crewID = text1Field.getText();
                     String flightID = text2Field.getText();
-                    //need to add to database and singleton
-                    System.out.println("Crew ID: "+crewID+"Flight ID: "+flightID);
+                    // need to add to database and singleton
+                    System.out.println("Crew ID: " + crewID + "Flight ID: " + flightID);
                 }
             });
-        }
-        else if(name =="Remove Crew"){
+        } else if (name == "Remove Crew") {
             setTitle("Remove Crew");
             text1.setText("Crew ID:");
             text2.setText("Flight ID: ");
-
 
             text3.setVisible(false);
             text3Field.setVisible(false);
@@ -325,13 +324,13 @@ public class PerformAdmin extends JFrame {
                 public void actionPerformed(ActionEvent e) {
                     String crewID = text1Field.getText();
                     String flightID = text2Field.getText();
-                    //need to add to database and singleton
-                    System.out.println("Crew ID: "+crewID+"Flight ID: "+flightID);
+                    // need to add to database and singleton
+                    System.out.println("Crew ID: " + crewID + "Flight ID: " + flightID);
                 }
             });
         }
 
-        else if(name =="Add Flight Destination"){
+        else if (name == "Add Flight Destination") {
             setTitle("Add Flight Destination");
             text1.setText("Airport Name:");
             text2.setText("Airport Code: ");
@@ -345,14 +344,13 @@ public class PerformAdmin extends JFrame {
                     String airportCode = text2Field.getText();
                     String city = text3Field.getText();
                     String country = text4Field.getText();
-                    //need to add to database and singleton
-                    System.out.println("Airport Name: "+airportName+"Airport Code: "+airportCode+"City: "+city+"Country: "+country);
+                    // need to add to database and singleton
+                    System.out.println("Airport Name: " + airportName + "Airport Code: " + airportCode + "City: " + city
+                            + "Country: " + country);
                 }
             });
 
-
-        }
-        else if(name =="Remove Flight Destination"){
+        } else if (name == "Remove Flight Destination") {
             setTitle("Remove Flight Destination");
             text1.setText("Flight Destination Code");
             text2.setVisible(false);
@@ -366,16 +364,14 @@ public class PerformAdmin extends JFrame {
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     String AirportCode = text1Field.getText();
-                    //need to add to database and singleton
-                    System.out.println("Airport Code removed: "+AirportCode);
+                    // need to add to database and singleton
+                    System.out.println("Airport Code removed: " + AirportCode);
                 }
             });
-
-
         }
 
-        else if(name=="Add Flight Info"){
-            //set all the text to visible
+        else if (name == "Add Flight Info") {
+            // set all the text to visible
 
             text5.setVisible(true);
             text5Field.setVisible(true);
@@ -389,7 +385,8 @@ public class PerformAdmin extends JFrame {
             text9Field.setVisible(true);
             text10.setVisible(true);
             text10Field.setVisible(true);
-            //(FlightID, Destination, ArrivalTime, ArrivalDate, Origin, DepartureTime, DepartureDate, CrewID, PlaneID, BasePrice
+            // (FlightID, Destination, ArrivalTime, ArrivalDate, Origin, DepartureTime,
+            // DepartureDate, CrewID, PlaneID, BasePrice
             setTitle("Add Flight Info");
             text1.setText("Flight ID");
             text2.setText("Destination");
@@ -408,22 +405,29 @@ public class PerformAdmin extends JFrame {
                 public void actionPerformed(ActionEvent e) {
                     String flightID = text1Field.getText();
                     String destination = text2Field.getText();
-                    String arrivalTime = text3Field.getText();
-                    String arrivalDate = text4Field.getText();
+                    LocalTime arrivalTime = LocalTime.parse(text3Field.getText());
+                    LocalDate arrivalDate = LocalDate.parse(text4Field.getText());
                     String origin = text5Field.getText();
-                    String departureTime = text6Field.getText();
-                    String departureDate = text7Field.getText();
+                    LocalTime departureTime = LocalTime.parse(text6Field.getText());
+                    LocalDate departureDate = LocalDate.parse(text7Field.getText());
                     String crewID = text8Field.getText();
                     String planeID = text9Field.getText();
                     String basePrice = text10Field.getText();
-                    //need to add to database and singleton
-                    System.out.println("Flight ID: "+flightID+"Destination: "+destination+"Arrival Time: "+arrivalTime+"Arrival Date: "+arrivalDate+"Origin: "+origin+"Departure Time: "+departureTime+"Departure Date: "+departureDate+"Crew ID: "+crewID+"Plane ID: "+planeID+"Base Price: "+basePrice);
+                    // need to add to database and singleton
+                    System.out.println("Flight ID: " + flightID);
+                    System.out.println("Destination: " + destination);
+                    System.out.println("Arrival Time: " + arrivalTime);
+                    System.out.println("Arrival Date: " + arrivalDate);
+                    System.out.println("Origin: " + origin);
+                    System.out.println("Departure Time: " + departureTime);
+                    System.out.println("Departure Date: " + departureDate);
+                    System.out.println("Crew ID: " + crewID);
+                    System.out.println("Plane ID: " + planeID);
+                    System.out.println("Base Price: " + basePrice);
                 }
             });
 
-
-        }
-        else if(name =="Remove Flight Info"){
+        } else if (name == "Remove Flight Info") {
             setTitle("Remove Flight Info");
             text1.setText("Flight ID");
             text2.setVisible(false);
@@ -437,14 +441,13 @@ public class PerformAdmin extends JFrame {
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     String flightID = text1Field.getText();
-                    //need to add to database and singleton
-                    System.out.println("Flight ID: "+flightID);
+                    // need to add to database and singleton
+                    System.out.println("Flight ID: " + flightID);
                 }
             });
 
-        }
-        else if(name =="Modify Flight"){
-            //set all the text to visible
+        } else if (name == "Modify Flight") {
+            // set all the text to visible
 
             text5.setVisible(true);
             text5Field.setVisible(true);
@@ -458,7 +461,8 @@ public class PerformAdmin extends JFrame {
             text9Field.setVisible(true);
             text10.setVisible(true);
             text10Field.setVisible(true);
-            //(FlightID, Destination, ArrivalTime, ArrivalDate, Origin, DepartureTime, DepartureDate, CrewID, PlaneID, BasePrice
+            // (FlightID, Destination, ArrivalTime, ArrivalDate, Origin, DepartureTime,
+            // DepartureDate, CrewID, PlaneID, BasePrice
             setTitle("Modify Flight");
             text1.setText("Flight ID");
             text2.setText("Destination");
@@ -477,30 +481,36 @@ public class PerformAdmin extends JFrame {
                 public void actionPerformed(ActionEvent e) {
                     String flightID = text1Field.getText();
                     String destination = text2Field.getText();
-                    String arrivalTime = text3Field.getText();
-                    String arrivalDate = text4Field.getText();
+                    LocalTime arrivalTime = LocalTime.parse(text3Field.getText());
+                    LocalDate arrivalDate = LocalDate.parse(text4Field.getText());
                     String origin = text5Field.getText();
-                    String departureTime = text6Field.getText();
-                    String departureDate = text7Field.getText();
+                    LocalTime departureTime = LocalTime.parse(text6Field.getText());
+                    LocalDate departureDate = LocalDate.parse(text7Field.getText());
                     String crewID = text8Field.getText();
                     String planeID = text9Field.getText();
                     String basePrice = text10Field.getText();
-                    //need to add to database and singleton
-                    System.out.println("Flight ID: "+flightID+"Destination: "+destination+"Arrival Time: "+arrivalTime+"Arrival Date: "+arrivalDate+"Origin: "+origin+"Departure Time: "+departureTime+"Departure Date: "+departureDate+"Crew ID: "+crewID+"Plane ID: "+planeID+"Base Price: "+basePrice);
+                    // need to add to database and singleton
+                    System.out.println("Flight ID: " + flightID);
+                    System.out.println("Destination: " + destination);
+                    System.out.println("Arrival Time: " + arrivalTime);
+                    System.out.println("Arrival Date: " + arrivalDate);
+                    System.out.println("Origin: " + origin);
+                    System.out.println("Departure Time: " + departureTime);
+                    System.out.println("Departure Date: " + departureDate);
+                    System.out.println("Crew ID: " + crewID);
+                    System.out.println("Plane ID: " + planeID);
+                    System.out.println("Base Price: " + basePrice);
                 }
             });
         }
 
     }
-    
+
     // Helper method to add components with GridBagConstraints
     private void addComponent(JPanel panel, Component component, GridBagConstraints gbc, int gridx, int gridy) {
         gbc.gridx = gridx;
         gbc.gridy = gridy;
         panel.add(component, gbc);
     }
-    
 
-
-    
 }

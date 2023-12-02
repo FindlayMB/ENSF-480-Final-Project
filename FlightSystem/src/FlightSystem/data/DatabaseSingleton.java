@@ -421,4 +421,31 @@ public class DatabaseSingleton {
         int[] values = { flightID, passenger.getPassengerID() };
         removeFrom("passengerlist", columns, values);
     }
+
+    public void updateFlight(Flight flight) throws SQLException {
+        String query = """
+                UPDATE flights SET
+                Destination = '%s',
+                ArrivalTime = '%s',
+                ArrivalDate = '%s',
+                Origin = '%s',
+                DepartureTime = '%s',
+                DepartureDate = '%s',
+                CrewID = %d,
+                PlaneID = %d,
+                BasePrice = %f
+                WHERE FlightID = %d;""";
+        query = String.format(query,
+                flight.getOrigin().getCode(),
+                flight.getArrivalTime(),
+                flight.getArrivalDate(),
+                flight.getOrigin().getCode(),
+                flight.getDepartureTime(),
+                flight.getDepartureDate(),
+                flight.getCrew().getCrewID(),
+                flight.getPlane().getID(),
+                flight.getBasePrice(),
+                flight.getID());
+        execute(query);
+    }
 }

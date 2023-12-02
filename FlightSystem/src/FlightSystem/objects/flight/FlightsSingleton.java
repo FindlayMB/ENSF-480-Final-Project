@@ -62,6 +62,10 @@ public class FlightsSingleton {
         flights.put(newFlight.getID(), newFlight);
     }
 
+    public void updateFlight(Flight updatedFlight) {
+
+    }
+
     public void removeFlight(Flight removeFlight) {
         try {
             DatabaseSingleton.getInstance().removeFlight(removeFlight);
