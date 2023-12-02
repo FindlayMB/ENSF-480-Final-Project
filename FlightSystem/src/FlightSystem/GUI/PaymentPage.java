@@ -56,6 +56,7 @@ public class PaymentPage extends JFrame implements ActionListener, MouseListener
     private JCheckBox insuranceCheckBox;
 
     public PaymentPage(RegisteredUser signedInUser, Flight selectedFlight, Integer selectedSeatNum, Color selectedSeatColor)
+
     {
         super("Payment"); // create a frame
         this.signedInUser = signedInUser;
@@ -81,6 +82,7 @@ public class PaymentPage extends JFrame implements ActionListener, MouseListener
                 this.seatPriceMultipler = BusinessSeat .getPriceMultipler();
                 System.out.println(seatPriceMultipler + "business");
             }
+            
                 
             
         
