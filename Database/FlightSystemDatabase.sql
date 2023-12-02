@@ -90,7 +90,7 @@ CREATE TABLE passengerlist (
 
 DROP TABLE IF EXISTS promos;
 CREATE TABLE promos (
-    UserId INT NOT NULL,
+    UserID INT NOT NULL,
     PromoCode VARCHAR(10) NOT NULL,
     DiscountPercent FLOAT NOT NULL,
     PRIMARY KEY(UserID, PromoCode),

@@ -119,9 +119,9 @@ public class RegisteredUser extends User {
     }
 
     public void addPromo(String promoCode, Float discountPercent) {
-        promos.put(promoCode, discountPercent);
         try {
             DatabaseSingleton.getInstance().addPromo(this.getID(), promoCode, discountPercent);
+            promos.put(promoCode, discountPercent);
         } catch (Exception e) {
             e.printStackTrace();
             System.out.println("Failed to add promo!");
