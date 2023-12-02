@@ -63,7 +63,13 @@ public class FlightsSingleton {
     }
 
     public void updateFlight(Flight updatedFlight) {
-
+        try {
+            DatabaseSingleton.getInstance().updateFlight(updatedFlight);
+            flights.put(updatedFlight.getID(), updatedFlight);
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.out.println("Failed to update flight!");
+        }
     }
 
     public void removeFlight(Flight removeFlight) {
