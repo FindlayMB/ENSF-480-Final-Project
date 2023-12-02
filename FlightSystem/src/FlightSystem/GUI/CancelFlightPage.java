@@ -1,9 +1,13 @@
 package FlightSystem.GUI;
+import javax.mail.MessagingException;
 import javax.swing.*;
 
 import FlightSystem.objects.*;
 import FlightSystem.objects.flight.Flight;
 import FlightSystem.objects.flight.FlightsSingleton;
+import FlightSystem.objects.seats.BusinessSeat;
+import FlightSystem.objects.seats.ComfortSeat;
+import FlightSystem.objects.seats.RegularSeat;
 import FlightSystem.objects.seats.Seat;
 import FlightSystem.objects.user.RegisteredUser;
 import FlightSystem.objects.user.User;
@@ -199,31 +203,60 @@ public class CancelFlightPage extends JFrame implements ActionListener{
         }
         else if(e.getSource() == nextButton)
         {
-            // FINS STUFF TO CANCEL FLIGHT GOES HERE
-            Flight bookedFlight = FlightsSingleton.getInstance().getFlightMap().get(flightID); // get the flight
-            ArrayList<Seat> bookedSeats = bookedFlight.getPassengerList().getPassengers(); 
-            Seat bookedSeat = null;   
-            for (Seat seat : bookedSeats) {
-                if (seat.getPassengerID() == user.getID()) {
-                    // Found the seat with the specified passenger ID
-                    bookedSeat = seat; // get seat and price of seat
+            try
+            {
+
+                // Send cancellation email to user
+                Flight bookedFlight = FlightsSingleton.getInstance().getFlightMap().get(flightID); // get the flight
+                ArrayList<Seat> bookedSeats = bookedFlight.getPassengerList().getPassengers(); 
+                Seat bookedSeat = null;   
+                for (Seat seat : bookedSeats) {
+                    if (seat.getPassengerID() == user.getID()) {
+                        // Found the seat with the specified passenger ID
+                        bookedSeat = seat; // get seat and price of seat
+                    }
+                }         
+                double seatPrice;
+    
+                // Multiply seat by multiplier to get price of seat
+                if(bookedSeat instanceof RegularSeat)
+                {
+                    RegularSeat regularSeat = (RegularSeat)bookedSeat;
+                    seatPrice = bookedFlight.getBasePrice()*RegularSeat.getPriceMultipler();
+                } 
+                else if(bookedSeat instanceof BusinessSeat)
+                {
+                    BusinessSeat businessSeat = (BusinessSeat)bookedSeat;
+                    seatPrice = bookedFlight.getBasePrice()*BusinessSeat.getPriceMultipler();
+                }                                                   
+                else
+                {
+                    ComfortSeat comfortSeat = (ComfortSeat)bookedSeat;
+                    seatPrice = bookedFlight.getBasePrice()*ComfortSeat.getPriceMultipler();
                 }
-            }                                                              
-            
-            double seatPrice = bookedSeat.getPrice();
-                                                                     // multiply seat by multiplier to get price of seat
-                                                                        // decrease if insurance
-            Mail.sendCancellation(user, flightID, bookedSeat.getInsurance());
-            JOptionPane.showMessageDialog(this, "Flight cancelled");
-            this.dispose();
-            if(user.getRole().equals("guest"))
-            {
-                HomePage nextPage = new HomePage(null);
+                
+                Mail.sendCancellation(user, bookedFlight, bookedSeat.getInsurance(), seatPrice);
+
+                // Remove user from flight
+                bookedFlight.removePassenger(bookedSeat);
+                
+                JOptionPane.showMessageDialog(this, "Flight cancelled");
+                this.dispose();
+                if(user.getRole().equals("guest"))
+                {
+                    HomePage nextPage = new HomePage(null);
+                }
+                else
+                {
+                    HomePage nextPage = new HomePage((RegisteredUser)user);
+                }
             }
-            else
-            {
-                HomePage nextPage = new HomePage((RegisteredUser)user);
-            }
+            catch (MessagingException ex) {
+                    // Handle AddressException and MessagingException here
+                    ex.printStackTrace(); // You might want to log this to a proper logging system
+                    // Optionally, show an error message to the user
+                    JOptionPane.showMessageDialog(this, "Error sending email: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+                }
         
         }
         

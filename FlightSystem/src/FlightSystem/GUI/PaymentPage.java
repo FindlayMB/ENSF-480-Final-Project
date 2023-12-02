@@ -242,7 +242,9 @@ public class PaymentPage extends JFrame implements ActionListener, MouseListener
                 try 
                 {
                         boolean hasInsurance = insuranceCheckBox.isSelected();
-                        Mail.emailTicket(firstName, lastName, email, creditCardNumber, expiryDate, CSV, selectedFlight, selectedSeatNum, totalPrice);
+                        String creditCardlast4 = creditCardNumber.substring(creditCardNumber.length() - 4);
+
+                        Mail.emailTicket(firstName, lastName, email, creditCardlast4, expiryDate, CSV, selectedFlight, selectedSeatNum, totalPrice);
                         String seatType = "";
                         if(selectedSeatColor.equals(Color.GREEN))
                         {

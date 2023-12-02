@@ -3,7 +3,6 @@ package FlightSystem.data;
 import java.sql.*;
 import java.util.*;
 
-import com.mysql.cj.x.protobuf.MysqlxDatatypes.Scalar.String;
 
 import FlightSystem.objects.*;
 import FlightSystem.objects.airport.*;

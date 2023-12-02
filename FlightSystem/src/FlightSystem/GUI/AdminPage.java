@@ -62,6 +62,11 @@ public class AdminPage extends JFrame implements ActionListener {
         modifyFlightButton.addActionListener(this);
         buttonPanel.add(modifyFlightButton);
 
+        JButton managePromoButton = new JButton("Manage Promo");
+        managePromoButton.setPreferredSize(new Dimension(150, 50));
+        managePromoButton.addActionListener(this);
+        buttonPanel.add(managePromoButton);
+
         frame.add(buttonPanel, BorderLayout.CENTER);
         // buttonPanel.add(southPanel);
         // Add the go back button at the bottom
@@ -220,7 +225,17 @@ public class AdminPage extends JFrame implements ActionListener {
             PerformAdmin a = new PerformAdmin(this.user, "Modify Flight");
             a.setVisible(true);
             enableButton();
-        } else if (buttonText == "Go Back") {
+        } 
+        else if(buttonText == "Manage Promo"){
+            disableButton(clickedButton);
+            System.out.println("Manage Promo button clicked");
+            // make a call to new page PerForm Admin
+            PerformAdmin a = new PerformAdmin(this.user, "Manage Promo");
+            a.setVisible(true);
+            enableButton();
+        }
+
+        else if (buttonText == "Go Back") {
             // make a function call handle remove crew
             disableButton(clickedButton);
             System.out.println("Go Back button clicked");

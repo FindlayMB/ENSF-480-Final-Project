@@ -504,6 +504,46 @@ public class PerformAdmin extends JFrame {
             });
         }
 
+        else if(name == "Manage Promo")
+        {
+            setTitle("Manage Promo"); 
+            text1.setText("Enter News:");
+            text2.setText("Promo Code:");
+            text3.setText("Discount Percent:");
+            text4.setVisible(false);
+            text4Field.setVisible(false);
+            submitButton.setText("Send Promo");
+
+            submitButton.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    String news = text1Field.getText();
+                    String promoCode = text2Field.getText();
+                    float discount = Float.parseFloat(text3Field.getText());
+
+                    // check discount is between 0 and 1
+                    if(discount>1 || discount<0)
+                    {
+                        JOptionPane.showMessageDialog(PerformAdmin.this, "Discount must be between 0 and 1", "Error",
+                            JOptionPane.ERROR_MESSAGE);
+                        return;
+                    }
+                 
+                    // need to add to database and singleton
+                    System.out.println("News " + news);
+                    System.out.println("Promo: " + promoCode);
+                    System.out.println("Discount: " + discount);
+                    UsersSingleton.getInstance().addPromo(promoCode, discount);
+                    Mail.sendPromo(news, promoCode, discount);
+                }
+            });
+
+        
+
+                        
+
+        }
+
     }
 
     // Helper method to add components with GridBagConstraints

@@ -252,6 +252,11 @@ public class HomePage extends JFrame implements ActionListener{
             CancelFlightPage nextPage = new CancelFlightPage(user);
         }
         else if(buttonText.equals("View Passenger List")){
-            JOptionPane.showMessageDialog(this, "Successfully view");
+            // get list of flights they are on 
+
+            // let them select flight
+
+            // show list of passengers on that flight
+            
          }
 }}
