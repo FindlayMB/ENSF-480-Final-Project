@@ -11,8 +11,8 @@ public class BusinessSeat extends Seat {
         super(seatNumber);
     }
 
-    public BusinessSeat(int seatNumber, int passengerID, boolean insurance) {
-        super(seatNumber, passengerID, insurance);
+    public BusinessSeat(int seatNumber, int passengerID, boolean insurance, Float pricePaid) {
+        super(seatNumber, passengerID, insurance, pricePaid);
     }
 
     @Override

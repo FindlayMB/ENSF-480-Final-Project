@@ -11,8 +11,8 @@ public class RegularSeat extends Seat {
         super(seatNumber);
     }
 
-    public RegularSeat(int seatNumber, int passengerID, boolean insurance) {
-        super(seatNumber, passengerID, insurance);
+    public RegularSeat(int seatNumber, int passengerID, boolean insurance, Float pricePaid) {
+        super(seatNumber, passengerID, insurance, pricePaid);
     }
 
     @Override
