@@ -1,12 +1,14 @@
 package FlightSystem.objects.seats;
 
+import FlightSystem.objects.ToQuery;
+
 /**
  * Seat abstract class
  * Used as a factory for seats
  * 
  * @author Findlay Brown
  */
-public abstract class Seat {
+public abstract class Seat implements ToQuery {
     private int seatNumber;
     private int passengerID;
     private boolean isReserved;
@@ -28,6 +30,8 @@ public abstract class Seat {
     }
 
     public abstract String getSeatType();
+
+    public abstract double getPriceMultipler();
 
     public int getSeatNumber() {
         return seatNumber;
@@ -52,6 +56,10 @@ public abstract class Seat {
         this.price = price;
     }
 
+    public boolean getInsurance() {
+        return insurance;
+    }
+
     @Override
     public String toString() {
         String output = String.format("Seat Number:%d  Passenger ID: %d  Seat Type: %s",
@@ -59,10 +67,14 @@ public abstract class Seat {
         return output;
     }
 
-    public static double getPriceMultipler()
-    {
-        return 1;
+    public String toQuery() {
+        String output = String.format("%d,%d,'%s',%b",
+                getPassengerID(),
+                getSeatNumber(),
+                getSeatType(),
+                getInsurance());
+
+        return output;
     }
-    
 
 }

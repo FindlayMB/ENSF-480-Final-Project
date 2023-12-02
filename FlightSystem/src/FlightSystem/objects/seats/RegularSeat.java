@@ -7,7 +7,6 @@ package FlightSystem.objects.seats;
 public class RegularSeat extends Seat {
     private static final double priceMultipler = 1;
 
-
     public RegularSeat(int seatNumber) {
         super(seatNumber);
     }
@@ -20,8 +19,8 @@ public class RegularSeat extends Seat {
     public String getSeatType() {
         return "regular";
     }
-    
-    public static double getPriceMultipler() {
+
+    public double getPriceMultipler() {
         return priceMultipler;
     }
 

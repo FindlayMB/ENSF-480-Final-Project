@@ -85,14 +85,12 @@ SELECT UserID,FirstName,LastName,Role FROM users AS Admins
 
 
 /* Get full tables */
-GET * FROM planes;
-GET * FROM airports;
-GET * FROM users;
-GET * FROM crews;
-GET * FROM flights;
-GET * FROM passengerlist;
-
-
+SELECT * FROM planes;
+SELECT * FROM airports;
+SELECT * FROM users;
+SELECT * FROM crews;
+SELECT * FROM flights;
+SELECT * FROM passengerlist;
 
 /* 
 Create a user for a database 

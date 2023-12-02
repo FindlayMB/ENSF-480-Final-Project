@@ -1,7 +1,6 @@
 package FlightSystem.objects.flight;
 
 import java.util.ArrayList;
-
 import FlightSystem.objects.seats.*;
 
 /**
@@ -15,10 +14,14 @@ public class PassengerList {
         this.passengers = new ArrayList<Seat>(passengers);
     }
 
-    public void addPassenger() {
-
+    public void addPassenger(Seat passenger) {
+        this.passengers.add(passenger);
     }
-    
+
+    public void removePassenger(Seat passenger) {
+        this.passengers.remove(passenger);
+    }
+
     public ArrayList<Seat> getPassengers() {
         return passengers;
     }

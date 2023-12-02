@@ -3,6 +3,7 @@ package FlightSystem.data;
 import java.sql.*;
 import java.util.*;
 
+import FlightSystem.objects.*;
 import FlightSystem.objects.airport.*;
 import FlightSystem.objects.flight.*;
 import FlightSystem.objects.plane.*;
@@ -17,8 +18,8 @@ import FlightSystem.objects.user.*;
  * @author Findlay Brown
  */
 public class DatabaseSingleton {
-    private static DatabaseSingleton dbInstance = null;
-    private Connection dbConnection = null;
+    private static DatabaseSingleton dbInstance;
+    private Connection dbConnection;
     // private AirportsSingleton airports = AirportsSingleton.getInstance();
 
     /**
@@ -44,6 +45,10 @@ public class DatabaseSingleton {
         return dbInstance;
     }
 
+    /*
+     * Functions that execute queries on the database
+     */
+
     public ResultSet executeQuery(String query) throws SQLException {
         Statement statement = dbConnection.createStatement();
         return statement.executeQuery(query);
@@ -53,6 +58,10 @@ public class DatabaseSingleton {
         Statement statement = dbConnection.createStatement();
         return statement.execute(query);
     }
+
+    /*
+     * Functions to get data from database
+     */
 
     public ResultSet getTable(String tableName) throws SQLException {
         String query = String.format("SELECT * FROM %s", tableName);
@@ -78,9 +87,11 @@ public class DatabaseSingleton {
      */
     public HashMap<Integer, User> getUserTable() throws SQLException {
         HashMap<Integer, ArrayList<Integer>> flights = getUserFlights();
-        String query = "SELECT u.*, r.Username, r.Password, r.SignUpDate, r.CreditCardNumber, r.CVV, r.ExpiryDate FROM users as u " +
-        "LEFT JOIN (SELECT UserID, Username, Password, SignUpDate, CreditCardNumber, CVV, ExpiryDate FROM registered) as r " +
-        "ON u.UserID = r.UserID;";
+        String query = """
+                SELECT u.*,r.Username,r.Password,r.SignUpDate,r.CreditCardNumber,r.CVV,r.ExpiryDate FROM users as u
+                LEFT JOIN
+                (SELECT UserID,Username,Password,SignUpDate,CreditCardNumber,CVV,ExpiryDate FROM registered) as r
+                ON u.UserID = r.UserID;""";
 
         ResultSet table = executeQuery(query);
         HashMap<Integer, User> users = new HashMap<Integer, User>();
@@ -91,39 +102,21 @@ public class DatabaseSingleton {
                     table.getString(2), //
                     table.getString(3),
                     table.getString(4),
-                    table.getDate(5).toLocalDate(),
-                    table.getString(6));
-            if (table.getString(6).equals("guest") == false) {
+                    table.getString(5));
+            if (table.getString(5).equals("guest") == false) {
                 user = new RegisteredUser(user,
-                        table.getString(7),
-                        table.getString(8),
-                        table.getDate(9).toLocalDate(),
                         table.getString(6),
-                        new CreditCard(table.getString(10),
-                                table.getInt(11),
-                                table.getDate(12) != null ? table.getDate(12).toLocalDate() : null),
+                        table.getString(7),
+                        table.getDate(8).toLocalDate(),
+                        table.getString(5),
+                        new CreditCard(table.getString(9),
+                                table.getInt(10),
+                                table.getDate(11) != null ? table.getDate(12).toLocalDate() : null),
                         flights.get(table.getInt(1)));
             }
             users.put(table.getInt(1), user);
         }
         return users;
-    }
-
-    public void addUserWithFields(String Username,String Password,String FirstName,String LastName,String Email,String signUpDate,String creditCardNumber,String Role) throws SQLException {
-        String sql ="INSERT INTO Users (Username,Password,FirstName,LastName,Email,SignUpDate,creditCardNumber,Role) VALUES (?,?,?,?,?,?,?,?)";
-        try (PreparedStatement preparedStatement = dbConnection.prepareStatement(sql)) {
-            //preparedStatement.setInt(1,UserID);
-            preparedStatement.setString(1,Username);
-            preparedStatement.setString(2,Password);
-            preparedStatement.setString(3,FirstName);
-            preparedStatement.setString(4,LastName);
-            preparedStatement.setString(5,Email);
-            preparedStatement.setString(6,signUpDate);
-            preparedStatement.setString(7,creditCardNumber);
-            preparedStatement.setString(8,Role);
-
-            preparedStatement.executeUpdate();
-        } 
     }
 
     public HashMap<String, Airport> getAirportTable() throws SQLException {
@@ -186,17 +179,19 @@ public class DatabaseSingleton {
                     planeResultSet.getString(2),
                     planeResultSet.getInt(3),
                     planeResultSet.getInt(4),
-                    planeResultSet.getInt(5)
-            );
+                    planeResultSet.getInt(5));
         } else {
             throw new SQLException("Plane not found for code: " + planeID);
         }
     }
 
     public HashMap<Integer, ArrayList<Integer>> getUserFlights() throws SQLException {
-        String query = "SELECT f.FlightID, c.CrewMemberID FROM flights as f " +
-        "JOIN (SELECT CrewID, CrewMemberID FROM crews) as c " +
-        "ON f.CrewID = c.CrewID;";
+        String query = """
+                SELECT f.FlightID,c.CrewMemberID FROM flights as f
+                JOIN
+                (SELECT CrewID,CrewMemberID FROM crews) as c
+                ON f.CrewID = c.CrewID;
+                """;
 
         HashMap<Integer, ArrayList<Integer>> flights = new HashMap<Integer, ArrayList<Integer>>();
         ResultSet table = executeQuery(query);
@@ -220,34 +215,237 @@ public class DatabaseSingleton {
         return new PassengerList(passengers);
     }
 
-    public ArrayList<RegisteredUser> getCrewList(int flightID) throws SQLException {
+    public void getCrewList(Crew crew, int flightID) throws SQLException {
         UsersSingleton usersSingleton = UsersSingleton.getInstance();
-        String query = String.format(
-            "SELECT f.FlightID, c.CrewMemberID FROM flights AS f " +
-            "JOIN (SELECT CrewID, CrewMemberID FROM crews) AS c " +
-            "ON f.CrewID = c.CrewID " +
-            "WHERE f.FlightID = %d AND columnName = 'your_value' AND anotherColumn = 'another_value'",
-            flightID
-        );
-    
+        String query = String.format("""
+                SELECT f.FlightID,c.CrewID,c.CrewMemberID,c.Job FROM flights as f
+                JOIN
+                (SELECT CrewID,CrewMemberID,Job FROM crews) as c
+                ON f.CrewID = c.CrewID
+                WHERE f.FlightID = %d;
+                """, flightID);
+
         ResultSet table = executeQuery(query);
         ArrayList<RegisteredUser> crewMembers = new ArrayList<RegisteredUser>();
 
-        while (table.next()) {
-            crewMembers.add(usersSingleton.getRegisteredUser(table.getInt(2)));
+        table.next();
+        crew.setCrewID(table.getInt(2));
+        do {
+            RegisteredUser regUser = usersSingleton.getRegisteredUser(table.getInt(3));
+            regUser.setJob(table.getString(4));
+            crewMembers.add(regUser);
+        } while (table.next());
+        crew.setCrew(crewMembers);
+    }
+
+    /*
+     * Functions to insert objects into the database
+     */
+
+    public Integer insertInto(String tableName, String[] columns, String values) throws SQLException {
+        String columnString = "";
+        for (String s : columns) {
+            columnString += s + ",";
         }
-        return crewMembers;
+        columnString = columnString.substring(0, columnString.length() - 1);
+        String query = String.format("""
+                INSERT INTO %s (%s)
+                VALUES
+                (%s);
+                """, tableName, columnString, values);
+        Statement statement = dbConnection.createStatement();
+        statement.executeUpdate(query, Statement.RETURN_GENERATED_KEYS);
+
+        ResultSet table = statement.getGeneratedKeys();
+        table.next();
+        return table.getRow() != 0 ? table.getInt(1) : 0;
+    }
+
+    public Integer insertInto(String tableName, String[] columns, ToQuery object) throws SQLException {
+        return insertInto(tableName, columns, object.toQuery());
+    }
+
+    public Plane addPlane(Plane plane) {
+        String[] columns = { "PlaneType", "NumRegular", "NumComfort", "NumBusiness" };
+        Plane newPlane = null;
+        try {
+            newPlane = new Plane(insertInto("planes", columns, plane), plane);
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.out.println("Failed to insert new plane: " + plane.toString());
+        }
+        return newPlane;
     }
 
     public void addAirport(Airport airport) throws SQLException {
-        String query = String.format(" INSERT INTO airports (AirportCode, AirportName, City, Country)" +
-                "VALUES ('%s','%s','%s','%s');",
-                airport.getCode(), airport.getName(),
-                airport.getCity(), airport.getCountry());
-        execute(query);
+        String[] columns = { "AirportCode", "AirportName", "City", "Country" };
+        insertInto("airports", columns, airport);
+    }
 
-        System.out.println("Added AAA");
+    public User addUser(User user) {
+        String[] columns = { "FirstName", "LastName", "Email", "Role" };
+        User newUser = null;
+        try {
+            newUser = new User(insertInto("users", columns, user), user);
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.out.println("Failed to insert new user: " + user.toString());
+        }
+        return newUser;
+    }
+
+    public int addRegisteredUser(RegisteredUser regUser) throws SQLException {
+        String[] columns = { "UserID", "Username", "Password", "SignUpDate", "CreditCardNumber", "CVV", "ExpiryDate" };
+        return insertInto("registered", columns, regUser);
+    }
+
+    public void addCrew(Crew crew) {
+        String[] columns = { "CrewID", "CrewMemberID", "Job" };
+        crew.getCrew().forEach((cMember) -> {
+            try {
+                insertInto("crews", columns,
+                        String.format("%d,%d,'%s'",
+                                crew.getCrewID(), cMember.getID(), cMember.getJob()));
+            } catch (Exception e) {
+                e.printStackTrace();
+                System.out.println("Failed to add crewmember" + cMember.getID());
+            }
+        });
+    }
+
+    public void addCrewMember(RegisteredUser crewMember, int crewID, String job) {
 
     }
 
+    public Flight addFlight(Flight flight) {
+        String[] columns = { "Destination", "ArrivalTime", "ArrivalDate", "Origin", "DepartureTime",
+                "DepartureDate", "CrewID", "PlaneID", "BasePrice" };
+        Flight newFlight = null;
+        try {
+            newFlight = new Flight(insertInto("flights", columns, flight), flight);
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.out.println("Failed to insert new flight: " + flight.toString());
+        }
+        return newFlight;
+    }
+
+    public void addPassenger(Seat passenger, int flightID) throws SQLException {
+        String[] columns = { "FlightID", "UserID", "SeatNumber", "SeatType", "Insurance" };
+
+        insertInto("passengerlist", columns,
+                String.format("%d,%s", flightID, passenger.toQuery()));
+    }
+
+    public void addUserWithFields(String Username, String Password, String FirstName, String LastName, String Email,
+            String signUpDate, String creditCardNumber, String Role) throws SQLException {
+        String sql = "INSERT INTO Users (Username,Password,FirstName,LastName,Email,SignUpDate,creditCardNumber,Role) VALUES (?,?,?,?,?,?,?,?)";
+        try (PreparedStatement preparedStatement = dbConnection.prepareStatement(sql)) {
+            // preparedStatement.setInt(1,UserID);
+            preparedStatement.setString(1, Username);
+            preparedStatement.setString(2, Password);
+            preparedStatement.setString(3, FirstName);
+            preparedStatement.setString(4, LastName);
+            preparedStatement.setString(5, Email);
+            preparedStatement.setString(6, signUpDate);
+            preparedStatement.setString(7, creditCardNumber);
+            preparedStatement.setString(8, Role);
+
+            preparedStatement.executeUpdate();
+        }
+    }
+
+    /*
+     * Functions to remove objects from database tables
+     */
+
+    public void removeFrom(String table, String column, int value) throws SQLException {
+        String query = String.format("""
+                DELETE FROM %s WHERE %s = %d
+                """, table, column, value);
+        execute(query);
+    }
+
+    public void removeFrom(String table, String column, String value) throws SQLException {
+        String query = String.format("""
+                DELETE FROM %s WHERE %s = '%s'
+                """, table, column, value);
+        execute(query);
+    }
+
+    public void removeFrom(String table, String[] columns, int[] values) throws SQLException {
+        String query = String.format("""
+                DELETE FROM %s WHERE %s = %d and %s = %d;
+                """, table, columns[0], values[0], columns[1], values[1]);
+        execute(query);
+    }
+
+    public void removePlane(Plane plane) throws SQLException {
+        removeFrom("planes", "PlaneID", plane.getID());
+    }
+
+    public void removeAirport(Airport airport) throws SQLException {
+        removeFrom("airports", "AirportCode", airport.getCode());
+    }
+
+    public void removeUser(User user) throws SQLException {
+        removeFrom("users", "UserID", user.getID());
+    }
+
+    public void removeRegisteredUser(RegisteredUser user) throws SQLException {
+        removeFrom("registered", "UserID", user.getID());
+    }
+
+    public void removeCrew(Crew crew) throws SQLException {
+        String query = """
+                SET FOREIGN_KEY_CHECKS=0;
+                DELETE FROM crews WHERE CrewMemberID = %d;
+                SET FOREIGN_KEY_CHECKS=1;
+                """;
+        crew.getCrew().forEach((cMember) -> {
+            try {
+                execute(String.format(query, cMember.getID()));
+            } catch (Exception e) {
+                e.printStackTrace();
+                System.out.println("Failed to remove crewID: " + cMember.getID());
+            }
+        });
+    }
+
+    public void removeFlight(Flight flight) throws SQLException {
+        removeFrom("flights", "FlightID", flight.getID());
+    }
+
+    public void removePassenger(Seat passenger, int flightID) throws SQLException {
+        String[] columns = { "FlightID", "UserID" };
+        int[] values = { flightID, passenger.getPassengerID() };
+        removeFrom("passengerlist", columns, values);
+    }
+
+    public void updateFlight(Flight flight) throws SQLException {
+        String query = """
+                UPDATE flights SET
+                Destination = '%s',
+                ArrivalTime = '%s',
+                ArrivalDate = '%s',
+                Origin = '%s',
+                DepartureTime = '%s',
+                DepartureDate = '%s',
+                CrewID = %d,
+                PlaneID = %d,
+                BasePrice = %f
+                WHERE FlightID = %d;""";
+        query = String.format(query,
+                flight.getOrigin().getCode(),
+                flight.getArrivalTime(),
+                flight.getArrivalDate(),
+                flight.getOrigin().getCode(),
+                flight.getDepartureTime(),
+                flight.getDepartureDate(),
+                flight.getCrew().getCrewID(),
+                flight.getPlane().getID(),
+                flight.getBasePrice(),
+                flight.getID());
+        execute(query);
+    }
 }

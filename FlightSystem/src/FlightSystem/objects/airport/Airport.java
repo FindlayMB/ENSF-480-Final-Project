@@ -1,10 +1,12 @@
 package FlightSystem.objects.airport;
 
+import FlightSystem.objects.ToQuery;
+
 /**
  * 
  * @author Findlay Brown
  */
-public class Airport {
+public class Airport implements ToQuery {
     private String Code;
     private String Name;
     private String City;
@@ -49,8 +51,15 @@ public class Airport {
         this.Country = country;
     }
 
+    @Override
     public String toString() {
         String output = String.format("%s: %s,  %s, %s", Code, Name, City, Country);
+        return output;
+    }
+
+    public String toQuery() {
+        String output = String.format("'%s','%s','%s','%s'",
+                Code, Name, City, Country);
         return output;
     }
 }

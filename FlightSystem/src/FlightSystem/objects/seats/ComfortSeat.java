@@ -19,7 +19,8 @@ public class ComfortSeat extends Seat {
     public String getSeatType() {
         return "comfort";
     }
-    public static double getPriceMultipler() {
+
+    public double getPriceMultipler() {
         return priceMultipler;
     }
 }

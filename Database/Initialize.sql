@@ -15,31 +15,31 @@ VALUES
 ('AAL','Aalborg Airport','Aalborg','Denmark');
 
 
-INSERT INTO users (UserID, FirstName, LastName, Email, BirthDay, Role)
+INSERT INTO users (UserID, FirstName, LastName, Email, Role)
 VALUES
-(1,'p1','p1','Passenger1@gmail.com','2000-01-01','guest'),
-(2,'p2','p2','Passenger2@gmail.com','2000-01-01','guest'),
-(3,'p3','p3','Passenger3@gmail.com','2000-01-01','guest'),
-(4,'p4','p4','Passenger4@gmail.com','2000-01-01','guest'),
-(5,'p5','p5','Passenger5@gmail.com','2000-01-01','guest'),
-(6,'p6','p6','Passenger6@gmail.com','2000-01-01','guest'),
-(7,'p7','p7','Passenger7@gmail.com','2000-01-01','guest'),
-(8,'p8','p8','Passenger8@gmail.com','2000-01-01','guest'),
-(9,'p9','p9','Passenger9@gmail.com','2000-01-01','guest'),
-(10,'p10','p10','Passenger10@gmail.com','2000-01-01','guest'),
-(11,'p11','p11','Passenger11@gmail.com','2000-01-01','guest'),
-(12,'p12','p12','Passenger12@gmail.com','2000-01-01','guest'),
-(13,'m1','m1','Member1@gmail.com','2000-01-01','member'),
-(14,'m2','m2','Member2@gmail.com','2000-01-01','member'),
-(15,'e1','e1','Employee1@companymail.com','2000-01-01','employee'),
-(16,'e2','e2','Employee2@companymail.com','2000-01-01','employee'),
-(17,'e3','e3','Employee3@companymail.com','2000-01-01','employee'),
-(18,'e4','e4','Employee4@companymail.com','2000-01-01','employee'),
-(19,'e5','e5','Employee5@companymail.com','2000-01-01','employee'),
-(20,'e6','e6','Employee6@companymail.com','2000-01-01','employee'),
-(21,'e7','e7','Employee7@companymail.com','2000-01-01','employee'),
-(22,'e8','e8','Employee8@companymail.com','2000-01-01','employee'),
-(23,'a1','a1','Admin1@companymail.com','2000-01-01','admin');
+(1,'p1','p1','Passenger1@gmail.com','guest'),
+(2,'p2','p2','Passenger2@gmail.com','guest'),
+(3,'p3','p3','Passenger3@gmail.com','guest'),
+(4,'p4','p4','Passenger4@gmail.com','guest'),
+(5,'p5','p5','Passenger5@gmail.com','guest'),
+(6,'p6','p6','Passenger6@gmail.com','guest'),
+(7,'p7','p7','Passenger7@gmail.com','guest'),
+(8,'p8','p8','Passenger8@gmail.com','guest'),
+(9,'p9','p9','Passenger9@gmail.com','guest'),
+(10,'p10','p10','Passenger10@gmail.com','guest'),
+(11,'p11','p11','Passenger11@gmail.com','guest'),
+(12,'p12','p12','Passenger12@gmail.com','guest'),
+(13,'m1','m1','Member1@gmail.com','member'),
+(14,'m2','m2','Member2@gmail.com','member'),
+(15,'e1','e1','Employee1@companymail.com','employee'),
+(16,'e2','e2','Employee2@companymail.com','employee'),
+(17,'e3','e3','Employee3@companymail.com','employee'),
+(18,'e4','e4','Employee4@companymail.com','employee'),
+(19,'e5','e5','Employee5@companymail.com','employee'),
+(20,'e6','e6','Employee6@companymail.com','employee'),
+(21,'e7','e7','Employee7@companymail.com','employee'),
+(22,'e8','e8','Employee8@companymail.com','employee'),
+(23,'a1','a1','Admin1@companymail.com','admin');
 
 
 INSERT INTO registered (UserID, Username, Password, SignUpDate, CreditCardNumber, CVV, ExpiryDate)
