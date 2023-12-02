@@ -205,7 +205,7 @@ public class PerformAdmin extends JFrame {
                     String message = "";
                     for (Flight flight : flightList) {
                         if (flight.getID() == Integer.parseInt(flightID)) {
-                            for (User crew : flight.getCrew().getCrew()) {
+                            for (User crew : flight.getCrew().getCrewMembers()) {
                                 message += crew.getFirstName() + " " + crew.getLastName() + ", ";
                             }
                             message += "\n";

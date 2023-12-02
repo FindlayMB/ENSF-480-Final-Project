@@ -322,7 +322,7 @@ public class DatabaseSingleton {
 
     public void addCrew(Crew crew) {
         String[] columns = { "CrewID", "CrewMemberID", "Job" };
-        crew.getCrew().forEach((cMember) -> {
+        crew.getCrewMembers().forEach((cMember) -> {
             try {
                 insertInto("crews", columns,
                         String.format("%d,%d,'%s'",
@@ -428,7 +428,7 @@ public class DatabaseSingleton {
                 DELETE FROM crews WHERE CrewMemberID = %d;
                 SET FOREIGN_KEY_CHECKS=1;
                 """;
-        crew.getCrew().forEach((cMember) -> {
+        crew.getCrewMembers().forEach((cMember) -> {
             try {
                 execute(String.format(query, cMember.getID()));
             } catch (Exception e) {

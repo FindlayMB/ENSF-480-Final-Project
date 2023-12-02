@@ -26,13 +26,28 @@ public class viewPassengerListPage extends JFrame implements ActionListener{
 
     private RegisteredUser signedInUser;
 
-    private ArrayList<Flight> flights;
-    // search flight by destination and move to select flight page
+    private ArrayList<Flight> employeeFlights; // list of flights the employee is a crew member for
+
+
     public viewPassengerListPage(RegisteredUser signedInUser)
     {
         super("Passenger List"); // create a frame
+
+        // get flights they are a crew member for
         fs = FlightsSingleton.getInstance();
-        flights = fs.getFlights("destinationCode", destination);
+        ArrayList<Flight> flights = fs.getFlightList();
+        for(Flight flight : flights)
+        {
+            ArrayList<RegisteredUser> crewMembers = flight.getCrew().getCrewMembers();
+            for(RegisteredUser crewMember : crewMembers)
+            {
+                if(crewMember.getID() == signedInUser.getID())
+                {
+                    employeeFlights.add(flight);
+                }
+            }
+        }
+
         this.signedInUser = signedInUser;
         setupGUI();
         this.setSize(800, 600);
