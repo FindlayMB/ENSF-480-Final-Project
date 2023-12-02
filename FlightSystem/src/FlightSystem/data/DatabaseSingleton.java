@@ -3,9 +3,6 @@ package FlightSystem.data;
 import java.sql.*;
 import java.util.*;
 
-import com.mysql.cj.jdbc.exceptions.SQLExceptionsMapping;
-import com.mysql.cj.xdevapi.Result;
-
 import FlightSystem.objects.*;
 import FlightSystem.objects.airport.*;
 import FlightSystem.objects.flight.*;

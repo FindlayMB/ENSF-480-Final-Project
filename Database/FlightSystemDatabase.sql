@@ -95,7 +95,7 @@ CREATE TABLE promos (
     DiscountPercent FLOAT NOT NULL,
     PRIMARY KEY(UserID, PromoCode),
     FOREIGN KEY(UserID) REFERENCES registered(UserID) ON DELETE CASCADE
-)
+);
 
 /* 
  * Create a admin user for MySQL database.
