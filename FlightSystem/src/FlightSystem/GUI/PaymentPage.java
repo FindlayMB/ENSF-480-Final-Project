@@ -1,3 +1,6 @@
+
+
+
 package FlightSystem.GUI;
 import javax.mail.MessagingException;
 import javax.mail.internet.AddressException;
@@ -29,6 +32,7 @@ public class PaymentPage extends JFrame implements ActionListener, MouseListener
     private double seatPriceMultipler;
     private int totalPrice;
     private Color selectedSeatColor;
+    private boolean appliedPromo = false;
 
     private String firstName;
     private String lastName;
@@ -52,11 +56,13 @@ public class PaymentPage extends JFrame implements ActionListener, MouseListener
     private JTextField creditCardNumberInput;
     private JTextField expiryDateInput;
     private JTextField CSVInput;
+    private JTextField promoteTextField;
+    private HashMap<String, Float> promotions = new HashMap<String, Float>();
+    
 
     private JCheckBox insuranceCheckBox;
 
     public PaymentPage(RegisteredUser signedInUser, Flight selectedFlight, Integer selectedSeatNum, Color selectedSeatColor)
-
     {
         super("Payment"); // create a frame
         this.signedInUser = signedInUser;
@@ -82,7 +88,6 @@ public class PaymentPage extends JFrame implements ActionListener, MouseListener
                 this.seatPriceMultipler = BusinessSeat .getPriceMultipler();
                 System.out.println(seatPriceMultipler + "business");
             }
-            
                 
             
         
@@ -144,6 +149,11 @@ public class PaymentPage extends JFrame implements ActionListener, MouseListener
             public void actionPerformed(ActionEvent e) {
                 dispose();
                 Seatmap nextPage = new Seatmap(signedInUser, selectedFlight);
+                //if applied promo, add it back to the user
+                if(appliedPromo==true && signedInUser != null){
+                    signedInUser.addPromo(promoteTextField.getText(), 0.1f);
+                }
+
             }
         });
 
@@ -206,8 +216,50 @@ public class PaymentPage extends JFrame implements ActionListener, MouseListener
         gbc.gridy = 6;
         paymentPanel.add(insuranceCheckBox, gbc);
 
+        gbc.gridx = 0;
+        gbc.gridy = 7;
+        paymentPanel.add(priceLabel, gbc);
+
+        gbc.gridx = 0;
+        gbc.gridy = 8;
+        gbc.gridwidth = 2; // Make the button span two columns
+        gbc.fill = GridBagConstraints.HORIZONTAL; // Make the button horizontally fill the cell
+        paymentPanel.add(payButton, gbc);
+
+        gbc.gridy++;
+        paymentPanel.add(backButton, gbc);
+
+        this.add(paymentPanel, BorderLayout.NORTH);
+        //check if insurance is selected
+        if(insuranceCheckBox.isSelected()){
+            totalPrice += 50;
+            priceLabel.setText("Total: " + String.valueOf(totalPrice)+"$");
+        }
+        //uncheck the insurance checkbox
+        insuranceCheckBox.addActionListener(new ActionListener() {
+                
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    if(insuranceCheckBox.isSelected()){
+                        totalPrice += 50;
+                        priceLabel.setText("Total: " + String.valueOf(totalPrice)+"$");
+                    }
+                    else{
+                        totalPrice -= 50;
+                        priceLabel.setText("Total: " + String.valueOf(totalPrice)+"$");
+                    }
+                    
+                }
+            
+        });
+
+
+
+
+
         //add promote text field and apply button next to insurance checkbox
-        JTextField promoteTextField = new JTextField("Promotion code");
+        // JTextField promoteTextField = new JTextField("Promotion code");
+        promoteTextField = new JTextField("Promotion code");
         promoteTextField.setColumns(20); // Set the number of columns (width)
         JButton applyButton = new JButton("Apply");
         gbc.gridx = 1;
@@ -237,29 +289,65 @@ public class PaymentPage extends JFrame implements ActionListener, MouseListener
         }
 
         this.add(paymentPanel, BorderLayout.NORTH);
-        payButton.addActionListener(this);
+        if(signedInUser!=null){
+            promotions = signedInUser.getPromos();
+            if(promotions != null){
+                System.out.println("Promotions:");
+                for(String key : promotions.keySet()){
+                    System.out.println(key + " " + promotions.get(key));
+                }
+        }
+        }
+        
+        //print the promotions
 
-        //add promote text field and apply button
+    
+        if(appliedPromo==false){
+            applyButton.addActionListener(this);
+
+
+
+        }
+        
+
         applyButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                String promotionCode = promoteTextField.getText();
-                if(promotionCode.equals("1234")) {
-                    JOptionPane.showMessageDialog(null, "Promotion code applied!");
-                    totalPrice = (int) (totalPrice * 0.9);
-                    priceLabel.setText("Total: " + String.valueOf(totalPrice)+"$");
+                
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    String promotionCode = promoteTextField.getText();
+                    if(promotions.containsKey(promotionCode)){
+                        JOptionPane.showMessageDialog(null, "Promotion code applied!");
+                        
+                        if(appliedPromo==false){
+
+                            totalPrice = (int) (totalPrice * (1 - promotions.get(promotionCode)));
+                            priceLabel.setText("Total: " + String.valueOf(totalPrice)+"$");
+                        }
+                        else{
+                            JOptionPane.showMessageDialog(null, "Promotion code already applied!");
+                        }
+                        appliedPromo = true;
+                        
+                        //remove the promotion from the user
+                        //promotions.remove(promotionCode);
+                    }
+                    else {
+                        JOptionPane.showMessageDialog(null, "Invalid promotion code!");
+                    }
+                    
                 }
-                else {
-                    JOptionPane.showMessageDialog(null, "Invalid promotion code!");
-                }
-            }
+            
         });
 
-        
 
 
     }
-        
+    // public static void main(String[] args)
+    // {
+    //     EventQueue.invokeLater(() -> { // event queue is threading related
+    //         new PaymentPage().setVisible(true); // makes GUI appear on screen 
+    //     });
+    // }
 
         @Override
         public void actionPerformed(ActionEvent e)  // performed for an actionListener
@@ -270,6 +358,8 @@ public class PaymentPage extends JFrame implements ActionListener, MouseListener
             creditCardNumber = creditCardNumberInput.getText().trim();
             expiryDate = LocalDate.parse(expiryDateInput.getText().trim()); // CONVERT FROM STRING TO DATE OBJECT
             CSV = CSVInput.getText();
+            //remove the promotion from the user
+
             
             if(validatePaymentInfo(firstName, creditCardNumber, expiryDate, CSV)) // add checks for all user types
             {
@@ -296,26 +386,25 @@ public class PaymentPage extends JFrame implements ActionListener, MouseListener
                         {
                             Seat newSeat = SeatFactory.createSeat(seatType, selectedSeatNum, signedInUser.getID() ,hasInsurance);
                             selectedFlight.addPassenger(newSeat); // add passenger to flight in DB
+                            if(appliedPromo==true){
+                                String promotionCode = promoteTextField.getText();
+                                signedInUser.removePromo(promotionCode);
+                                        }
                         }
 
                         else // user is not signed in 
-                        {
-                            User newUser = UsersSingleton.getInstance.add(firstName, lastName, email, "basic");
-                            Seat newSeat = SeatFactory.createSeat(seatType, selectedSeatNum, newUser.getID() ,hasInsurance);
+                        {   User newUser = new User(0 , firstName, lastName, email,  "guest"); // temporarily set ID to 0
+                            UsersSingleton.getInstance().addUser(newUser); // add user to DB
+                            ArrayList<User> dbUsers = UsersSingleton.getInstance().getUsersList(); 
+                            newUser = dbUsers.get(dbUsers.size()-1);                                                                       // get user from DB with correct ID, ID has been incremented in DB
+                            Seat newSeat = SeatFactory.createSeat(seatType, selectedSeatNum, newUser.getID(), hasInsurance);
                             selectedFlight.addPassenger(newSeat); // add passenger to flight in DB
-
                         }
-
                         this.dispose();
                         HomePage nextPage = new HomePage(signedInUser);
                     
                 } 
-                catch (SQLException ex) {
-                    // Handle the SQLException or log it
-                    ex.printStackTrace(); // You might want to log this to a proper logging system
-                    // Optionally, show an error message to the user
-                    JOptionPane.showMessageDialog(this, "Error adding user to flight: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-                }
+             
                 catch (MessagingException ex) {
                     // Handle AddressException and MessagingException here
                     ex.printStackTrace(); // You might want to log this to a proper logging system

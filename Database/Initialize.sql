@@ -90,3 +90,16 @@ VALUES
 (4,10,1,'regular',true),
 (4,11,2,'comfort',false),
 (4,12,3,'business',true);
+
+INSERT INTO promos (UserID, PromoCode, DiscountPercent)
+VALUES
+(13,'PROMO1',0.1),
+(14,'PROMO2',0.2),
+(15,'PROMO3',0.3),
+(16,'PROMO4',0.4),
+(17,'PROMO5',0.5),
+(18,'PROMO6',0.6),
+(19,'PROMO7',0.7),
+(20,'PROMO8',0.8),
+(21,'PROMO9',0.9),
+(22,'PROMO10',1.0);

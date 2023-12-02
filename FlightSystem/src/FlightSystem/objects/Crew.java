@@ -42,7 +42,7 @@ public class Crew {
         this.crewFlightIDs = crewFlightIDs;
     }
 
-    public ArrayList<RegisteredUser> getCrew() {
+    public ArrayList<RegisteredUser> getCrewMembers() {
         return crew;
     }
 
