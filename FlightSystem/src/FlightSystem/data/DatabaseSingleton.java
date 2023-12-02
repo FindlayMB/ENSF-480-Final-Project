@@ -29,8 +29,8 @@ public class DatabaseSingleton {
         try {
             this.dbConnection = DriverManager.getConnection(
                     "jdbc:mysql://localhost/flightsystem",
-                    "root",
-                    "1234");
+                    "admin",
+                    "admin");
             System.out.println("Database connection made!");
         } catch (Exception e) {
             System.out.println(e);

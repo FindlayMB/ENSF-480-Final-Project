@@ -50,7 +50,7 @@ public class Airport {
     }
 
     public String toString() {
-        String output = String.format("%s: %s  %s, %s", Code, Name, City, Country);
+        String output = String.format("%s: %s,  %s, %s", Code, Name, City, Country);
         return output;
     }
 }
