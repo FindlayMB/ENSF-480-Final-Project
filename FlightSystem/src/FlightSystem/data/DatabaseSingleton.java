@@ -3,8 +3,7 @@ package FlightSystem.data;
 import java.sql.*;
 import java.util.*;
 
-import com.mysql.cj.jdbc.exceptions.SQLExceptionsMapping;
-import com.mysql.cj.xdevapi.Result;
+import com.mysql.cj.x.protobuf.MysqlxDatatypes.Scalar.String;
 
 import FlightSystem.objects.*;
 import FlightSystem.objects.airport.*;
@@ -356,7 +355,8 @@ public class DatabaseSingleton {
                 String.format("%d,%s", flightID, passenger.toQuery()));
     }
 
-    public void addUserWithFields(String Username, String Password, String FirstName, String LastName, String Email,
+    public void addUserWithFields(String Username, String Password,
+            String FirstName, String LastName, String Email,
             String signUpDate, String creditCardNumber, String Role) throws SQLException {
         String sql = "INSERT INTO Users (Username,Password,FirstName,LastName,Email,SignUpDate,creditCardNumber,Role) VALUES (?,?,?,?,?,?,?,?)";
         try (PreparedStatement preparedStatement = dbConnection.prepareStatement(sql)) {
@@ -413,6 +413,14 @@ public class DatabaseSingleton {
 
     public void removeRegisteredUser(RegisteredUser user) throws SQLException {
         removeFrom("registered", "UserID", user.getID());
+    }
+
+    public void removePromo(int userID, String promoCode) throws SQLException {
+        String query = String.format("""
+                DELETE FROM promos
+                WHERE UserID = %d AND PromoCode = '%s';
+                """, userID, promoCode);
+        execute(query);
     }
 
     public void removeCrew(Crew crew) throws SQLException {
