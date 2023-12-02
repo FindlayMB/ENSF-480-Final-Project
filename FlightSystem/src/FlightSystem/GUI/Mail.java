@@ -50,7 +50,7 @@ public class Mail {
         String emailBodyString = "Dear " + firstName + " " + lastName + ",\n\n" + "Thank you for booking with us. Please " 
         + "find your ticket and reciept below:\n\n" + "Ticket:\n" + "Name: " + firstName + " " + lastName + "\n" + "Flight Info:\n" 
         + "From: " + selectedFlight.getDestination() + "\nTo: " + selectedFlight.getDestination() + "\nSeat number: " + selectedSeatNum 
-        + "\n\n" + "Reciept\n" + "Cardholder: " + firstName + " " + lastName + "\n" + "Card Number: " + creditCardNumber
+        + "\n\n" + "Reciept:\n" + "Cardholder: " + firstName + " " + lastName + "\n" + "Card Number: " + creditCardNumber
         + "\n" + "Expiry Date: " + expiryDate + "\n" + "CSV: " + CSV + "\n\n" + "Total Price: " + totalPrice +"$" +"\n\n" + 
         "Kind Regards,\n\n" + "Group 17 Airline Company";
         mimeMessage = new MimeMessage(newSession);

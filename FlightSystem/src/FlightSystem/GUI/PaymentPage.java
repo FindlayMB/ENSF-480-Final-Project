@@ -265,23 +265,18 @@ public class PaymentPage extends JFrame implements ActionListener, MouseListener
                         }
 
                         else // user is not signed in 
-                        {
-                            User newUser = UsersSingleton.getInstance.add(firstName, lastName, email, "basic");
-                            Seat newSeat = SeatFactory.createSeat(seatType, selectedSeatNum, newUser.getID() ,hasInsurance);
+                        {   User newUser = new User(0 , firstName, lastName, email,  "guest"); // temporarily set ID to 0
+                            UsersSingleton.getInstance().addUser(newUser); // add user to DB
+                            ArrayList<User> dbUsers = UsersSingleton.getInstance().getUsersList(); 
+                            newUser = dbUsers.get(dbUsers.size()-1);                                                                       // get user from DB with correct ID, ID has been incremented in DB
+                            Seat newSeat = SeatFactory.createSeat(seatType, selectedSeatNum, newUser.getID(), hasInsurance);
                             selectedFlight.addPassenger(newSeat); // add passenger to flight in DB
-
                         }
-
                         this.dispose();
                         HomePage nextPage = new HomePage(signedInUser);
                     
                 } 
-                catch (SQLException ex) {
-                    // Handle the SQLException or log it
-                    ex.printStackTrace(); // You might want to log this to a proper logging system
-                    // Optionally, show an error message to the user
-                    JOptionPane.showMessageDialog(this, "Error adding user to flight: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-                }
+             
                 catch (MessagingException ex) {
                     // Handle AddressException and MessagingException here
                     ex.printStackTrace(); // You might want to log this to a proper logging system
