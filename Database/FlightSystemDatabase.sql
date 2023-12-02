@@ -82,6 +82,7 @@ CREATE TABLE passengerlist (
     SeatNumber  INT NOT NULL,
     SeatType    ENUM('regular','comfort','business'),
     Insurance   BOOL NOT NULL DEFAULT false,
+    PricePaid   FLOAT,
     PRIMARY KEY(FlightID, UserID),
     FOREIGN KEY(FlightID) REFERENCES flights(FlightID) ON DELETE CASCADE,
     FOREIGN KEY(UserID) REFERENCES users(UserID) ON DELETE CASCADE

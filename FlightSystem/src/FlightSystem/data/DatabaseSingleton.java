@@ -3,8 +3,6 @@ package FlightSystem.data;
 import java.sql.*;
 import java.util.*;
 
-import com.mysql.cj.x.protobuf.MysqlxDatatypes.Scalar.String;
-
 import FlightSystem.objects.*;
 import FlightSystem.objects.airport.*;
 import FlightSystem.objects.flight.*;
@@ -222,7 +220,8 @@ public class DatabaseSingleton {
                     table.getString("SeatType"),
                     table.getInt("SeatNumber"),
                     table.getInt("UserID"),
-                    table.getBoolean("Insurance")));
+                    table.getBoolean("Insurance"),
+                    table.getFloat("PricePaid")));
         }
         return new PassengerList(passengers);
     }
@@ -349,7 +348,7 @@ public class DatabaseSingleton {
     }
 
     public void addPassenger(Seat passenger, int flightID) throws SQLException {
-        String[] columns = { "FlightID", "UserID", "SeatNumber", "SeatType", "Insurance" };
+        String[] columns = { "FlightID", "UserID", "SeatNumber", "SeatType", "Insurance", "PricePaid" };
 
         insertInto("passengerlist", columns,
                 String.format("%d,%s", flightID, passenger.toQuery()));
