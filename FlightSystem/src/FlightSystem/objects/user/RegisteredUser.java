@@ -2,6 +2,9 @@ package FlightSystem.objects.user;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.HashMap;
+
+import FlightSystem.data.DatabaseSingleton;
 
 /**
  * 
@@ -15,9 +18,13 @@ public class RegisteredUser extends User {
     private CreditCard creditCard;
     private String job;
     private ArrayList<Integer> onFlights = new ArrayList<Integer>();
+    private HashMap<String, Float> promos = new HashMap<String, Float>();
 
-    public RegisteredUser(User user, String username, String password,
-            LocalDate signUpDate, String job, CreditCard creditCard,
+    public RegisteredUser(
+            User user, String username,
+            String password,
+            LocalDate signUpDate,
+            String job, CreditCard creditCard,
             ArrayList<Integer> onFlights) {
         super(user);
         this.username = username;
@@ -28,6 +35,7 @@ public class RegisteredUser extends User {
         if (onFlights != null) {
             this.onFlights = onFlights;
         }
+
     }
 
     @Override
@@ -102,4 +110,21 @@ public class RegisteredUser extends User {
         return onFlights;
     }
 
+    public HashMap<String, Float> getPromos() {
+        return promos;
+    }
+
+    public void setPromos(HashMap<String, Float> promos) {
+        this.promos = promos;
+    }
+
+    public void addPromo(String promoCode, Float discountPercent) {
+        promos.put(promoCode, discountPercent);
+        try {
+            DatabaseSingleton.getInstance().addPromo(this.getID(), promoCode, discountPercent);
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.out.println("Failed to add promo!");
+        }
+    }
 }

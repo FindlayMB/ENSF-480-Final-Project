@@ -50,6 +50,7 @@ public class UsersSingleton {
 
     public synchronized RegisteredUser addRegisteredUser(RegisteredUser user) {
         try {
+            DatabaseSingleton.getInstance().addRegisteredUser(user);
             registeredUsers.put(user.getID(), user);
         } catch (Exception e) {
             e.printStackTrace();
