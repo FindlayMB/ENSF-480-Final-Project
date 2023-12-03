@@ -122,6 +122,7 @@ public class HomePage extends JFrame implements ActionListener{
         JButton myBookingsButton = new JButton("Flight Status");
         JButton cancelButton = new JButton("Cancel Flight");
         cancelButton.addActionListener(this);
+        
 
         // Create a panel for the middle buttons
         JPanel middleButtonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 20, 20));
