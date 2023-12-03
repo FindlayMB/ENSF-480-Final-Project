@@ -82,11 +82,21 @@ CREATE TABLE passengerlist (
     SeatNumber  INT NOT NULL,
     SeatType    ENUM('regular','comfort','business'),
     Insurance   BOOL NOT NULL DEFAULT false,
+    PricePaid   FLOAT,
     PRIMARY KEY(FlightID, UserID),
     FOREIGN KEY(FlightID) REFERENCES flights(FlightID) ON DELETE CASCADE,
     FOREIGN KEY(UserID) REFERENCES users(UserID) ON DELETE CASCADE
 );
 
+
+DROP TABLE IF EXISTS promos;
+CREATE TABLE promos (
+    UserID INT NOT NULL,
+    PromoCode VARCHAR(10) NOT NULL,
+    DiscountPercent FLOAT NOT NULL,
+    PRIMARY KEY(UserID, PromoCode),
+    FOREIGN KEY(UserID) REFERENCES registered(UserID) ON DELETE CASCADE
+);
 
 /* 
  * Create a admin user for MySQL database.

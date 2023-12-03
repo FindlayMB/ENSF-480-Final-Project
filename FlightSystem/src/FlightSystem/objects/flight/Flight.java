@@ -85,8 +85,8 @@ public class Flight implements ToQuery {
     @Override
     public String toString() {
         String output = String.format(
-                "%s @ %s %s to %s @ %s %s",
-                origin, departureTime, departureDate, destination, arrivalTime, arrivalDate);
+                "%d: %s @ %s %s to %s @ %s %s",
+                ID, origin, departureTime, departureDate, destination, arrivalTime, arrivalDate);
         return output;
     }
 

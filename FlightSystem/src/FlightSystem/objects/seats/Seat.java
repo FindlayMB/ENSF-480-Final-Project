@@ -13,7 +13,7 @@ public abstract class Seat implements ToQuery {
     private int passengerID;
     private boolean isReserved;
     private boolean insurance;
-    private double price;
+    private Float pricePaid;
 
     public Seat(int seatNumber) {
         this.seatNumber = seatNumber;
@@ -22,15 +22,15 @@ public abstract class Seat implements ToQuery {
         this.insurance = false;
     }
 
-    public Seat(int seatNumber, int passengerID, boolean insurance) {
+    public Seat(int seatNumber, int passengerID, boolean insurance, Float pricePaid) {
         this.seatNumber = seatNumber;
         this.passengerID = passengerID;
         this.isReserved = true;
         this.insurance = insurance;
+        this.pricePaid = pricePaid;
     }
 
     public abstract String getSeatType();
-
 
     public int getSeatNumber() {
         return seatNumber;
@@ -51,15 +51,20 @@ public abstract class Seat implements ToQuery {
         this.isReserved = (passengerID != -1);
     }
 
-    public void setPrice(int price) {
-        this.price = price;
+    public Float getPricePaid() {
+        return pricePaid;
     }
-    public double getPrice() {
-        return price;
+
+    public void setPricePaid(Float pricePaid) {
+        this.pricePaid = pricePaid;
     }
 
     public boolean getInsurance() {
         return insurance;
+    }
+
+    public void setInsurance(boolean insurance) {
+        this.insurance = insurance;
     }
 
     @Override
@@ -70,11 +75,12 @@ public abstract class Seat implements ToQuery {
     }
 
     public String toQuery() {
-        String output = String.format("%d,%d,'%s',%b",
+        String output = String.format("%d,%d,'%s',%b,%f",
                 getPassengerID(),
                 getSeatNumber(),
                 getSeatType(),
-                getInsurance());
+                getInsurance(),
+                getPricePaid());
 
         return output;
     }

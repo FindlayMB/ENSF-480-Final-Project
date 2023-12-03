@@ -30,7 +30,7 @@ public class PaymentPage extends JFrame implements ActionListener, MouseListener
     private Flight selectedFlight;
     private Integer selectedSeatNum;
     private double seatPriceMultipler;
-    private int totalPrice;
+    private float totalPrice;
     private Color selectedSeatColor;
     private boolean appliedPromo = false;
 
@@ -253,10 +253,6 @@ public class PaymentPage extends JFrame implements ActionListener, MouseListener
             
         });
 
-
-
-
-
         //add promote text field and apply button next to insurance checkbox
         // JTextField promoteTextField = new JTextField("Promotion code");
         promoteTextField = new JTextField("Promotion code");
@@ -300,13 +296,8 @@ public class PaymentPage extends JFrame implements ActionListener, MouseListener
         }
         
         //print the promotions
-
-    
         if(appliedPromo==false){
             applyButton.addActionListener(this);
-
-
-
         }
         
 
@@ -366,7 +357,8 @@ public class PaymentPage extends JFrame implements ActionListener, MouseListener
                 try 
                 {
                         boolean hasInsurance = insuranceCheckBox.isSelected();
-                        Mail.emailTicket(firstName, lastName, email, creditCardNumber, expiryDate, CSV, selectedFlight, selectedSeatNum, totalPrice);
+                        String creditCardlast4 = creditCardNumber.substring(creditCardNumber.length() - 4);
+
                         String seatType = "";
                         if(selectedSeatColor.equals(Color.GREEN))
                         {
@@ -384,12 +376,14 @@ public class PaymentPage extends JFrame implements ActionListener, MouseListener
 
                         if(signedInUser != null) // User is signed in 
                         {
-                            Seat newSeat = SeatFactory.createSeat(seatType, selectedSeatNum, signedInUser.getID() ,hasInsurance);
-                            selectedFlight.addPassenger(newSeat); // add passenger to flight in DB
+  
                             if(appliedPromo==true){
                                 String promotionCode = promoteTextField.getText();
                                 signedInUser.removePromo(promotionCode);
-                                        }
+                            }
+                           
+                            Seat newSeat = SeatFactory.createSeat(seatType, selectedSeatNum, signedInUser.getID() ,hasInsurance, totalPrice);
+                            selectedFlight.addPassenger(newSeat); // add passenger to flight in DB
                         }
 
                         else // user is not signed in 
@@ -397,9 +391,13 @@ public class PaymentPage extends JFrame implements ActionListener, MouseListener
                             UsersSingleton.getInstance().addUser(newUser); // add user to DB
                             ArrayList<User> dbUsers = UsersSingleton.getInstance().getUsersList(); 
                             newUser = dbUsers.get(dbUsers.size()-1);                                                                       // get user from DB with correct ID, ID has been incremented in DB
-                            Seat newSeat = SeatFactory.createSeat(seatType, selectedSeatNum, newUser.getID(), hasInsurance);
+                            Seat newSeat = SeatFactory.createSeat(seatType, selectedSeatNum, newUser.getID(), hasInsurance, totalPrice);
                             selectedFlight.addPassenger(newSeat); // add passenger to flight in DB
                         }
+                         
+                        Mail.emailTicket(firstName, lastName, email, creditCardlast4, expiryDate, CSV, selectedFlight, selectedSeatNum, totalPrice);
+                        JOptionPane.showMessageDialog(this, "Flight Booked!");
+
                         this.dispose();
                         HomePage nextPage = new HomePage(signedInUser);
                     
@@ -505,6 +503,10 @@ public class PaymentPage extends JFrame implements ActionListener, MouseListener
         if(event.getSource().equals(emailInput))
         {
             emailInput.setText("");
+        }
+        if(event.getSource().equals(promoteTextField))
+        {
+            promoteTextField.setText("");
         }
 
     }

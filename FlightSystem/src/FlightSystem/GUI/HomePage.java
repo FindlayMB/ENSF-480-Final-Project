@@ -239,11 +239,9 @@ public class HomePage extends JFrame implements ActionListener{
         {
             this.dispose();
             //delete the home page
-            this.setVisible(false);
             System.out.println("Admin button clicked");
 
             AdminPage adminPage = new AdminPage(this.user);
-            adminPage.setVisible(true);
             //adminPage.setVisible(true);
         }
         else if (buttonText.equals("Cancel Flight"))
@@ -253,6 +251,12 @@ public class HomePage extends JFrame implements ActionListener{
             CancelFlightPage nextPage = new CancelFlightPage(user);
         }
         else if(buttonText.equals("View Passenger List")){
-            JOptionPane.showMessageDialog(this, "Successfully view");
+            this.dispose();
+            viewPassengerListPage nextPage = new viewPassengerListPage(user);// get list of flights they are on 
+
+            // let them select flight
+
+            // show list of passengers on that flight
+            
          }
 }}
