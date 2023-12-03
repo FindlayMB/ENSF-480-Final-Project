@@ -55,6 +55,17 @@ public class AirportsSingleton {
         }
     }
 
+    public void removeAirport(String removeAirportCode) {
+        try {
+            DatabaseSingleton.getInstance().removeAirport(airports.get(removeAirportCode));
+            FlightsSingleton.getInstance().removeFlights(airports.get(removeAirportCode));
+            airports.remove(removeAirportCode);
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.out.println("Failed to remove airport: " + airports.get(removeAirportCode));
+        }
+    }
+
     public void removeAirport(String code, Airport removeAirport) {
         if (code.equals(removeAirport.getCode()) != true) {
             System.out.println("Code does not match airport!");

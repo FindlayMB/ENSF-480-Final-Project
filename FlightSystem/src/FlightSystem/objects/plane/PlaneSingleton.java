@@ -4,7 +4,7 @@ import FlightSystem.data.DatabaseSingleton;
 import FlightSystem.objects.flight.FlightsSingleton;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 
 /**
  * 
@@ -12,12 +12,12 @@ import java.util.HashMap;
  */
 public class PlaneSingleton {
     private static PlaneSingleton instance;
-    private HashMap<Integer, Plane> planes;
+    private LinkedHashMap<Integer, Plane> planes;
 
     private PlaneSingleton() {
         if (planes == null) {
             try {
-                planes = new HashMap<Integer, Plane>(DatabaseSingleton.getInstance().getPlaneTable());
+                planes = new LinkedHashMap<Integer, Plane>(DatabaseSingleton.getInstance().getPlaneTable());
             } catch (Exception e) {
                 System.out.println(e);
                 System.out.println("Failed to get airports table!");
@@ -32,7 +32,7 @@ public class PlaneSingleton {
         return instance;
     }
 
-    public HashMap<Integer, Plane> getPlaneMap() {
+    public LinkedHashMap<Integer, Plane> getPlaneMap() {
         return planes;
     }
 
@@ -44,9 +44,16 @@ public class PlaneSingleton {
         return planes.get(planeID);
     }
 
-    public synchronized void addPlane(Plane newPlane) {
-        newPlane = DatabaseSingleton.getInstance().addPlane(newPlane);
-        planes.put(newPlane.getID(), newPlane);
+    public synchronized boolean addPlane(Plane newPlane) {
+        try {
+            newPlane = DatabaseSingleton.getInstance().addPlane(newPlane);
+            planes.put(newPlane.getID(), newPlane);
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.out.println("Failed to insert new plane: " + newPlane.toString());
+            return false;
+        }
+        return true;
     }
 
     public void removePlane(Plane removePlane) {

@@ -19,7 +19,8 @@ public class SeatFactory {
         }
     }
 
-    public static Seat createSeat(String seatType, int seatNumber, int passengerID, boolean insurance, float pricePaid) {
+    public static Seat createSeat(String seatType, int seatNumber, int passengerID, boolean insurance,
+            Float pricePaid) {
         switch (seatType) {
             case "regular":
                 return new RegularSeat(seatNumber, passengerID, insurance, pricePaid);
