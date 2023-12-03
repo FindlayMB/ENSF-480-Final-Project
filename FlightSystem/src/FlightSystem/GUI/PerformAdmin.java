@@ -259,8 +259,8 @@ public class PerformAdmin extends JFrame {
                         System.out.println("Failed to add plane!");
                     }
                     // need to add to database and singleton
-                    PlaneSingleton.getInstance().addPlane(new Plane(0,aircraftType, Integer.parseInt(totalRegularSeat),
-                            Integer.parseInt(totalComfortSeat), Integer.parseInt(totalBussinessSeat)));
+                    PlaneSingleton.getInstance().addPlane(new Plane(0,aircraftType, (totalRegularSeat),
+                            (totalComfortSeat), (totalBussinessSeat)));
                     System.out.println("Aircraft Type: " + aircraftType + "Total Regular Seat: " + totalRegularSeat
                             + "Total Comfort Seat: " + totalComfortSeat + "Total Bussiness Seat: "
                             + totalBussinessSeat);

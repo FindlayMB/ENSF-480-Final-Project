@@ -27,7 +27,7 @@ public class Mail {
     private final static String emailHost = "smtp.gmail.com";
   
 
-    public static void emailTicket(String firstName, String lastName, String emailRecipientString, String creditCardNumber, LocalDate expiryDate, String CSV, Flight selectedFlight, Integer selectedSeatNum, int totalPrice) throws AddressException, MessagingException 
+    public static void emailTicket(String firstName, String lastName, String emailRecipientString, String creditCardNumber, LocalDate expiryDate, String CSV, Flight selectedFlight, Integer selectedSeatNum, float totalPrice) throws AddressException, MessagingException 
     {
         setupServerProperties();
         String emailSubjectString = "Reciept and Ticket for Flight Booking";

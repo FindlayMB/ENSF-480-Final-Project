@@ -30,7 +30,7 @@ public class PaymentPage extends JFrame implements ActionListener, MouseListener
     private Flight selectedFlight;
     private Integer selectedSeatNum;
     private double seatPriceMultipler;
-    private int totalPrice;
+    private float totalPrice;
     private Color selectedSeatColor;
     private boolean appliedPromo = false;
 
