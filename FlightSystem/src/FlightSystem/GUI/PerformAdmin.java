@@ -7,6 +7,7 @@ import java.time.LocalTime;
 import FlightSystem.data.DatabaseSingleton;
 import FlightSystem.objects.airport.*;
 
+
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -264,7 +265,11 @@ public class PerformAdmin extends JFrame {
                     System.out.println("Aircraft Type: " + aircraftType + "Total Regular Seat: " + totalRegularSeat
                             + "Total Comfort Seat: " + totalComfortSeat + "Total Bussiness Seat: "
                             + totalBussinessSeat);
+                    JOptionPane.showMessageDialog(PerformAdmin.this, "Aircraft has been added", "Aircraft Added",
+                            JOptionPane.INFORMATION_MESSAGE);
                 }
+                //Show that the aircraft has been added and ask user to go back
+                
             });
             goBackButton.addActionListener(new ActionListener() {
                 @Override
@@ -293,16 +298,28 @@ public class PerformAdmin extends JFrame {
             text4.setVisible(false);
             text4Field.setVisible(false);
 
+
             text1.setText("AirCraftID to remove:");
             // text2.setText("Destination");
             submitButton.setText("Remove Aircraft");
+            
             submitButton.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     int aircraftID = Integer.parseInt(text1Field.getText());
-
+                    //Search for the aircraft in the database and remove it
+                    // need to add to database and singleton
                     PlaneSingleton.getInstance().removePlane(PlaneSingleton.getInstance().getPlane(aircraftID));
-                    System.out.println("Aircraft ID to remove: " + aircraftID);
+                    //if the aircraft is not found, show error message
+                    //if the aircraft is found, show that the aircraft has been removed and ask user to go back
+                    try {
+                        PlaneSingleton.getInstance().removePlane(PlaneSingleton.getInstance().getPlane(aircraftID));
+                        JOptionPane.showMessageDialog(PerformAdmin.this, "Aircraft has been removed", "Aircraft Removed",
+                            JOptionPane.INFORMATION_MESSAGE);
+                    } catch (Exception e1) {
+                        JOptionPane.showMessageDialog(PerformAdmin.this, "Aircraft not found", "Aircraft not found",
+                            JOptionPane.INFORMATION_MESSAGE);
+                    }
                 }
             });
 
@@ -320,6 +337,7 @@ public class PerformAdmin extends JFrame {
             submitButton.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
+
                     int crewID = Integer.parseInt(text1Field.getText());
                     int crewMemberID = Integer.parseInt(text2Field.getText());
                     String job = text3Field.getText();
@@ -346,6 +364,7 @@ public class PerformAdmin extends JFrame {
                         System.out.println();
                     });
 
+
                 }
             });
         } else if (name == "Remove Crew") {
@@ -362,6 +381,7 @@ public class PerformAdmin extends JFrame {
             submitButton.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
+
                     int crewID = Integer.parseInt(text1Field.getText());
                     // int flightID = Integer.parseInt(text2Field.getText());
 
@@ -375,6 +395,7 @@ public class PerformAdmin extends JFrame {
                     FlightsSingleton.getInstance().removeFlight(toRemove);
 
                 }
+
             });
         }
 
@@ -396,6 +417,16 @@ public class PerformAdmin extends JFrame {
                     AirportsSingleton.getInstance().addAirport(new Airport(airportCode, name, city, country));
                     System.out.println("Airport Name: " + airportName + "Airport Code: " + airportCode + "City: " + city
                             + "Country: " + country);
+                    try{
+                        AirportsSingleton.getInstance().addAirport(new Airport(airportCode,airportName , city, country));
+                        JOptionPane.showMessageDialog(PerformAdmin.this, "Airport has been added", "Airport Added",
+                            JOptionPane.INFORMATION_MESSAGE);
+
+                    } catch (Exception e1) {
+                        JOptionPane.showMessageDialog(PerformAdmin.this, "Airport Code already exists", "Airport Code already exists",
+                            JOptionPane.INFORMATION_MESSAGE);
+                    }
+                    
                 }
             });
 
@@ -416,6 +447,15 @@ public class PerformAdmin extends JFrame {
 
                     AirportsSingleton.getInstance().removeAirport(AirportCode);
                     System.out.println("Airport Code removed: " + AirportCode);
+                    try{
+                        AirportsSingleton.getInstance().removeAirport(AirportsSingleton.getInstance().getAirport(AirportCode));
+                        JOptionPane.showMessageDialog(PerformAdmin.this, "Airport has been removed", "Airport Removed",
+                            JOptionPane.INFORMATION_MESSAGE);
+
+                    } catch (Exception e1) {
+                        JOptionPane.showMessageDialog(PerformAdmin.this, "Airport Code not found", "Airport Code not found",
+                            JOptionPane.INFORMATION_MESSAGE);
+                    }
                 }
             });
         }
@@ -450,14 +490,17 @@ public class PerformAdmin extends JFrame {
             text9.setText("Plane ID");
             text10.setText("Base Price");
             submitButton.setText("Add Flight");
+            text1.setVisible(false);
+            text1Field.setVisible(false);
 
             submitButton.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     String destination = text2Field.getText();
-                    LocalTime arrivalTime = LocalTime.parse(text3Field.getText());
-                    LocalDate arrivalDate = LocalDate.parse(text4Field.getText());
+                    LocalTime arrivalTime = LocalTime.parse(text3Field.getText().trim());
+                    LocalDate arrivalDate = LocalDate.parse(text4Field.getText().trim());
                     String origin = text5Field.getText();
+
                     LocalTime departureTime = LocalTime.parse(text6Field.getText());
                     LocalDate departureDate = LocalDate.parse(text7Field.getText());
                     int crewID = Integer.parseInt(text8Field.getText());
@@ -504,6 +547,18 @@ public class PerformAdmin extends JFrame {
                     // need to add to database and singleton
                     FlightsSingleton.getInstance().removeFlight(FlightsSingleton.getInstance().getFlight(flightID));
                     System.out.println("Flight ID: " + flightID);
+                    try {
+                        FlightsSingleton.getInstance().removeFlight(FlightsSingleton.getInstance().getFlight(Integer.parseInt(flightID)));
+                        JOptionPane.showMessageDialog(PerformAdmin.this, "Flight has been removed", "Flight Removed",
+                            JOptionPane.INFORMATION_MESSAGE);
+
+                    } catch (Exception e1) {
+                        JOptionPane.showMessageDialog(PerformAdmin.this, "Flight ID not found", "Flight ID not found",
+                            JOptionPane.INFORMATION_MESSAGE);
+                    
+                    }
+
+                    //TODO
                 }
             });
 
@@ -567,6 +622,7 @@ public class PerformAdmin extends JFrame {
                     System.out.println("Crew ID: " + crewID);
                     System.out.println("Plane ID: " + planeID);
                     System.out.println("Base Price: " + basePrice);
+                    //TODO
                 }
             });
         }
