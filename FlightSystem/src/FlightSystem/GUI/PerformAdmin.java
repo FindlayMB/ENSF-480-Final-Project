@@ -13,15 +13,18 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import FlightSystem.objects.user.User;
 import FlightSystem.objects.flight.FlightsSingleton;
+import FlightSystem.objects.plane.Plane;
+import FlightSystem.objects.plane.PlaneSingleton;
 import FlightSystem.objects.user.RegisteredUser;
 import FlightSystem.objects.user.User;
 import FlightSystem.objects.user.UsersSingleton;
 
 public class PerformAdmin extends JFrame {
-    private User user;
+    private RegisteredUser user;
     private String name;
+    ArrayList<Flight> flightList = FlightsSingleton.getInstance().getFlightList();
 
-    public PerformAdmin(User user, String name) {
+    public PerformAdmin(RegisteredUser user, String name) {
         // dispose the previous frame
         dispose();
         this.user = user;
@@ -155,6 +158,8 @@ public class PerformAdmin extends JFrame {
             text2.setText("Destination");
             // change text3 to "Depature Date"
             text3.setText("Depature Date");
+            text3.setVisible(false);
+            text3Field.setVisible(false);
             // change submitButton to "Search"
             submitButton.setText("Search");
             submitButton.addActionListener(new ActionListener() {
@@ -162,25 +167,39 @@ public class PerformAdmin extends JFrame {
                 public void actionPerformed(ActionEvent e) {
                     String origin = text1Field.getText();
                     String destination = text2Field.getText();
-                    String departureDate = text3Field.getText();
-                    ArrayList<Flight> flightList = FlightsSingleton.getInstance().getFlight(destination);
+                    // String departureDate = text3Field.getText();
+                    
+                        //print the list of flights
                     String message = "";
-                    // TODO
-                    for (Flight flight : flightList) {
-                        System.out.println(flight.getDestination().getCity() + flight.getOrigin().getCode()
-                                + flight.getDepartureDate().toString());
-                        if (destination.toUpperCase() == flight.getDestination().getCode().toUpperCase()
-                                && origin.toUpperCase() == flight.getOrigin().getCode().toUpperCase()
-                                && departureDate == flight.getDepartureDate().toString()) {
-                            message += "From: " + origin + "To: " + destination + "Departure Time: "
-                                    + departureDate.toString() + "Arrival time:" + flight.getArrivalDate().toString()
-                                    + "\n";
-                        }
+                    if (origin.equals("") && destination.equals("")){
+                        for (Flight flight : flightList) {
+                        message += "From: " + flight.getOrigin().getCode() + "To: " + flight.getDestination().getCode() + "Departure Time: "
+                                + flight.getDepartureDate().toString() + "Arrival time:" + flight.getArrivalDate().toString()
+                                + "\n";
+                         }
+                        System.out.println(message);
+                    
+
+                    
+                        JOptionPane.showMessageDialog(PerformAdmin.this, message, "Flight List",
+                            JOptionPane.INFORMATION_MESSAGE);
+
                     }
-                    JOptionPane.showMessageDialog(PerformAdmin.this, message, "Flight List",
+                    else{
+                        for (Flight flight : flightList) {
+                            if (flight.getOrigin().getCode().equals(origin) && flight.getDestination().getCode().equals(destination)) {
+                                message += "From: " + flight.getOrigin().getCode() + "To: " + flight.getDestination().getCode() + "Departure Time: "
+                                    + flight.getDepartureDate().toString() + "Arrival time:" + flight.getArrivalDate().toString()
+                                    + "\n";
+                            }
+                        }
+                        JOptionPane.showMessageDialog(PerformAdmin.this, message, "Flight List",
                             JOptionPane.INFORMATION_MESSAGE);
                 }
+                }
             });
+          
+
         } else if (name == "Browse List Crews") {
 
             setTitle("Browse List Crews");
@@ -202,20 +221,14 @@ public class PerformAdmin extends JFrame {
                 public void actionPerformed(ActionEvent e) {
                     String flightID = text1Field.getText();
                     // String destination = text2Field.getText();
-                    ArrayList<Flight> flightList = FlightsSingleton.getInstance().getFlightList();
+                    Flight flight = FlightsSingleton.getInstance().getFlight(Integer.parseInt(flightID));
+                    ArrayList<RegisteredUser> crews = flight.getCrew().getCrewMembers();
                     String message = "";
-
-                    // TODO
-                    for (Flight flight : flightList) {
-                        if (flight.getID() == Integer.parseInt(flightID)) {
-                            for (User crew : flight.getCrew().getCrewMembers()) {
-                                message += crew.getFirstName() + " " + crew.getLastName() + ", ";
-                            }
-                            message += "\n";
-                        }
-
+                    for (RegisteredUser crewmember : crews) {
+                        message += "Crew ID: " + crewmember.getID() + "Crew Name: " + crewmember.getFirstName() + " "
+                                + crewmember.getLastName() + "\n";
                     }
-                    JOptionPane.showMessageDialog(PerformAdmin.this, message, "Flight List",
+                    JOptionPane.showMessageDialog(PerformAdmin.this, message, "Crew List",
                             JOptionPane.INFORMATION_MESSAGE);
                 }
             });
@@ -243,6 +256,8 @@ public class PerformAdmin extends JFrame {
 
                     // TODO
                     // need to add to database and singleton
+                    PlaneSingleton.getInstance().addPlane(new Plane(0,aircraftType, Integer.parseInt(totalRegularSeat),
+                            Integer.parseInt(totalComfortSeat), Integer.parseInt(totalBussinessSeat)));
                     System.out.println("Aircraft Type: " + aircraftType + "Total Regular Seat: " + totalRegularSeat
                             + "Total Comfort Seat: " + totalComfortSeat + "Total Bussiness Seat: "
                             + totalBussinessSeat);
@@ -528,7 +543,7 @@ public class PerformAdmin extends JFrame {
             setTitle("Manage Promo"); 
             text1.setText("Enter News:");
             text2.setText("Promo Code:");
-            text3.setText("Discount Percent:");
+            text3.setText("Discount:");
             text4.setVisible(false);
             text4Field.setVisible(false);
             submitButton.setText("Send Promo");
@@ -549,18 +564,17 @@ public class PerformAdmin extends JFrame {
                     }
                  
                     // need to add to database and singleton
-                    System.out.println("News " + news);
+                    System.out.println("News: " + news);
                     System.out.println("Promo: " + promoCode);
                     System.out.println("Discount: " + discount);
-                    UsersSingleton.getInstance().addPromo(promoCode, discount);
                     Mail.sendPromo(news, promoCode, discount);
+                         // Dispose of the current JFrame
+                    PerformAdmin.this.dispose();
+
+                    // Open the next page
                 }
+
             });
-
-        
-
-                        
-
         }
 
     }

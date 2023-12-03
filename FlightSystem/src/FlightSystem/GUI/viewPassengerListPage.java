@@ -4,12 +4,18 @@ import java.awt.*;
 import java.awt.event.*;
 import java.nio.channels.SeekableByteChannel;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.concurrent.Flow;
 import FlightSystem.objects.*;
 import FlightSystem.objects.flight.Flight;
 import FlightSystem.objects.flight.FlightsSingleton;
+import FlightSystem.objects.flight.PassengerList;
+import FlightSystem.objects.seats.Seat;
 import FlightSystem.objects.user.RegisteredUser;
+import FlightSystem.objects.user.User;
+import FlightSystem.objects.user.UsersSingleton;
 
 public class viewPassengerListPage extends JFrame implements ActionListener{
     private FlightsSingleton fs;
@@ -26,7 +32,7 @@ public class viewPassengerListPage extends JFrame implements ActionListener{
 
     private RegisteredUser signedInUser;
 
-    private ArrayList<Flight> employeeFlights; // list of flights the employee is a crew member for
+    private HashMap<Integer, Flight> employeeFlights = new HashMap<>(); // list of flights the employee is a crew member for
 
 
     public viewPassengerListPage(RegisteredUser signedInUser)
@@ -35,15 +41,15 @@ public class viewPassengerListPage extends JFrame implements ActionListener{
 
         // get flights they are a crew member for
         fs = FlightsSingleton.getInstance();
-        ArrayList<Flight> flights = fs.getFlightList();
-        for(Flight flight : flights)
+        HashMap<Integer, Flight> flights = fs.getFlightMap();
+        for(Flight flight : flights.values())
         {
             ArrayList<RegisteredUser> crewMembers = flight.getCrew().getCrewMembers();
             for(RegisteredUser crewMember : crewMembers)
             {
                 if(crewMember.getID() == signedInUser.getID())
                 {
-                    employeeFlights.add(flight);
+                    employeeFlights.put(flight.getID(), flight);
                 }
             }
         }
@@ -65,7 +71,7 @@ public class viewPassengerListPage extends JFrame implements ActionListener{
         gbc.insets = new Insets(5, 5, 5, 5); // Add some padding
         gbc.gridy = 0;
 
-        if (flights.size() == 0) // if no flights found
+        if (employeeFlights.size() == 0) // if no flights found
         {
             JLabel noFlights = new JLabel("No flights found");
             selectPanel.add(noFlights, gbc);
@@ -73,7 +79,7 @@ public class viewPassengerListPage extends JFrame implements ActionListener{
         }
 
         else {
-            for (Flight flight : flights) {
+            for (Flight flight : employeeFlights.values()) {
                 // Reset grid position for each flight
                 gbc.gridx = 0;
                 int tempFlightID = flight.getID(); // if select button clicked will set flightID to this
@@ -150,16 +156,50 @@ public class viewPassengerListPage extends JFrame implements ActionListener{
     {
         if (e.getSource() == nextButton) // add checks for all user types
         {
-            this.dispose();
-            Seatmap nextPage = new Seatmap(signedInUser, flights.get(flightID - 1));// navigate to next page, IDs start
-                                                                                    // at 1
+            showPassengerListPopup();
+
+            // display popup with passenger list
+
+
         } else if (e.getSource() == backButton) {
             this.dispose();
-            SearchFlightPage nextPage = new SearchFlightPage(signedInUser);
+            HomePage nextPage = new HomePage(signedInUser);
         } else {
-            System.out.println("Error in SelectFlightPage");
+            System.out.println("Error in viewPassengerListPage");
         }
     }
+
+    private void showPassengerListPopup() {
+        // Retrieve the passenger list based on the selected flightID
+        // Replace the following line with your logic to get the passengerList
+        ArrayList<Seat> passengerList = employeeFlights.get(flightID).getPassengerList().getPassengers();
+        HashMap<Integer, User> users =  UsersSingleton.getInstance().getUsersMap();
+        HashMap<Integer, RegisteredUser> registeredUsers = UsersSingleton.getInstance().getRegisteredUsersMap();
+
+        DefaultListModel<String> userModel = new DefaultListModel<>();
+
+        for(Seat seat : passengerList) // get rid of users that aren't in flight
+        {
+            if(users.containsKey(seat.getPassengerID()))
+            {
+                userModel.addElement((users.get(seat.getPassengerID())).getFirstName() + " " + users.get((seat.getPassengerID())).getLastName() + " - Seat: " + seat.getSeatNumber());
+            }
+
+            else if(registeredUsers.containsKey(seat.getPassengerID()))
+            {
+                userModel.addElement((registeredUsers.get(seat.getPassengerID())).getFirstName() + " " + registeredUsers.get((seat.getPassengerID())).getLastName() + " - Seat: " + seat.getSeatNumber());
+            }
+        }
+        JList<String> userList = new JList<>(userModel);
+
+        JPanel panel = new JPanel(new GridLayout(1, 1));
+        panel.add(new JScrollPane(userList));
+
+        JOptionPane.showMessageDialog(this, panel, "Passenger List", JOptionPane.PLAIN_MESSAGE);
+
+    }
+
+   
 
     public void mouseClicked(MouseEvent event) {
 

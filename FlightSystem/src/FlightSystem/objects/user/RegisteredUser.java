@@ -130,6 +130,7 @@ public class RegisteredUser extends User {
 
     public void removePromo(String promoCode) {
         try {
+            DatabaseSingleton.getInstance().removePromo(this.getID(), promoCode);
             promos.remove(promoCode);
         } catch (Exception e) {
             e.printStackTrace();

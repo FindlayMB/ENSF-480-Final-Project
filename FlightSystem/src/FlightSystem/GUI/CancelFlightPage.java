@@ -219,21 +219,22 @@ public class CancelFlightPage extends JFrame implements ActionListener{
                 double seatPrice;
     
                 // Multiply seat by multiplier to get price of seat
-                if(bookedSeat instanceof RegularSeat)
-                {
-                    RegularSeat regularSeat = (RegularSeat)bookedSeat;
-                    seatPrice = bookedFlight.getBasePrice()*RegularSeat.getPriceMultipler();
-                } 
-                else if(bookedSeat instanceof BusinessSeat)
-                {
-                    BusinessSeat businessSeat = (BusinessSeat)bookedSeat;
-                    seatPrice = bookedFlight.getBasePrice()*BusinessSeat.getPriceMultipler();
-                }                                                   
-                else
-                {
-                    ComfortSeat comfortSeat = (ComfortSeat)bookedSeat;
-                    seatPrice = bookedFlight.getBasePrice()*ComfortSeat.getPriceMultipler();
-                }
+                // if(bookedSeat instanceof RegularSeat)
+                // {
+                //     RegularSeat regularSeat = (RegularSeat)bookedSeat;
+                //     seatPrice = bookedFlight.getBasePrice()*RegularSeat.getPriceMultipler();
+                // } 
+                // else if(bookedSeat instanceof BusinessSeat)
+                // {
+                //     BusinessSeat businessSeat = (BusinessSeat)bookedSeat;
+                //     seatPrice = bookedFlight.getBasePrice()*BusinessSeat.getPriceMultipler();
+                // }                                                   
+                // else
+                // {
+                //     ComfortSeat comfortSeat = (ComfortSeat)bookedSeat;
+                //     seatPrice = bookedFlight.getBasePrice()*ComfortSeat.getPriceMultipler();
+                // }
+                seatPrice = bookedSeat.getPricePaid();
                 
                 Mail.sendCancellation(user, bookedFlight, bookedSeat.getInsurance(), seatPrice);
 

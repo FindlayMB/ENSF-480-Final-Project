@@ -74,7 +74,7 @@ public class Mail {
         "Kind Regards,\n\n" + "Group 17 Airline Company";
         UsersSingleton.getInstance().getRegisteredUsersList().forEach(user -> {
             try {
-                if(user.getRole() == "member")
+                if(user.getRole().equals("member"))
                 {
                     mimeMessage = new MimeMessage(newSession);
                     mimeMessage.setFrom(new InternetAddress(fromUser));
@@ -82,6 +82,7 @@ public class Mail {
                     mimeMessage.setSubject(emailSubjectString);
                     mimeMessage.setText(emailBodyString);
                     sendEmail();
+                    UsersSingleton.getInstance().addPromo(code, discount);
                 }
                 
             } catch (MessagingException e) {

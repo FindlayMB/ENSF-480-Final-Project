@@ -103,7 +103,7 @@ public class HomePage extends JFrame implements ActionListener{
         titleAndButtonsPanel.add(signInButton, gbc);
 
         // Add promotion logo
-        ImageIcon originalIcon = new ImageIcon("C:\\Users\\theo4\\ENGG Year 3\\Fall 2023\\ENSF 480\\ENSF-480-Term-Project---Group-17\\FlightSystem\\src\\FlightSystem\\GUI\\promotionlogo.png");
+        ImageIcon originalIcon = new ImageIcon("/Users/chithanhnguyen/Desktop/ENSF461/ensf461F23/ENSF-480-Term-Project---Group-17/FlightSystem/src/FlightSystem/GUI/promotionlogo.png");
         Image originalImage = originalIcon.getImage();
          
         // Scale the image proportionally to fill the width
@@ -238,11 +238,9 @@ public class HomePage extends JFrame implements ActionListener{
         {
             this.dispose();
             //delete the home page
-            this.setVisible(false);
             System.out.println("Admin button clicked");
 
             AdminPage adminPage = new AdminPage(this.user);
-            adminPage.setVisible(true);
             //adminPage.setVisible(true);
         }
         else if (buttonText.equals("Cancel Flight"))

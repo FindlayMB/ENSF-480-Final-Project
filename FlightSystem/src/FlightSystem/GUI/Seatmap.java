@@ -173,6 +173,7 @@ public class Seatmap extends JFrame implements ActionListener, MouseListener {
                 Color seatColor = seatColorList.get(0);
 
                 PaymentPage nextPage = new PaymentPage(signedInUser, selectFlight, seatnum, seatColor);
+                nextPage.setVisible(true);
                 dispose();
 
             }

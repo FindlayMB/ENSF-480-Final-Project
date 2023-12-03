@@ -4,7 +4,6 @@ package FlightSystem.GUI;
 import javax.swing.*;
 
 import FlightSystem.objects.plane.*;
-import FlightSystem.objects.user.User;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -19,15 +18,19 @@ public class AdminPage extends JFrame implements ActionListener {
     private JButton[][] adminButtons;
 
     public AdminPage(RegisteredUser user) {
+        super("Admin Page");
         this.user = user;
+        this.setSize(500, 800);
+        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        this.setLocationRelativeTo(null);
         setupGUI();
+        EventQueue.invokeLater(() -> { // event queue is threading related
+                this.setVisible(true); // makes GUI appear on screen 
+            });
     }
 
     public void setupGUI() {
-        JFrame frame = new JFrame("Admin Page");
-        frame.setSize(500, 800);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setLocationRelativeTo(null);
+        
 
         // Create a 2D array of buttons
         adminButtons = new JButton[3][4];
@@ -67,7 +70,7 @@ public class AdminPage extends JFrame implements ActionListener {
         managePromoButton.addActionListener(this);
         buttonPanel.add(managePromoButton);
 
-        frame.add(buttonPanel, BorderLayout.CENTER);
+        this.add(buttonPanel, BorderLayout.CENTER);
         // buttonPanel.add(southPanel);
         // Add the go back button at the bottom
         JButton backButton = new JButton("Go Back");
@@ -87,14 +90,14 @@ public class AdminPage extends JFrame implements ActionListener {
                 backButton.setForeground(Color.BLACK); // Reset text color on exit
             }
         });
-        frame.add(backButton, BorderLayout.PAGE_END);
+        this.add(backButton, BorderLayout.PAGE_END);
 
         // All title to the top
         JLabel headerLabel = new JLabel(
                 "Welcome to the Administator Page " + user.getFirstName() + " " + user.getLastName());
         headerLabel.setFont(new Font("Serif", Font.BOLD, 25));
 
-        frame.add(headerLabel, BorderLayout.NORTH);
+        this.add(headerLabel, BorderLayout.NORTH);
         // frame.add(backButton, BorderLayout.NORTH);
 
         // Add action listener to the back button
@@ -102,13 +105,11 @@ public class AdminPage extends JFrame implements ActionListener {
             // frame.dispose();
             // dispose();
 
-            frame.dispose();
-            frame.setVisible(false);
+            this.dispose();
+            this.setVisible(false);
             HomePage homePage = new HomePage(user);
             homePage.setVisible(true);
         });
-        dispose();
-        frame.setVisible(true);
     }
 
     @Override
@@ -305,10 +306,10 @@ public class AdminPage extends JFrame implements ActionListener {
         JOptionPane.showMessageDialog(AdminPage.this, planeList, "Registered Planes", JOptionPane.PLAIN_MESSAGE);
     }
 
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> {
-            new AdminPage(null);
-        });
-    }
+    // public static void main(String[] args) {
+    //     SwingUtilities.invokeLater(() -> {
+    //         new AdminPage(null);
+    //     });
+    // }
 
 }
