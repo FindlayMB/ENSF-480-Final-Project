@@ -276,15 +276,11 @@ public class DatabaseSingleton {
         return insertInto(tableName, columns, object.toQuery());
     }
 
-    public Plane addPlane(Plane plane) {
+    public Plane addPlane(Plane plane) throws SQLException {
         String[] columns = { "PlaneType", "NumRegular", "NumComfort", "NumBusiness" };
-        Plane newPlane = null;
-        try {
-            newPlane = new Plane(insertInto("planes", columns, plane), plane);
-        } catch (Exception e) {
-            e.printStackTrace();
-            System.out.println("Failed to insert new plane: " + plane.toString());
-        }
+
+        Plane newPlane = new Plane(insertInto("planes", columns, plane), plane);
+
         return newPlane;
     }
 
@@ -334,12 +330,34 @@ public class DatabaseSingleton {
         });
     }
 
+    public void addCrewMember(int crewID, int crewMemberID, String job) throws SQLException {
+        String[] columns = { "CrewID", "CrewMemberID", "Job" };
+        insertInto("crews", columns,
+                String.format("%d,%d,'%s'", crewID, crewMemberID, job));
+    }
+
     public Flight addFlight(Flight flight) {
         String[] columns = { "Destination", "ArrivalTime", "ArrivalDate", "Origin", "DepartureTime",
                 "DepartureDate", "CrewID", "PlaneID", "BasePrice" };
+        String columnString = "";
+        for (String s : columns) {
+            columnString += s + ",";
+        }
+        columnString = columnString.substring(0, columnString.length() - 1);
+        String query = String.format("""
+                INSERT INTO flights (%s)
+                VALUES
+                (%s);
+                """, columnString, flight.toQuery());
         Flight newFlight = null;
         try {
-            newFlight = new Flight(insertInto("flights", columns, flight), flight);
+            Statement statement = dbConnection.createStatement();
+            statement.executeUpdate(query, Statement.RETURN_GENERATED_KEYS);
+
+            ResultSet table = statement.getGeneratedKeys();
+            table.next();
+
+            newFlight = new Flight(table.getRow() != 0 ? table.getInt(1) : 0, flight);
         } catch (Exception e) {
             e.printStackTrace();
             System.out.println("Failed to insert new flight: " + flight.toString());
