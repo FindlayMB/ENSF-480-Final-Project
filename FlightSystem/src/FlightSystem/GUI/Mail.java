@@ -33,7 +33,7 @@ public class Mail {
         String emailSubjectString = "Reciept and Ticket for Flight Booking";
         String emailBodyString = "Dear " + firstName + " " + lastName + ",\n\n" + "Thank you for booking with us. Please" 
         + "find your ticket and reciept below:\n\n" + "Ticket:\n" + "Name: " + firstName + " " + lastName + "\n" + "Flight Info:\n" 
-        + "From: " + selectedFlight.getDestination() + "\nTo: " + selectedFlight.getDestination() + "\nSeat number: " + selectedSeatNum 
+        + "From: " + selectedFlight.getOrigin() + "\nTo: " + selectedFlight.getDestination() + "\nSeat number: " + selectedSeatNum 
         + "\n\n" + "Reciept\n" + "Cardholder: " + firstName + " " + lastName + "\n" + "Card Number: ************" + creditCardNumber
         + "\n" + "Expiry Date: " + expiryDate + "\n\n" + "Total Price: " + totalPrice +"$" +"\n\n" + 
         "Kind Regards,\n\n" + "Group 17 Airline";
