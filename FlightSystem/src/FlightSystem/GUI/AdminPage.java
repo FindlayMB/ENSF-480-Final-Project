@@ -32,12 +32,16 @@ public class AdminPage extends JFrame implements ActionListener {
         // Create a 2D array of buttons
         adminButtons = new JButton[3][4];
 
-        // Create buttons and add them to the array
+        //Create buttons and add them to the array
         ArrayList<String> buttonList = new ArrayList<>(
                 Arrays.asList("Browse List Flights", "Browse List Crews", "Browse List Aircrafts",
                         "Print Users", "Add Crew", "Add Aircraft", "Add Flight Destination",
                         "Add Flight Info", "Remove Crew", "Remove Aircraft",
                         "Remove Flight Destination", "Remove Flight Info"));
+        // ArrayList<String> buttonList = new ArrayList<>(
+        //         Arrays.asList("Browse List Flights", "Browse List Crews", "Browse List Aircrafts",
+        //                 "Print Users", "Add Crew", "Add Aircraft", "Add Flight Info", "Remove Crew", "Remove Aircraft",
+        //                 "Remove Flight Info"));
         for (int i = 0; i < adminButtons.length; i++) {
             for (int j = 0; j < adminButtons[i].length; j++) {
                 adminButtons[i][j] = new JButton();
@@ -46,6 +50,9 @@ public class AdminPage extends JFrame implements ActionListener {
                 adminButtons[i][j].addActionListener(this);
             }
         }
+
+        
+
 
         // Create a panel for the buttons using FlowLayout
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 10));
@@ -161,7 +168,7 @@ public class AdminPage extends JFrame implements ActionListener {
             dispose();
 
         } else if (buttonText == "Add Flight Destination") {
-            // make a function call handle add flight destination
+            //make a function call handle add flight destination
             disableButton(clickedButton);
             System.out.println("Add Flight Destination button clicked");
             // make a call to new page PerForm Admin

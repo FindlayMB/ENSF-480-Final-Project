@@ -3,6 +3,9 @@ package FlightSystem.GUI;
 import javax.swing.*;
 import java.time.LocalDate;
 import java.time.LocalTime;
+
+import FlightSystem.objects.airport.Airport;
+import FlightSystem.objects.airport.AirportsSingleton;
 import FlightSystem.objects.flight.Flight;
 import FlightSystem.objects.user.User;
 
@@ -259,7 +262,11 @@ public class PerformAdmin extends JFrame {
                     System.out.println("Aircraft Type: " + aircraftType + "Total Regular Seat: " + totalRegularSeat
                             + "Total Comfort Seat: " + totalComfortSeat + "Total Bussiness Seat: "
                             + totalBussinessSeat);
+                    JOptionPane.showMessageDialog(PerformAdmin.this, "Aircraft has been added", "Aircraft Added",
+                            JOptionPane.INFORMATION_MESSAGE);
                 }
+                //Show that the aircraft has been added and ask user to go back
+                
             });
             goBackButton.addActionListener(new ActionListener() {
                 @Override
@@ -288,20 +295,28 @@ public class PerformAdmin extends JFrame {
             text4.setVisible(false);
             text4Field.setVisible(false);
 
+
             text1.setText("AirCraftID to remove:");
             // text2.setText("Destination");
-            submitButton.setText("Add Aircraft");
+            submitButton.setText("Remove Aircraft");
+            
             submitButton.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    String aircraftType = text1Field.getText();
-                    String totalRegularSeat = text2Field.getText();
-                    String totalComfortSeat = text3Field.getText();
-                    String totalBussinessSeat = text4Field.getText();
+                    String aircraftID = text1Field.getText();
+                    //Search for the aircraft in the database and remove it
                     // need to add to database and singleton
-                    System.out.println("Aircraft Type: " + aircraftType + "Total Regular Seat: " + totalRegularSeat
-                            + "Total Comfort Seat: " + totalComfortSeat + "Total Bussiness Seat: "
-                            + totalBussinessSeat);
+                    PlaneSingleton.getInstance().removePlane(PlaneSingleton.getInstance().getPlane(Integer.parseInt(aircraftID)));
+                    //if the aircraft is not found, show error message
+                    //if the aircraft is found, show that the aircraft has been removed and ask user to go back
+                    try {
+                        PlaneSingleton.getInstance().removePlane(PlaneSingleton.getInstance().getPlane(Integer.parseInt(aircraftID)));
+                        JOptionPane.showMessageDialog(PerformAdmin.this, "Aircraft has been removed", "Aircraft Removed",
+                            JOptionPane.INFORMATION_MESSAGE);
+                    } catch (Exception e1) {
+                        JOptionPane.showMessageDialog(PerformAdmin.this, "Aircraft not found", "Aircraft not found",
+                            JOptionPane.INFORMATION_MESSAGE);
+                    }
                 }
             });
 
@@ -324,6 +339,10 @@ public class PerformAdmin extends JFrame {
                     String flightID = text2Field.getText();
                     // need to add to database and singleton
                     System.out.println("Crew ID: " + crewID + "Flight ID: " + flightID);
+
+
+                    ///TODO
+
                 }
             });
         } else if (name == "Remove Crew") {
@@ -342,9 +361,10 @@ public class PerformAdmin extends JFrame {
                 public void actionPerformed(ActionEvent e) {
                     String crewID = text1Field.getText();
                     String flightID = text2Field.getText();
-                    // need to add to database and singleton
-                    System.out.println("Crew ID: " + crewID + "Flight ID: " + flightID);
+
                 }
+
+                //TODO
             });
         }
 
@@ -365,6 +385,16 @@ public class PerformAdmin extends JFrame {
                     // need to add to database and singleton
                     System.out.println("Airport Name: " + airportName + "Airport Code: " + airportCode + "City: " + city
                             + "Country: " + country);
+                    try{
+                        AirportsSingleton.getInstance().addAirport(new Airport(airportCode,airportName , city, country));
+                        JOptionPane.showMessageDialog(PerformAdmin.this, "Airport has been added", "Airport Added",
+                            JOptionPane.INFORMATION_MESSAGE);
+
+                    } catch (Exception e1) {
+                        JOptionPane.showMessageDialog(PerformAdmin.this, "Airport Code already exists", "Airport Code already exists",
+                            JOptionPane.INFORMATION_MESSAGE);
+                    }
+                    
                 }
             });
 
@@ -384,6 +414,15 @@ public class PerformAdmin extends JFrame {
                     String AirportCode = text1Field.getText();
                     // need to add to database and singleton
                     System.out.println("Airport Code removed: " + AirportCode);
+                    try{
+                        AirportsSingleton.getInstance().removeAirport(AirportsSingleton.getInstance().getAirport(AirportCode));
+                        JOptionPane.showMessageDialog(PerformAdmin.this, "Airport has been removed", "Airport Removed",
+                            JOptionPane.INFORMATION_MESSAGE);
+
+                    } catch (Exception e1) {
+                        JOptionPane.showMessageDialog(PerformAdmin.this, "Airport Code not found", "Airport Code not found",
+                            JOptionPane.INFORMATION_MESSAGE);
+                    }
                 }
             });
         }
@@ -417,31 +456,38 @@ public class PerformAdmin extends JFrame {
             text9.setText("Plane ID");
             text10.setText("Base Price");
             submitButton.setText("Add Flight");
+            text1.setVisible(false);
+            text1Field.setVisible(false);
 
             submitButton.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    String flightID = text1Field.getText();
+                    //String flightID = text1Field.getText();
                     String destination = text2Field.getText();
-                    LocalTime arrivalTime = LocalTime.parse(text3Field.getText());
-                    LocalDate arrivalDate = LocalDate.parse(text4Field.getText());
+                    LocalTime arrivalTime = LocalTime.parse(text3Field.getText().trim());
+                    LocalDate arrivalDate = LocalDate.parse(text4Field.getText().trim());
                     String origin = text5Field.getText();
-                    LocalTime departureTime = LocalTime.parse(text6Field.getText());
-                    LocalDate departureDate = LocalDate.parse(text7Field.getText());
+                    LocalTime departureTime = LocalTime.parse(text6Field.getText().trim());
+                    LocalDate departureDate = LocalDate.parse(text7Field.getText().trim());
                     String crewID = text8Field.getText();
                     String planeID = text9Field.getText();
                     String basePrice = text10Field.getText();
+                    //get airport from the airport singleton
+                    Airport destinationAirport = AirportsSingleton.getInstance().getAirport(destination);
+                    Airport originAirport = AirportsSingleton.getInstance().getAirport(origin);
                     // need to add to database and singleton
-                    System.out.println("Flight ID: " + flightID);
-                    System.out.println("Destination: " + destination);
-                    System.out.println("Arrival Time: " + arrivalTime);
-                    System.out.println("Arrival Date: " + arrivalDate);
-                    System.out.println("Origin: " + origin);
-                    System.out.println("Departure Time: " + departureTime);
-                    System.out.println("Departure Date: " + departureDate);
-                    System.out.println("Crew ID: " + crewID);
-                    System.out.println("Plane ID: " + planeID);
-                    System.out.println("Base Price: " + basePrice);
+                    // try {
+                    //     FlightsSingleton.getInstance().addFlight(new Flight(0, destinationAirport, arrivalTime, arrivalDate, originAirport, departureTime, departureDate, Integer.parseInt(crewID), Float.parseFloat(basePrice), PlaneSingleton.getInstance().getPlane(Integer.parseInt(planeID))));
+                    //     JOptionPane.showMessageDialog(PerformAdmin.this, "Flight has been added", "Flight Added",
+                    //         JOptionPane.INFORMATION_MESSAGE);
+
+                    // } catch (Exception e1) {
+                    //     JOptionPane.showMessageDialog(PerformAdmin.this, "Flight ID already exists", "Flight ID already exists",
+                    //         JOptionPane.INFORMATION_MESSAGE);
+                    // }
+
+                    //TODO
+                    
                 }
             });
 
@@ -461,6 +507,18 @@ public class PerformAdmin extends JFrame {
                     String flightID = text1Field.getText();
                     // need to add to database and singleton
                     System.out.println("Flight ID: " + flightID);
+                    try {
+                        FlightsSingleton.getInstance().removeFlight(FlightsSingleton.getInstance().getFlight(Integer.parseInt(flightID)));
+                        JOptionPane.showMessageDialog(PerformAdmin.this, "Flight has been removed", "Flight Removed",
+                            JOptionPane.INFORMATION_MESSAGE);
+
+                    } catch (Exception e1) {
+                        JOptionPane.showMessageDialog(PerformAdmin.this, "Flight ID not found", "Flight ID not found",
+                            JOptionPane.INFORMATION_MESSAGE);
+                    
+                    }
+
+                    //TODO
                 }
             });
 
@@ -518,6 +576,7 @@ public class PerformAdmin extends JFrame {
                     System.out.println("Crew ID: " + crewID);
                     System.out.println("Plane ID: " + planeID);
                     System.out.println("Base Price: " + basePrice);
+                    //TODO
                 }
             });
         }
