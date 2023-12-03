@@ -480,7 +480,7 @@ public class DatabaseSingleton {
                 BasePrice = %f
                 WHERE FlightID = %d;""";
         query = String.format(query,
-                flight.getOrigin().getCode(),
+                flight.getDestination().getCode(),
                 flight.getArrivalTime(),
                 flight.getArrivalDate(),
                 flight.getOrigin().getCode(),
