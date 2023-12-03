@@ -29,6 +29,13 @@ public class FlightSystem {
         planes = PlaneSingleton.getInstance();
         users = UsersSingleton.getInstance();
         flights = FlightsSingleton.getInstance();
+        RegisteredUser user = null;
+        SwingUtilities.invokeLater(() -> {
+            HomePage gui = new HomePage(user); // pass registered user object accross
+            // pages to keep track of possible
+            // logged in user
+            gui.setVisible(true);
+        });
         // users.addUser(new User(0, "John", "Doe", "JohnDoe@gmail.com", "guest"));
 
         // users.addRegisteredUser(new RegisteredUser(
@@ -87,13 +94,7 @@ public class FlightSystem {
     public static void main(String[] args) {
         FlightSystem fs = new FlightSystem();
 
-        RegisteredUser user = null;
-        SwingUtilities.invokeLater(() -> {
-            HomePage gui = new HomePage(user); // pass registered user object accross
-            // pages to keep track of possible
-            // logged in user
-            gui.setVisible(true);
-        });
+        
     }
 
 }

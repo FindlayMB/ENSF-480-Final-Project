@@ -82,7 +82,6 @@ public class Mail {
                     mimeMessage.setSubject(emailSubjectString);
                     mimeMessage.setText(emailBodyString);
                     sendEmail();
-                    UsersSingleton.getInstance().addPromo(code, discount);
                 }
                 
             } catch (MessagingException e) {

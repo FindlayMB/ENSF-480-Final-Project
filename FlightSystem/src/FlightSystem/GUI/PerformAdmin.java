@@ -602,8 +602,10 @@ public class PerformAdmin extends JFrame {
                     System.out.println("Discount: " + discount);
                     Mail.sendPromo(news, promoCode, discount);
                          // Dispose of the current JFrame
-                    PerformAdmin.this.dispose();
+                    UsersSingleton.getInstance().addPromo(promoCode, discount);
 
+                    PerformAdmin.this.dispose();
+                    
                     // Open the next page
                 }
 

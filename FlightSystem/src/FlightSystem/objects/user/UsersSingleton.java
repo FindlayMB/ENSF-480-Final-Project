@@ -157,7 +157,10 @@ public class UsersSingleton {
 
     public void addPromo(String promoCode, Float discountPercent) {
         registeredUsers.forEach((uID, u) -> {
-            u.addPromo(promoCode, discountPercent);
+            if(u.getRole().equals("member"))
+            {
+                u.addPromo(promoCode, discountPercent);
+            }
         });
     }
 

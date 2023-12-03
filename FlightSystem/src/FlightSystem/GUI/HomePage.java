@@ -116,7 +116,7 @@ public class HomePage extends JFrame implements ActionListener{
         JLabel imageLabel = new JLabel(scaledIcon);
 
         // Create buttons for the middle panel
-        JButton searchFlightButton = new JButton("Search Flight");
+        JButton searchFlightButton = new JButton("Book Flight");
         searchFlightButton.addActionListener(this);
         JButton bookFlightButton2 = new JButton("Book Flight");
         JButton myBookingsButton = new JButton("Flight Status");
@@ -126,7 +126,7 @@ public class HomePage extends JFrame implements ActionListener{
         // Create a panel for the middle buttons
         JPanel middleButtonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 20, 20));
         middleButtonPanel.add(searchFlightButton);
-        middleButtonPanel.add(bookFlightButton2);
+        // middleButtonPanel.add(bookFlightButton2);
         middleButtonPanel.add(myBookingsButton);
         middleButtonPanel.add(cancelButton);
 
@@ -199,7 +199,7 @@ public class HomePage extends JFrame implements ActionListener{
         JButton clickedButton = (JButton) e.getSource();
         String buttonText = clickedButton.getText();
 
-        if(buttonText == "Search Flight") // Allow user to search for flight
+        if(buttonText == "Book Flight") // Allow user to search for flight
         {
             this.dispose();
             new SearchFlightPage(user);// navigate to next page
