@@ -162,7 +162,7 @@ public class AdminPage extends JFrame implements ActionListener {
             PerformAdmin a = new PerformAdmin(this.user, "Add Crew");
             a.setVisible(true);
             enableButton();
-            dispose();
+            // dispose();
 
         } else if (buttonText == "Add Aircraft") {
             disableButton(clickedButton);
@@ -171,7 +171,7 @@ public class AdminPage extends JFrame implements ActionListener {
             PerformAdmin a = new PerformAdmin(this.user, "Add Aircraft");
             a.setVisible(true);
             enableButton();
-            dispose();
+            // dispose();
 
         } else if (buttonText == "Add Flight Destination") {
             //make a function call handle add flight destination

@@ -363,15 +363,16 @@ public class PerformAdmin extends JFrame {
                         });
                         System.out.println();
                     });
-
-
                 }
+                
             });
+
         } else if (name == "Remove Crew") {
             setTitle("Remove Crew");
             text1.setText("Crew ID:");
             text2.setText("Flight ID: ");
-
+            text2.setVisible(false);
+            text2Field.setVisible(false);
             text3.setVisible(false);
             text3Field.setVisible(false);
             text4.setVisible(false);
@@ -414,7 +415,7 @@ public class PerformAdmin extends JFrame {
                     String city = text3Field.getText();
                     String country = text4Field.getText();
 
-                    AirportsSingleton.getInstance().addAirport(new Airport(airportCode, name, city, country));
+                    // AirportsSingleton.getInstance().addAirport(new Airport(airportCode, name, city, country));
                     System.out.println("Airport Name: " + airportName + "Airport Code: " + airportCode + "City: " + city
                             + "Country: " + country);
                     try{
@@ -445,7 +446,7 @@ public class PerformAdmin extends JFrame {
                 public void actionPerformed(ActionEvent e) {
                     String AirportCode = text1Field.getText();
 
-                    AirportsSingleton.getInstance().removeAirport(AirportCode);
+                    //AirportsSingleton.getInstance().removeAirport(AirportCode);
                     System.out.println("Airport Code removed: " + AirportCode);
                     try{
                         AirportsSingleton.getInstance().removeAirport(AirportsSingleton.getInstance().getAirport(AirportCode));
@@ -545,10 +546,10 @@ public class PerformAdmin extends JFrame {
                 public void actionPerformed(ActionEvent e) {
                     int flightID = Integer.parseInt(text1Field.getText());
                     // need to add to database and singleton
-                    FlightsSingleton.getInstance().removeFlight(FlightsSingleton.getInstance().getFlight(flightID));
+                    // FlightsSingleton.getInstance().removeFlight(FlightsSingleton.getInstance().getFlight(flightID));
                     System.out.println("Flight ID: " + flightID);
                     try {
-                        FlightsSingleton.getInstance().removeFlight(FlightsSingleton.getInstance().getFlight(Integer.parseInt(flightID)));
+                        FlightsSingleton.getInstance().removeFlight(FlightsSingleton.getInstance().getFlight((flightID)));
                         JOptionPane.showMessageDialog(PerformAdmin.this, "Flight has been removed", "Flight Removed",
                             JOptionPane.INFORMATION_MESSAGE);
 
