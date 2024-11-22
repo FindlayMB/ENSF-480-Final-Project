@@ -21,21 +21,30 @@ CREATE TABLE airports (
     City                VARCHAR(30) NOT NULL,
     Country             VARCHAR(30) NOT NULL,
     PRIMARY KEY(AirportCode)
+    
 );
 
 DROP TABLE IF EXISTS users;
 CREATE TABLE users (
     UserID              INT         NOT NULL AUTO_INCREMENT,
-    Username            VARCHAR(30) NOT NULL,
-    Password            VARCHAR(30) NOT NULL,
     FirstName           VARCHAR(30) NOT NULL,
     LastName            VARCHAR(30) NOT NULL,    
     Email               VARCHAR(60) NOT NULL,
-    SignUpDate          DATE        NOT NULL,
-
-    CreditCardNumber    VARCHAR(19),
-    Role                ENUM('member','employee','admin'),
+    Role                ENUM('guest','member','employee','admin'),
     PRIMARY KEY(UserID)
+);
+
+DROP TABLE IF EXISTS registered;
+CREATE TABLE registered (
+    UserID              INT         NOT NULL,
+    Username            VARCHAR(30) NOT NULL,
+    Password            VARCHAR(30) NOT NULL,
+    SignUpDate          DATE        NOT NULL,
+    CreditCardNumber    VARCHAR(19),
+    CVV                 CHAR(3),
+    ExpiryDate          DATE,
+    PRIMARY KEY(UserID, Username),
+    FOREIGN KEY(UserID) REFERENCES users(UserID)
 );
 
 DROP TABLE IF EXISTS crews;
@@ -44,7 +53,7 @@ CREATE TABLE crews (
     CrewMemberID    INT NOT NULL,
     Job             VARCHAR(30) NOT NULL,
     PRIMARY KEY(CrewID, CrewMemberID),
-    FOREIGN KEY(CrewMemberID) REFERENCES users(UserID)
+    FOREIGN KEY(CrewMemberID) REFERENCES registered(UserID)
 );
 
 DROP TABLE IF EXISTS flights;
@@ -58,12 +67,12 @@ CREATE TABLE flights (
     DepartureDate   DATE    NOT NULL,
     CrewID          INT     NOT NULL,
     PlaneID         INT     NOT NULL,
-
+    BasePrice       FLOAT   NOT NULL,
     PRIMARY KEY(FlightID),
-    FOREIGN KEY(Destination) REFERENCES airports(AirportCode),
-    FOREIGN KEY(Origin) REFERENCES airports(AirportCode),
+    FOREIGN KEY(Destination) REFERENCES airports(AirportCode) ON DELETE CASCADE,
+    FOREIGN KEY(Origin) REFERENCES airports(AirportCode) ON DELETE CASCADE,
     FOREIGN KEY(CrewID) REFERENCES crews(CrewID),
-    FOREIGN KEY(PlaneID) REFERENCES planes(PlaneID)
+    FOREIGN KEY(PlaneID) REFERENCES planes(PlaneID) ON DELETE CASCADE
 );
 
 DROP TABLE IF EXISTS passengerlist;
@@ -71,12 +80,23 @@ CREATE TABLE passengerlist (
     FlightID    INT NOT NULL,
     UserID      INT NOT NULL,
     SeatNumber  INT NOT NULL,
+    SeatType    ENUM('regular','comfort','business'),
     Insurance   BOOL NOT NULL DEFAULT false,
+    PricePaid   FLOAT,
     PRIMARY KEY(FlightID, UserID),
-    FOREIGN KEY(FlightID) REFERENCES flights(FlightID),
-    FOREIGN KEY(UserID) REFERENCES users(UserID)
+    FOREIGN KEY(FlightID) REFERENCES flights(FlightID) ON DELETE CASCADE,
+    FOREIGN KEY(UserID) REFERENCES users(UserID) ON DELETE CASCADE
 );
 
+
+DROP TABLE IF EXISTS promos;
+CREATE TABLE promos (
+    UserID INT NOT NULL,
+    PromoCode VARCHAR(10) NOT NULL,
+    DiscountPercent FLOAT NOT NULL,
+    PRIMARY KEY(UserID, PromoCode),
+    FOREIGN KEY(UserID) REFERENCES registered(UserID) ON DELETE CASCADE
+);
 
 /* 
  * Create a admin user for MySQL database.
